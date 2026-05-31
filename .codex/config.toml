@@ -18,4 +18,7 @@ approval_mode = "approve"
 [mcp_servers.mcp-unity.tools.get_gameobject]
 approval_mode = "approve"
 
+[mcp_servers.figma]
+url = "http://127.0.0.1:3845/mcp"
+
 
