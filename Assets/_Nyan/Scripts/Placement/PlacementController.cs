@@ -24,14 +24,16 @@ public sealed class PlacementController : MonoBehaviour
 
     private sealed class PlacedCharacter
     {
-        public PlacedCharacter(MapTile tile, Transform character)
+        public PlacedCharacter(MapTile tile, Transform character, SlotSelectionButton sourceSlot)
         {
             Tile = tile;
             Character = character;
+            SourceSlot = sourceSlot;
         }
 
         public MapTile Tile { get; }
         public Transform Character { get; }
+        public SlotSelectionButton SourceSlot { get; }
     }
 
     [SerializeField] private Camera worldCamera;
@@ -46,6 +48,7 @@ public sealed class PlacementController : MonoBehaviour
     [SerializeField] private Color previewColor = new Color32(0, 170, 255, 120);
     [SerializeField] private Color placedColor = new Color32(40, 145, 255, 255);
     [SerializeField] private Color tilePreviewColor = new Color32(110, 220, 255, 255);
+    [SerializeField] private Color tileInvalidColor = new Color32(255, 80, 80, 255);
     [SerializeField] private Color trashNormalColor = new Color32(70, 70, 70, 220);
     [SerializeField] private Color trashHoverColor = new Color32(255, 80, 80, 240);
     [SerializeField] private Vector3 characterOffset = new Vector3(0f, 1f, 0f);
@@ -151,6 +154,13 @@ public sealed class PlacementController : MonoBehaviour
             return;
         }
 
+        if (slot != null && !slot.HasAvailableCount)
+        {
+            slot.FlashUnavailable();
+            RefreshModeUi(false);
+            return;
+        }
+
         if (selectedSlot != null)
         {
             selectedSlot.SetSelected(false, selectedOutlineColor, selectedOutlineDistance);
@@ -173,9 +183,23 @@ public sealed class PlacementController : MonoBehaviour
             return;
         }
 
+        if (!selectedSlot.TryReservePreview())
+        {
+            tile.FlashInvalid(tileInvalidColor);
+            return;
+        }
+
+        SlotSelectionButton sourceSlot = selectedSlot;
         GameObject character = CreateCharacterObject("Prototype Character", tile.transform, placedMaterial);
         tile.SetOccupant(character.transform);
-        placedBatches.Push(new List<PlacedCharacter> { new PlacedCharacter(tile, character.transform) });
+        sourceSlot.CommitPreviewReservations(1);
+        placedBatches.Push(new List<PlacedCharacter> { new PlacedCharacter(tile, character.transform, sourceSlot) });
+        if (!sourceSlot.HasAvailableCount)
+        {
+            ClearSelectedSlot();
+            return;
+        }
+
         RefreshModeUi(false);
     }
 
@@ -205,6 +229,11 @@ public sealed class PlacementController : MonoBehaviour
             {
                 Destroy(placed.Character.gameObject);
             }
+
+            if (placed.SourceSlot != null)
+            {
+                placed.SourceSlot.RestoreCount(1);
+            }
         }
 
         RefreshModeUi(false);
@@ -218,6 +247,11 @@ public sealed class PlacementController : MonoBehaviour
 
     private void CancelPlacementDrag()
     {
+        if (selectedSlot != null)
+        {
+            selectedSlot.ReleasePreviewReservations();
+        }
+
         ClearPreviews(true);
         isDraggingPlacement = false;
         RefreshModeUi(false);
@@ -226,11 +260,22 @@ public sealed class PlacementController : MonoBehaviour
     private void ConfirmPlacementDrag()
     {
         var batch = new List<PlacedCharacter>();
+        SlotSelectionButton sourceSlot = selectedSlot;
         for (int i = 0; i < previewOrder.Count; i++)
         {
             PreviewPlacement preview = previewOrder[i];
             if (preview.Tile == null || preview.Character == null || preview.Tile.IsOccupied)
             {
+                if (preview.Tile != null)
+                {
+                    preview.Tile.SetPlacementHighlight(false, tilePreviewColor);
+                }
+
+                if (preview.Character != null)
+                {
+                    Destroy(preview.Character);
+                }
+
                 continue;
             }
 
@@ -238,16 +283,27 @@ public sealed class PlacementController : MonoBehaviour
             preview.Character.name = "Prototype Character";
             preview.Tile.SetOccupant(preview.Character.transform);
             preview.Tile.SetPlacementHighlight(false, tilePreviewColor);
-            batch.Add(new PlacedCharacter(preview.Tile, preview.Character.transform));
+            batch.Add(new PlacedCharacter(preview.Tile, preview.Character.transform, sourceSlot));
         }
 
         previewsByTile.Clear();
         previewOrder.Clear();
         isDraggingPlacement = false;
 
+        if (sourceSlot != null)
+        {
+            sourceSlot.CommitPreviewReservations(batch.Count);
+        }
+
         if (batch.Count > 0)
         {
             placedBatches.Push(batch);
+        }
+
+        if (sourceSlot != null && !sourceSlot.HasAvailableCount)
+        {
+            ClearSelectedSlot();
+            return;
         }
 
         RefreshModeUi(false);
@@ -258,6 +314,12 @@ public sealed class PlacementController : MonoBehaviour
         MapTile tile = GetTileAt(screenPosition);
         if (tile == null || tile.IsOccupied || previewsByTile.ContainsKey(tile))
         {
+            return;
+        }
+
+        if (selectedSlot == null || !selectedSlot.TryReservePreview())
+        {
+            tile.FlashInvalid(tileInvalidColor);
             return;
         }
 

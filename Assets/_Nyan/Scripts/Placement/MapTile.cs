@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public sealed class MapTile : MonoBehaviour
@@ -9,7 +10,10 @@ public sealed class MapTile : MonoBehaviour
     public bool IsOccupied => occupant != null;
 
     private Color baseColor;
+    private Color activeHighlightColor;
     private bool hasBaseColor;
+    private bool isPlacementHighlighted;
+    private Coroutine invalidFlashRoutine;
 
     public void SetOccupant(Transform newOccupant)
     {
@@ -34,7 +38,30 @@ public sealed class MapTile : MonoBehaviour
             return;
         }
 
-        SetRendererColor(highlighted ? highlightColor : baseColor);
+        isPlacementHighlighted = highlighted;
+        activeHighlightColor = highlightColor;
+        SetRendererColor(GetCurrentTileColor());
+    }
+
+    public void FlashInvalid(Color invalidColor)
+    {
+        if (!isActiveAndEnabled)
+        {
+            return;
+        }
+
+        CacheRenderer();
+        if (tileRenderer == null)
+        {
+            return;
+        }
+
+        if (invalidFlashRoutine != null)
+        {
+            StopCoroutine(invalidFlashRoutine);
+        }
+
+        invalidFlashRoutine = StartCoroutine(FlashInvalidRoutine(invalidColor));
     }
 
     private void Awake()
@@ -95,5 +122,18 @@ public sealed class MapTile : MonoBehaviour
         {
             material.SetColor("_Color", color);
         }
+    }
+
+    private IEnumerator FlashInvalidRoutine(Color invalidColor)
+    {
+        SetRendererColor(invalidColor);
+        yield return new WaitForSeconds(0.16f);
+        invalidFlashRoutine = null;
+        SetRendererColor(GetCurrentTileColor());
+    }
+
+    private Color GetCurrentTileColor()
+    {
+        return isPlacementHighlighted ? activeHighlightColor : baseColor;
     }
 }
