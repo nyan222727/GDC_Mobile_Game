@@ -32,6 +32,17 @@ public sealed class ViewCameraTouchController : MonoBehaviour
     [SerializeField] private float zoomSuppressesRotationRatio = 1.35f;
     [SerializeField] private bool invertRotation;
 
+    [Header("Pitch")]
+    [SerializeField] private bool enableTwoFingerPitch = true;
+    [SerializeField] private float pitchSpeed = 0.1f;
+    [SerializeField] private float pitchSmoothTime = 0.08f;
+    [SerializeField] private float pitchDeadZone = 4f;
+    [SerializeField] private float pitchLockRatio = 1.25f;
+    [SerializeField] private float pitchVerticalBias = 1.2f;
+    [SerializeField] private float minPitchAngle = 30f;
+    [SerializeField] private float maxPitchAngle = 65f;
+    [SerializeField] private bool invertPitch;
+
     [Header("Zoom")]
     [SerializeField] private float pinchZoomSpeed = 0.015f;
     [SerializeField] private float zoomSmoothTime = 0.08f;
@@ -51,14 +62,16 @@ public sealed class ViewCameraTouchController : MonoBehaviour
     private readonly List<RaycastResult> uiResults = new List<RaycastResult>();
     private Vector3 desiredTargetPosition;
     private Vector3 panVelocity;
-    private float followVerticalRatio = 0.6f;
-    private float followHorizontalRatio = 0.8f;
     private float currentYawDegrees;
     private float targetYawDegrees;
     private float yawVelocity;
+    private float currentPitchDegrees;
+    private float targetPitchDegrees;
+    private float pitchVelocity;
     private float currentZoom;
     private float targetZoom;
     private float zoomVelocity;
+    private TwoFingerGestureMode activeTwoFingerGestureMode;
     private bool isMousePanning;
 
     private bool CanControlView => placementController == null
@@ -80,6 +93,13 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         rotationSmoothTime = Mathf.Max(0f, rotationSmoothTime);
         rotationDeadZone = Mathf.Max(0f, rotationDeadZone);
         zoomSuppressesRotationRatio = Mathf.Max(0f, zoomSuppressesRotationRatio);
+        pitchSpeed = Mathf.Max(0f, pitchSpeed);
+        pitchSmoothTime = Mathf.Max(0f, pitchSmoothTime);
+        pitchDeadZone = Mathf.Max(0f, pitchDeadZone);
+        pitchLockRatio = Mathf.Max(0f, pitchLockRatio);
+        pitchVerticalBias = Mathf.Max(0f, pitchVerticalBias);
+        minPitchAngle = Mathf.Clamp(minPitchAngle, -85f, 85f);
+        maxPitchAngle = Mathf.Clamp(maxPitchAngle, minPitchAngle, 85f);
         pinchZoomSpeed = Mathf.Max(0f, pinchZoomSpeed);
         zoomSmoothTime = Mathf.Max(0f, zoomSmoothTime);
         zoomDeadZone = Mathf.Max(0f, zoomDeadZone);
@@ -101,6 +121,7 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         {
             isMousePanning = false;
             desiredTargetPosition = viewTarget.position;
+            activeTwoFingerGestureMode = TwoFingerGestureMode.None;
             return;
         }
 
@@ -243,6 +264,8 @@ public sealed class ViewCameraTouchController : MonoBehaviour
 
         if (touchCount == 1)
         {
+            activeTwoFingerGestureMode = TwoFingerGestureMode.None;
+
             if (first.Began || IsScreenPositionOverUi(first.Position))
             {
                 return;
@@ -260,7 +283,10 @@ public sealed class ViewCameraTouchController : MonoBehaviour
             }
 
             HandleTwoFingerGesture(first, second);
+            return;
         }
+
+        activeTwoFingerGestureMode = TwoFingerGestureMode.None;
 #endif
     }
 
@@ -370,6 +396,7 @@ public sealed class ViewCameraTouchController : MonoBehaviour
     {
         if (first.Began || second.Began)
         {
+            activeTwoFingerGestureMode = TwoFingerGestureMode.None;
             return;
         }
 
@@ -384,6 +411,19 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         float previousDistance = previousVector.magnitude;
         float pinchDelta = currentDistance - previousDistance;
         float rotationDelta = Vector2.SignedAngle(previousVector, currentVector);
+
+        if (activeTwoFingerGestureMode == TwoFingerGestureMode.Pitch)
+        {
+            PitchByGestureDelta(GetPitchGestureDelta(first, second));
+            return;
+        }
+
+        if (ShouldLockPitchGesture(first, second, pinchDelta, rotationDelta))
+        {
+            activeTwoFingerGestureMode = TwoFingerGestureMode.Pitch;
+            PitchByGestureDelta(GetPitchGestureDelta(first, second));
+            return;
+        }
 
         ZoomByPinchDelta(pinchDelta);
         RotateByGestureDelta(rotationDelta, pinchDelta);
@@ -405,6 +445,67 @@ public sealed class ViewCameraTouchController : MonoBehaviour
 
         float direction = invertRotation ? -1f : 1f;
         targetYawDegrees += rotationDelta * rotationSpeed * direction;
+    }
+
+    private bool ShouldLockPitchGesture(
+        TouchSample first,
+        TouchSample second,
+        float pinchDelta,
+        float rotationDelta)
+    {
+        float pitchDelta = GetPitchGestureDelta(first, second);
+        if (!enableTwoFingerPitch || Mathf.Abs(pitchDelta) < pitchDeadZone)
+        {
+            return false;
+        }
+
+        if (!AreTouchesMovingTogether(first.Delta, second.Delta))
+        {
+            return false;
+        }
+
+        Vector2 averageDelta = (first.Delta + second.Delta) * 0.5f;
+        if (Mathf.Abs(averageDelta.y) < Mathf.Abs(averageDelta.x) * pitchVerticalBias)
+        {
+            return false;
+        }
+
+        float pitchScore = Mathf.Abs(pitchDelta) / Mathf.Max(pitchDeadZone, 0.001f);
+        float zoomScore = Mathf.Abs(pinchDelta) / Mathf.Max(zoomDeadZone, 0.001f);
+        float rotationScore = enableTwoFingerRotation
+            ? Mathf.Abs(rotationDelta) / Mathf.Max(rotationDeadZone, 0.001f)
+            : 0f;
+
+        return pitchScore > Mathf.Max(zoomScore, rotationScore) * pitchLockRatio;
+    }
+
+    private void PitchByGestureDelta(float pitchDelta)
+    {
+        if (!enableTwoFingerPitch || Mathf.Abs(pitchDelta) < pitchDeadZone)
+        {
+            return;
+        }
+
+        float direction = invertPitch ? -1f : 1f;
+        targetPitchDegrees = Mathf.Clamp(
+            targetPitchDegrees + pitchDelta * pitchSpeed * direction,
+            minPitchAngle,
+            maxPitchAngle);
+    }
+
+    private static float GetPitchGestureDelta(TouchSample first, TouchSample second)
+    {
+        return ((first.Delta + second.Delta) * 0.5f).y;
+    }
+
+    private static bool AreTouchesMovingTogether(Vector2 firstDelta, Vector2 secondDelta)
+    {
+        if (firstDelta.sqrMagnitude <= 0.001f || secondDelta.sqrMagnitude <= 0.001f)
+        {
+            return false;
+        }
+
+        return Vector2.Dot(firstDelta.normalized, secondDelta.normalized) > 0.7f;
     }
 
     private void ApplySmoothing()
@@ -444,6 +545,19 @@ public sealed class ViewCameraTouchController : MonoBehaviour
                 rotationSmoothTime);
         }
 
+        if (pitchSmoothTime <= 0f)
+        {
+            currentPitchDegrees = targetPitchDegrees;
+        }
+        else
+        {
+            currentPitchDegrees = Mathf.SmoothDamp(
+                currentPitchDegrees,
+                targetPitchDegrees,
+                ref pitchVelocity,
+                pitchSmoothTime);
+        }
+
         ApplyZoom(currentZoom);
     }
 
@@ -463,19 +577,34 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         }
 
         direction.Normalize();
-        followVerticalRatio = Mathf.Clamp(direction.y, -0.95f, 0.95f);
-        followHorizontalRatio = Mathf.Sqrt(Mathf.Max(0.001f, 1f - followVerticalRatio * followVerticalRatio));
-        currentYawDegrees = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        var horizontalDirection = new Vector3(direction.x, 0f, direction.z);
+        if (horizontalDirection.sqrMagnitude <= 0.001f)
+        {
+            horizontalDirection = Vector3.back;
+        }
+        else
+        {
+            horizontalDirection.Normalize();
+        }
+
+        currentPitchDegrees = Mathf.Clamp(
+            Mathf.Asin(Mathf.Clamp(direction.y, -0.95f, 0.95f)) * Mathf.Rad2Deg,
+            minPitchAngle,
+            maxPitchAngle);
+        targetPitchDegrees = currentPitchDegrees;
+        currentYawDegrees = Mathf.Atan2(horizontalDirection.x, horizontalDirection.z) * Mathf.Rad2Deg;
         targetYawDegrees = currentYawDegrees;
     }
 
     private Vector3 GetFollowDirection(float yawDegrees)
     {
         float yawRadians = yawDegrees * Mathf.Deg2Rad;
+        float pitchRadians = currentPitchDegrees * Mathf.Deg2Rad;
+        float horizontalRatio = Mathf.Cos(pitchRadians);
         return new Vector3(
-            Mathf.Sin(yawRadians) * followHorizontalRatio,
-            followVerticalRatio,
-            Mathf.Cos(yawRadians) * followHorizontalRatio).normalized;
+            Mathf.Sin(yawRadians) * horizontalRatio,
+            Mathf.Sin(pitchRadians),
+            Mathf.Cos(yawRadians) * horizontalRatio).normalized;
     }
 
     private Vector3 ApplyBoundsResistance(Vector3 current, Vector3 proposed)
@@ -588,5 +717,11 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         public Vector2 Position { get; }
         public Vector2 Delta { get; }
         public bool Began { get; }
+    }
+
+    private enum TwoFingerGestureMode
+    {
+        None,
+        Pitch
     }
 }

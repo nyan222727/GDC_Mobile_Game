@@ -10962,6 +10962,15 @@ MonoBehaviour:
   rotationDeadZone: 3
   zoomSuppressesRotationRatio: 1.35
   invertRotation: 0
+  enableTwoFingerPitch: 1
+  pitchSpeed: 0.1
+  pitchSmoothTime: 0.08
+  pitchDeadZone: 4
+  pitchLockRatio: 1.25
+  pitchVerticalBias: 1.2
+  minPitchAngle: 30
+  maxPitchAngle: 65
+  invertPitch: 0
   pinchZoomSpeed: 0.015
   zoomSmoothTime: 0.08
   zoomDeadZone: 2
