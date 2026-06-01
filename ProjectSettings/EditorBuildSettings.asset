@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Nyan/Menu_Scene.unity
+    guid: fbad4e9b3a3d49e9a41f27c1d7100003
+  - enabled: 1
     path: Assets/_Nyan/Nyan_Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
