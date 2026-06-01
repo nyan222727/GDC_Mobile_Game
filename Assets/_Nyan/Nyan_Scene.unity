@@ -10956,6 +10956,12 @@ MonoBehaviour:
   panSmoothTime: 0.08
   panDeadZone: 2
   invertPan: 1
+  enableTwoFingerRotation: 1
+  rotationSpeed: 0.8
+  rotationSmoothTime: 0.08
+  rotationDeadZone: 3
+  zoomSuppressesRotationRatio: 1.35
+  invertRotation: 0
   pinchZoomSpeed: 0.015
   zoomSmoothTime: 0.08
   zoomDeadZone: 2

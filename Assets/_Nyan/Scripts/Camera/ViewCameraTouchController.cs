@@ -24,6 +24,14 @@ public sealed class ViewCameraTouchController : MonoBehaviour
     [SerializeField] private float panDeadZone = 2f;
     [SerializeField] private bool invertPan = true;
 
+    [Header("Rotation")]
+    [SerializeField] private bool enableTwoFingerRotation = true;
+    [SerializeField] private float rotationSpeed = 0.8f;
+    [SerializeField] private float rotationSmoothTime = 0.08f;
+    [SerializeField] private float rotationDeadZone = 3f;
+    [SerializeField] private float zoomSuppressesRotationRatio = 1.35f;
+    [SerializeField] private bool invertRotation;
+
     [Header("Zoom")]
     [SerializeField] private float pinchZoomSpeed = 0.015f;
     [SerializeField] private float zoomSmoothTime = 0.08f;
@@ -43,7 +51,11 @@ public sealed class ViewCameraTouchController : MonoBehaviour
     private readonly List<RaycastResult> uiResults = new List<RaycastResult>();
     private Vector3 desiredTargetPosition;
     private Vector3 panVelocity;
-    private Vector3 followOffsetDirection = new Vector3(0f, 0.6f, -0.8f).normalized;
+    private float followVerticalRatio = 0.6f;
+    private float followHorizontalRatio = 0.8f;
+    private float currentYawDegrees;
+    private float targetYawDegrees;
+    private float yawVelocity;
     private float currentZoom;
     private float targetZoom;
     private float zoomVelocity;
@@ -64,6 +76,10 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         panSpeed = Mathf.Max(0f, panSpeed);
         panSmoothTime = Mathf.Max(0f, panSmoothTime);
         panDeadZone = Mathf.Max(0f, panDeadZone);
+        rotationSpeed = Mathf.Max(0f, rotationSpeed);
+        rotationSmoothTime = Mathf.Max(0f, rotationSmoothTime);
+        rotationDeadZone = Mathf.Max(0f, rotationDeadZone);
+        zoomSuppressesRotationRatio = Mathf.Max(0f, zoomSuppressesRotationRatio);
         pinchZoomSpeed = Mathf.Max(0f, pinchZoomSpeed);
         zoomSmoothTime = Mathf.Max(0f, zoomSmoothTime);
         zoomDeadZone = Mathf.Max(0f, zoomDeadZone);
@@ -179,7 +195,7 @@ public sealed class ViewCameraTouchController : MonoBehaviour
             initialOffset = new Vector3(0f, 6f, -8f);
         }
 
-        followOffsetDirection = initialOffset.normalized;
+        SetFollowDirection(initialOffset.normalized);
         currentZoom = Mathf.Clamp(initialOffset.magnitude, minZoom, maxZoom);
         targetZoom = currentZoom;
         ApplyZoom(currentZoom);
@@ -205,7 +221,10 @@ public sealed class ViewCameraTouchController : MonoBehaviour
                 continue;
             }
 
-            var sample = new TouchSample(touch.position.ReadValue(), touch.delta.ReadValue());
+            var sample = new TouchSample(
+                touch.position.ReadValue(),
+                touch.delta.ReadValue(),
+                touch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Began);
             if (touchCount == 0)
             {
                 first = sample;
@@ -224,7 +243,7 @@ public sealed class ViewCameraTouchController : MonoBehaviour
 
         if (touchCount == 1)
         {
-            if (IsScreenPositionOverUi(first.Position))
+            if (first.Began || IsScreenPositionOverUi(first.Position))
             {
                 return;
             }
@@ -240,10 +259,7 @@ public sealed class ViewCameraTouchController : MonoBehaviour
                 return;
             }
 
-            float currentDistance = Vector2.Distance(first.Position, second.Position);
-            float previousDistance = Vector2.Distance(first.Position - first.Delta, second.Position - second.Delta);
-            float pinchDelta = currentDistance - previousDistance;
-            ZoomByPinchDelta(pinchDelta);
+            HandleTwoFingerGesture(first, second);
         }
 #endif
     }
@@ -350,6 +366,47 @@ public sealed class ViewCameraTouchController : MonoBehaviour
         targetZoom = Mathf.Clamp(targetZoom - pinchDelta * pinchZoomSpeed, minZoom, maxZoom);
     }
 
+    private void HandleTwoFingerGesture(TouchSample first, TouchSample second)
+    {
+        if (first.Began || second.Began)
+        {
+            return;
+        }
+
+        Vector2 currentVector = second.Position - first.Position;
+        Vector2 previousVector = (second.Position - second.Delta) - (first.Position - first.Delta);
+        if (currentVector.sqrMagnitude <= 0.001f || previousVector.sqrMagnitude <= 0.001f)
+        {
+            return;
+        }
+
+        float currentDistance = currentVector.magnitude;
+        float previousDistance = previousVector.magnitude;
+        float pinchDelta = currentDistance - previousDistance;
+        float rotationDelta = Vector2.SignedAngle(previousVector, currentVector);
+
+        ZoomByPinchDelta(pinchDelta);
+        RotateByGestureDelta(rotationDelta, pinchDelta);
+    }
+
+    private void RotateByGestureDelta(float rotationDelta, float pinchDelta)
+    {
+        if (!enableTwoFingerRotation || Mathf.Abs(rotationDelta) < rotationDeadZone)
+        {
+            return;
+        }
+
+        float rotationScore = Mathf.Abs(rotationDelta) / Mathf.Max(rotationDeadZone, 0.001f);
+        float zoomScore = Mathf.Abs(pinchDelta) / Mathf.Max(zoomDeadZone, 0.001f);
+        if (zoomScore > rotationScore * zoomSuppressesRotationRatio)
+        {
+            return;
+        }
+
+        float direction = invertRotation ? -1f : 1f;
+        targetYawDegrees += rotationDelta * rotationSpeed * direction;
+    }
+
     private void ApplySmoothing()
     {
         if (panSmoothTime <= 0f)
@@ -374,6 +431,19 @@ public sealed class ViewCameraTouchController : MonoBehaviour
             currentZoom = Mathf.SmoothDamp(currentZoom, targetZoom, ref zoomVelocity, zoomSmoothTime);
         }
 
+        if (rotationSmoothTime <= 0f)
+        {
+            currentYawDegrees = targetYawDegrees;
+        }
+        else
+        {
+            currentYawDegrees = Mathf.SmoothDampAngle(
+                currentYawDegrees,
+                targetYawDegrees,
+                ref yawVelocity,
+                rotationSmoothTime);
+        }
+
         ApplyZoom(currentZoom);
     }
 
@@ -381,8 +451,31 @@ public sealed class ViewCameraTouchController : MonoBehaviour
     {
         if (cinemachineFollow != null)
         {
-            cinemachineFollow.FollowOffset = followOffsetDirection * zoom;
+            cinemachineFollow.FollowOffset = GetFollowDirection(currentYawDegrees) * zoom;
         }
+    }
+
+    private void SetFollowDirection(Vector3 direction)
+    {
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            direction = new Vector3(0f, 0.6f, -0.8f);
+        }
+
+        direction.Normalize();
+        followVerticalRatio = Mathf.Clamp(direction.y, -0.95f, 0.95f);
+        followHorizontalRatio = Mathf.Sqrt(Mathf.Max(0.001f, 1f - followVerticalRatio * followVerticalRatio));
+        currentYawDegrees = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        targetYawDegrees = currentYawDegrees;
+    }
+
+    private Vector3 GetFollowDirection(float yawDegrees)
+    {
+        float yawRadians = yawDegrees * Mathf.Deg2Rad;
+        return new Vector3(
+            Mathf.Sin(yawRadians) * followHorizontalRatio,
+            followVerticalRatio,
+            Mathf.Cos(yawRadians) * followHorizontalRatio).normalized;
     }
 
     private Vector3 ApplyBoundsResistance(Vector3 current, Vector3 proposed)
@@ -485,13 +578,15 @@ public sealed class ViewCameraTouchController : MonoBehaviour
 
     private readonly struct TouchSample
     {
-        public TouchSample(Vector2 position, Vector2 delta)
+        public TouchSample(Vector2 position, Vector2 delta, bool began)
         {
             Position = position;
             Delta = delta;
+            Began = began;
         }
 
         public Vector2 Position { get; }
         public Vector2 Delta { get; }
+        public bool Began { get; }
     }
 }
