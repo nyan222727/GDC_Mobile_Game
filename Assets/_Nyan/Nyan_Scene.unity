@@ -7095,8 +7095,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 346426259}
   countText: {fileID: 3400000000013}
   countBadgeBackground: {fileID: 3400000000003}
+  characterPrefab: {fileID: 0}
   initialCount: 3
-  remainingCount: 3
 --- !u!114 &3200000000110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7175,8 +7175,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 1629001827}
   countText: {fileID: 3400000000113}
   countBadgeBackground: {fileID: 3400000000103}
+  characterPrefab: {fileID: 0}
   initialCount: 1
-  remainingCount: 1
 --- !u!114 &3200000000120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7255,8 +7255,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 1227356671}
   countText: {fileID: 3400000000213}
   countBadgeBackground: {fileID: 3400000000203}
+  characterPrefab: {fileID: 0}
   initialCount: 5
-  remainingCount: 5
 --- !u!114 &3200000000130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7335,8 +7335,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 3200000000133}
   countText: {fileID: 3400000000313}
   countBadgeBackground: {fileID: 3400000000303}
+  characterPrefab: {fileID: 0}
   initialCount: 2
-  remainingCount: 2
 --- !u!114 &3200000000133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7445,8 +7445,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 707521545}
   countText: {fileID: 3400000000413}
   countBadgeBackground: {fileID: 3400000000403}
+  characterPrefab: {fileID: 0}
   initialCount: 3
-  remainingCount: 3
 --- !u!114 &3200000000150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7525,8 +7525,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 1110267737}
   countText: {fileID: 3400000000513}
   countBadgeBackground: {fileID: 3400000000503}
+  characterPrefab: {fileID: 0}
   initialCount: 1
-  remainingCount: 1
 --- !u!114 &3200000000160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7605,8 +7605,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 342581651}
   countText: {fileID: 3400000000613}
   countBadgeBackground: {fileID: 3400000000603}
+  characterPrefab: {fileID: 0}
   initialCount: 5
-  remainingCount: 5
 --- !u!114 &3200000000170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7685,8 +7685,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 1279002256}
   countText: {fileID: 3400000000713}
   countBadgeBackground: {fileID: 3400000000703}
+  characterPrefab: {fileID: 0}
   initialCount: 2
-  remainingCount: 2
 --- !u!114 &3200000000180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7765,8 +7765,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 1744834010}
   countText: {fileID: 3400000000813}
   countBadgeBackground: {fileID: 3400000000803}
+  characterPrefab: {fileID: 0}
   initialCount: 3
-  remainingCount: 3
 --- !u!114 &3200000000190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7845,8 +7845,8 @@ MonoBehaviour:
   slotGraphic: {fileID: 1341340771}
   countText: {fileID: 3400000000913}
   countBadgeBackground: {fileID: 3400000000903}
+  characterPrefab: {fileID: 0}
   initialCount: 1
-  remainingCount: 1
 --- !u!114 &3200000001001
 MonoBehaviour:
   m_ObjectHideFlags: 0

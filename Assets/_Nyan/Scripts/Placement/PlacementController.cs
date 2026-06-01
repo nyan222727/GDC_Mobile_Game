@@ -190,7 +190,12 @@ public sealed class PlacementController : MonoBehaviour
         }
 
         SlotSelectionButton sourceSlot = selectedSlot;
-        GameObject character = CreateCharacterObject("Prototype Character", tile.transform, placedMaterial);
+        GameObject character = CreateCharacterObject(
+            "Prototype Character",
+            tile.transform,
+            sourceSlot.CharacterPrefab,
+            placedMaterial,
+            false);
         tile.SetOccupant(character.transform);
         sourceSlot.CommitPreviewReservations(1);
         placedBatches.Push(new List<PlacedCharacter> { new PlacedCharacter(tile, character.transform, sourceSlot) });
@@ -279,11 +284,17 @@ public sealed class PlacementController : MonoBehaviour
                 continue;
             }
 
-            ApplyCharacterMaterial(preview.Character, placedMaterial);
-            preview.Character.name = "Prototype Character";
-            preview.Tile.SetOccupant(preview.Character.transform);
+            GameObject character = CreateCharacterObject(
+                "Prototype Character",
+                preview.Tile.transform,
+                sourceSlot != null ? sourceSlot.CharacterPrefab : null,
+                placedMaterial,
+                false);
+
+            Destroy(preview.Character);
+            preview.Tile.SetOccupant(character.transform);
             preview.Tile.SetPlacementHighlight(false, tilePreviewColor);
-            batch.Add(new PlacedCharacter(preview.Tile, preview.Character.transform, sourceSlot));
+            batch.Add(new PlacedCharacter(preview.Tile, character.transform, sourceSlot));
         }
 
         previewsByTile.Clear();
@@ -323,7 +334,12 @@ public sealed class PlacementController : MonoBehaviour
             return;
         }
 
-        GameObject preview = CreateCharacterObject("Prototype Character Preview", tile.transform, previewMaterial);
+        GameObject preview = CreateCharacterObject(
+            "Prototype Character Preview",
+            tile.transform,
+            selectedSlot.CharacterPrefab,
+            previewMaterial,
+            true);
         var placement = new PreviewPlacement(tile, preview);
         previewsByTile.Add(tile, placement);
         previewOrder.Add(placement);
@@ -346,22 +362,36 @@ public sealed class PlacementController : MonoBehaviour
         return hit.collider.GetComponentInParent<MapTile>();
     }
 
-    private GameObject CreateCharacterObject(string objectName, Transform parent, Material material)
+    private GameObject CreateCharacterObject(
+        string objectName,
+        Transform parent,
+        GameObject prefab,
+        Material material,
+        bool overridePrefabMaterial)
     {
-        var character = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        bool usesPrefab = prefab != null;
+        GameObject character = usesPrefab ? Instantiate(prefab, parent) : GameObject.CreatePrimitive(PrimitiveType.Capsule);
         character.name = objectName;
-        character.transform.position = parent.position + characterOffset;
+        character.transform.SetParent(parent, false);
+        character.transform.localPosition = characterOffset;
         character.transform.localScale = characterScale;
-        character.transform.SetParent(parent, true);
 
-        var characterCollider = character.GetComponent<Collider>();
-        if (characterCollider != null)
+        DisableCharacterColliders(character);
+        if (material != null && (!usesPrefab || overridePrefabMaterial))
         {
-            Destroy(characterCollider);
+            ApplyCharacterMaterial(character, material);
         }
 
-        ApplyCharacterMaterial(character, material);
         return character;
+    }
+
+    private static void DisableCharacterColliders(GameObject character)
+    {
+        var colliders = character.GetComponentsInChildren<Collider>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Destroy(colliders[i]);
+        }
     }
 
     private void ClearPreviews(bool destroyObjects)
@@ -599,10 +629,15 @@ public sealed class PlacementController : MonoBehaviour
 
     private static void ApplyCharacterMaterial(GameObject character, Material material)
     {
-        var characterRenderer = character.GetComponentInChildren<Renderer>();
-        if (characterRenderer != null && material != null)
+        if (material == null)
         {
-            characterRenderer.sharedMaterial = material;
+            return;
+        }
+
+        var characterRenderers = character.GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < characterRenderers.Length; i++)
+        {
+            characterRenderers[i].sharedMaterial = material;
         }
     }
 

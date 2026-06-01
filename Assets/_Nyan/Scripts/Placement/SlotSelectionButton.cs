@@ -13,8 +13,8 @@ public sealed class SlotSelectionButton : MonoBehaviour
     [SerializeField] private Graphic slotGraphic;
     [SerializeField] private Text countText;
     [SerializeField] private Graphic countBadgeBackground;
+    [SerializeField] private GameObject characterPrefab;
     [SerializeField] private int initialCount = 3;
-    [SerializeField] private int remainingCount = 3;
     [SerializeField] private Color normalSlotColor = new Color32(217, 217, 217, 255);
     [SerializeField] private Color emptySlotColor = new Color32(90, 90, 90, 255);
     [SerializeField] private Color normalBadgeColor = new Color32(45, 45, 45, 235);
@@ -22,16 +22,21 @@ public sealed class SlotSelectionButton : MonoBehaviour
     [SerializeField] private Color unavailableFlashColor = new Color32(255, 75, 75, 255);
 
     public int SlotIndex => slotIndex;
-    public int RemainingCount => remainingCount;
+    public GameObject CharacterPrefab => characterPrefab;
+    public int RemainingCount => Application.isPlaying ? remainingCount : Mathf.Max(0, initialCount);
     public int PreviewReservedCount => reservedPreviewCount;
-    public int AvailableCount => Mathf.Max(0, remainingCount - reservedPreviewCount);
+    public int AvailableCount => Mathf.Max(0, RemainingCount - reservedPreviewCount);
     public bool HasAvailableCount => AvailableCount > 0;
 
+    private int remainingCount;
     private int reservedPreviewCount;
     private Coroutine unavailableFlashRoutine;
 
     private void Awake()
     {
+        initialCount = Mathf.Max(0, initialCount);
+        remainingCount = initialCount;
+
         if (controller == null)
         {
             controller = FindAnyObjectByType<PlacementController>();
@@ -73,6 +78,17 @@ public sealed class SlotSelectionButton : MonoBehaviour
 
         SetSelected(false, Color.white, Vector2.zero);
         RefreshCountUi();
+    }
+
+    private void OnValidate()
+    {
+        initialCount = Mathf.Max(0, initialCount);
+
+        if (!Application.isPlaying)
+        {
+            remainingCount = initialCount;
+            RefreshCountUi();
+        }
     }
 
     private void OnDestroy()
