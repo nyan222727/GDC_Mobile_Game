@@ -13,43 +13,44 @@ public class BombScript : MonoBehaviour
     private float damageRange = 2;
     private float initHeight;
 
-    public void Seek(Transform _target) {
+    public void Seek(Transform _target)
+    {
         target = _target;
-        forwardSpeed = Vector3.Distance( transform.position, target.position) / inAirTime;
+        forwardSpeed = Vector3.Distance(transform.position, target.position) / inAirTime;
         initHeight = transform.position.y;
-        
+
         // 子彈一生成，就啟動協程 (Coroutine)
         // 在 0.1 秒後觸發扣血
         StartCoroutine(DamageTimer());
     }
 
-    void Update() {
+    void Update()
+    {
         timer += Time.deltaTime;
 
-        if (target == null) {
-            Destroy(gameObject);
-            return;
-        }
+
 
         // 簡單的移動邏輯
-        if(timer < inAirTime)
+        if (timer < inAirTime)
         {
             float currentHeight = initHeight + Mathf.Sin(timer * Mathf.PI / inAirTime) * waveHeight;
-            transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z) + transform.forward*forwardSpeed*Time.deltaTime;
+            transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z) + transform.forward * forwardSpeed * Time.deltaTime;
         }
     }
 
-    IEnumerator DamageTimer() {
+    IEnumerator DamageTimer()
+    {
         yield return new WaitForSeconds(inAirTime);
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, damageRange, LayerMask.GetMask("Enemy"));
 
-        foreach(Collider enemy in enemiesInRange)
+        foreach (Collider enemy in enemiesInRange)
         {
             // 尋找怪物身上的腳本（假設腳本名稱叫 EnemyHealth）
             // 請將 EnemyHealth 替換成你實際寫 LoseHP 的那個腳本名稱
-            var enemyScript = enemy.GetComponent<EnemyController>(); 
-            
-            if (enemyScript != null) {
+            var enemyScript = enemy.GetComponent<EnemyController>();
+
+            if (enemyScript != null)
+            {
                 enemyScript.LoseHP(damage);
                 Debug.Log("已爆炸，怪物扣血！");
             }
@@ -57,11 +58,12 @@ public class BombScript : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         // 傷害造成後銷毀子彈，或是你希望等子彈碰到怪物再銷毀
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
 
     // 開發時顯示範圍
-    void OnDrawGizmosSelected() {
+    void OnDrawGizmosSelected()
+    {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, damageRange);
     }
