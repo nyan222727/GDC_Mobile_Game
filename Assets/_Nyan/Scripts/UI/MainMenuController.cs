@@ -47,6 +47,7 @@ public sealed class MainMenuController : MonoBehaviour
     private void Awake()
     {
         _ = GameSession.Instance;
+        RegisterLevelsWithSession();
         ConfigureEventSystemInputModule();
         RegisterButtons();
         RefreshLevelButtons();
@@ -147,6 +148,22 @@ public sealed class MainMenuController : MonoBehaviour
         }
 
         StartLevel(levelButtons[bindingIndex].Level);
+    }
+
+    private void RegisterLevelsWithSession()
+    {
+        if (levelButtons == null)
+        {
+            return;
+        }
+
+        var levels = new LevelDefinition[levelButtons.Length];
+        for (int i = 0; i < levelButtons.Length; i++)
+        {
+            levels[i] = levelButtons[i].Level;
+        }
+
+        GameSession.Instance.SetAvailableLevels(levels);
     }
 
     private static void StartLevel(LevelDefinition level)

@@ -1,9 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 #pragma warning disable 0649
+
+public interface ILevelMoneySource
+{
+    int CurrentMoney { get; }
+}
 
 public sealed class LevelFlowController : MonoBehaviour
 {
@@ -55,6 +61,14 @@ public sealed class LevelFlowController : MonoBehaviour
     [SerializeField] private Text waveText;
     [SerializeField] private GameObject resultPanel;
     [SerializeField] private Text resultText;
+    [SerializeField] private Text resultMoneyText;
+    [SerializeField] private Button menuButton;
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button nextLevelButton;
+
+    [Header("Money")]
+    [SerializeField] private MonoBehaviour moneySource;
+    [SerializeField] private int fallbackResultMoney;
 
     [Header("Waves")]
     [SerializeField] private List<WaveDefinition> waves = new List<WaveDefinition>();
@@ -82,8 +96,15 @@ public sealed class LevelFlowController : MonoBehaviour
     public int TotalWaveCount => runtimeWaves.Count;
     public int CurrentBaseHp => currentBaseHp;
     public int BaseMaxHp => Mathf.Max(1, baseMaxHp);
+    public int CurrentResultMoney => GetCurrentResultMoney();
     public bool IsInPlacementState => currentState == LevelState.Placement;
     public bool IsInCombatState => currentState == LevelState.Combat;
+
+    public void SetFallbackResultMoney(int money)
+    {
+        fallbackResultMoney = Mathf.Max(0, money);
+        RefreshUi();
+    }
 
     private void Awake()
     {
@@ -424,6 +445,9 @@ public sealed class LevelFlowController : MonoBehaviour
             placementController.SetPlacementEnabled(false);
         }
 
+        GameSession.Instance.SetGameplayResult(
+            outcome == ResultOutcome.Defeat ? GameplayResult.Defeat : GameplayResult.Victory);
+
         RefreshUi();
     }
 
@@ -433,6 +457,21 @@ public sealed class LevelFlowController : MonoBehaviour
         {
             startWaveButton.onClick.AddListener(StartCurrentWave);
         }
+
+        if (menuButton != null)
+        {
+            menuButton.onClick.AddListener(ReturnToMenu);
+        }
+
+        if (retryButton != null)
+        {
+            retryButton.onClick.AddListener(RetryLevel);
+        }
+
+        if (nextLevelButton != null)
+        {
+            nextLevelButton.onClick.AddListener(LoadNextLevel);
+        }
     }
 
     private void UnregisterUiActions()
@@ -441,10 +480,28 @@ public sealed class LevelFlowController : MonoBehaviour
         {
             startWaveButton.onClick.RemoveListener(StartCurrentWave);
         }
+
+        if (menuButton != null)
+        {
+            menuButton.onClick.RemoveListener(ReturnToMenu);
+        }
+
+        if (retryButton != null)
+        {
+            retryButton.onClick.RemoveListener(RetryLevel);
+        }
+
+        if (nextLevelButton != null)
+        {
+            nextLevelButton.onClick.RemoveListener(LoadNextLevel);
+        }
     }
 
     private void RefreshUi()
     {
+        bool isResult = currentState == LevelState.Result;
+        bool isVictory = isResult && resultOutcome == ResultOutcome.Victory;
+
         if (startWaveButton != null)
         {
             bool canStartWave = currentState == LevelState.Placement && currentWaveIndex < runtimeWaves.Count;
@@ -476,18 +533,77 @@ public sealed class LevelFlowController : MonoBehaviour
 
         if (resultPanel != null)
         {
-            resultPanel.SetActive(currentState == LevelState.Result);
+            resultPanel.SetActive(isResult);
         }
 
         if (resultText != null)
         {
-            resultText.text = currentState == LevelState.Result ? GetResultLabel() : string.Empty;
+            resultText.text = isResult ? GetResultLabel() : string.Empty;
+        }
+
+        if (resultMoneyText != null)
+        {
+            resultMoneyText.gameObject.SetActive(isVictory);
+            resultMoneyText.text = isVictory ? $"Money: {CurrentResultMoney}" : string.Empty;
+        }
+
+        if (menuButton != null)
+        {
+            menuButton.interactable = isResult;
+        }
+
+        if (retryButton != null)
+        {
+            retryButton.interactable = isResult;
+        }
+
+        if (nextLevelButton != null)
+        {
+            bool canLoadNextLevel = isVictory && GameSession.Instance.TryPeekNextLevel(out _);
+            nextLevelButton.gameObject.SetActive(canLoadNextLevel);
+            nextLevelButton.interactable = canLoadNextLevel;
         }
     }
 
     private string GetResultLabel()
     {
-        return resultOutcome == ResultOutcome.Defeat ? "Defeat" : "Level Clear";
+        return resultOutcome == ResultOutcome.Defeat ? "Defeat" : "Victory";
+    }
+
+    private int GetCurrentResultMoney()
+    {
+        if (moneySource is ILevelMoneySource resultMoneySource)
+        {
+            return Mathf.Max(0, resultMoneySource.CurrentMoney);
+        }
+
+        return Mathf.Max(0, fallbackResultMoney);
+    }
+
+    private void ReturnToMenu()
+    {
+        string menuSceneName = GameSession.Instance.MenuSceneName;
+        if (!string.IsNullOrEmpty(menuSceneName))
+        {
+            SceneManager.LoadScene(menuSceneName);
+        }
+    }
+
+    private void RetryLevel()
+    {
+        string activeSceneName = SceneManager.GetActiveScene().name;
+        if (!string.IsNullOrEmpty(activeSceneName))
+        {
+            SceneManager.LoadScene(activeSceneName);
+        }
+    }
+
+    private void LoadNextLevel()
+    {
+        if (GameSession.Instance.TrySelectNextLevel(out LevelDefinition nextLevel))
+        {
+            SceneManager.LoadScene(nextLevel.SceneName);
+        }
     }
 }
 
