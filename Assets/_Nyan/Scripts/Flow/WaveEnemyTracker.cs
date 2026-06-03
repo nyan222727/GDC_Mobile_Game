@@ -21,14 +21,24 @@ public sealed class WaveEnemyTracker : MonoBehaviour
         waveIndex = -1;
     }
 
-    private void OnDestroy()
+    public void NotifyDefeated()
     {
         if (!isArmed || owner == null)
         {
             return;
         }
 
-        owner.NotifyEnemyDefeated(this, waveIndex);
+        LevelFlowController targetOwner = owner;
+        int targetWaveIndex = waveIndex;
         isArmed = false;
+        owner = null;
+        waveIndex = -1;
+
+        targetOwner.NotifyEnemyDefeated(this, targetWaveIndex);
+    }
+
+    private void OnDestroy()
+    {
+        NotifyDefeated();
     }
 }

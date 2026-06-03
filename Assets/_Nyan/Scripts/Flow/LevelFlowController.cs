@@ -14,6 +14,13 @@ public sealed class LevelFlowController : MonoBehaviour
         Result
     }
 
+    public enum ResultOutcome
+    {
+        None,
+        Victory,
+        Defeat
+    }
+
     [Serializable]
     public sealed class WaveDefinition
     {
@@ -54,23 +61,34 @@ public sealed class LevelFlowController : MonoBehaviour
     [SerializeField] private bool autoBuildSingleWaveFromSceneEnemies = true;
     [SerializeField] private bool deactivateEnemiesOnAwake = true;
 
+    [Header("Base")]
+    [SerializeField] private int baseMaxHp = 3;
+    [SerializeField] private Text baseHpText;
+
     private readonly List<WaveDefinition> runtimeWaves = new List<WaveDefinition>();
     private readonly List<GameObject> waveEnemyBuffer = new List<GameObject>();
     private readonly HashSet<GameObject> trackedEnemies = new HashSet<GameObject>();
+    private readonly HashSet<int> enemiesHandledAtGoal = new HashSet<int>();
     private LevelState currentState;
+    private ResultOutcome resultOutcome;
     private int currentWaveIndex;
     private int remainingEnemiesInCurrentWave;
+    private int currentBaseHp;
     private bool isQuitting;
 
     public LevelState CurrentState => currentState;
+    public ResultOutcome CurrentResultOutcome => resultOutcome;
     public int CurrentWaveIndex => currentWaveIndex;
     public int TotalWaveCount => runtimeWaves.Count;
+    public int CurrentBaseHp => currentBaseHp;
+    public int BaseMaxHp => Mathf.Max(1, baseMaxHp);
     public bool IsInPlacementState => currentState == LevelState.Placement;
     public bool IsInCombatState => currentState == LevelState.Combat;
 
     private void Awake()
     {
         ResolveReferences();
+        currentBaseHp = BaseMaxHp;
         BuildRuntimeWaves();
         PrepareWaveEnemies();
         RegisterUiActions();
@@ -92,13 +110,14 @@ public sealed class LevelFlowController : MonoBehaviour
 
         if (currentWaveIndex >= runtimeWaves.Count)
         {
-            EnterResultState();
+            EnterResultState(ResultOutcome.Victory);
             return;
         }
 
         var wave = runtimeWaves[currentWaveIndex];
         currentState = LevelState.Combat;
         remainingEnemiesInCurrentWave = 0;
+        enemiesHandledAtGoal.Clear();
         CollectWaveEnemies(wave, waveEnemyBuffer);
 
         if (placementController != null)
@@ -131,6 +150,46 @@ public sealed class LevelFlowController : MonoBehaviour
         {
             CompleteCurrentWave();
         }
+    }
+
+    public void NotifyEnemyReachedGoal(GameObject enemy, int damageToBase = 1, bool destroyEnemy = true)
+    {
+        if (isQuitting || currentState != LevelState.Combat || enemy == null)
+        {
+            return;
+        }
+
+        int enemyId = enemy.GetInstanceID();
+        if (!enemiesHandledAtGoal.Add(enemyId))
+        {
+            return;
+        }
+
+        currentBaseHp = Mathf.Max(0, currentBaseHp - Mathf.Max(0, damageToBase));
+
+        if (currentBaseHp <= 0)
+        {
+            if (destroyEnemy)
+            {
+                Destroy(enemy);
+            }
+
+            EnterResultState(ResultOutcome.Defeat);
+            return;
+        }
+
+        WaveEnemyTracker tracker = enemy.GetComponent<WaveEnemyTracker>();
+        if (tracker != null)
+        {
+            tracker.NotifyDefeated();
+        }
+
+        if (destroyEnemy)
+        {
+            Destroy(enemy);
+        }
+
+        RefreshUi();
     }
 
     public void NotifyEnemyDefeated(WaveEnemyTracker tracker, int waveIndex)
@@ -330,6 +389,7 @@ public sealed class LevelFlowController : MonoBehaviour
     private void EnterPlacementState()
     {
         currentState = LevelState.Placement;
+        resultOutcome = ResultOutcome.None;
         remainingEnemiesInCurrentWave = 0;
 
         if (placementController != null)
@@ -350,12 +410,13 @@ public sealed class LevelFlowController : MonoBehaviour
             return;
         }
 
-        EnterResultState();
+        EnterResultState(ResultOutcome.Victory);
     }
 
-    private void EnterResultState()
+    private void EnterResultState(ResultOutcome outcome)
     {
         currentState = LevelState.Result;
+        resultOutcome = outcome;
         remainingEnemiesInCurrentWave = 0;
 
         if (placementController != null)
@@ -397,7 +458,7 @@ public sealed class LevelFlowController : MonoBehaviour
             {
                 LevelState.Placement => "Game State",
                 LevelState.Combat => $"Play State ({remainingEnemiesInCurrentWave})",
-                LevelState.Result => "Result",
+                LevelState.Result => GetResultLabel(),
                 _ => currentState.ToString()
             };
         }
@@ -405,7 +466,12 @@ public sealed class LevelFlowController : MonoBehaviour
         if (waveText != null)
         {
             int displayWave = Mathf.Min(currentWaveIndex + 1, Mathf.Max(1, runtimeWaves.Count));
-            waveText.text = $"Wave {displayWave}/{Mathf.Max(1, runtimeWaves.Count)}";
+            waveText.text = $"Wave {displayWave}/{Mathf.Max(1, runtimeWaves.Count)} | Base HP {currentBaseHp}/{BaseMaxHp}";
+        }
+
+        if (baseHpText != null)
+        {
+            baseHpText.text = $"Base HP {currentBaseHp}/{BaseMaxHp}";
         }
 
         if (resultPanel != null)
@@ -415,8 +481,13 @@ public sealed class LevelFlowController : MonoBehaviour
 
         if (resultText != null)
         {
-            resultText.text = currentState == LevelState.Result ? "Level Clear" : string.Empty;
+            resultText.text = currentState == LevelState.Result ? GetResultLabel() : string.Empty;
         }
+    }
+
+    private string GetResultLabel()
+    {
+        return resultOutcome == ResultOutcome.Defeat ? "Defeat" : "Level Clear";
     }
 }
 
