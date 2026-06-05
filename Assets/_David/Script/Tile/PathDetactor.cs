@@ -29,48 +29,48 @@ public class PathDetactor : MonoBehaviour
 
     public void findPrevPath(MoveDirection thisDir) // 
     {
-        Debug.Log("start find");
+        // Debug.Log("start find");
         nextDirection = thisDir;
         if(thisDir != MoveDirection.Forward)
         {
-            Debug.Log("ray up");
+            // Debug.Log("ray up");
             RaycastHit prevPath;
             if (Physics.Raycast(transform.position, Vector3.forward, out prevPath, 2f, LayerMask.GetMask("Path")))
             {
-                Debug.Log("ray up find");
+                // Debug.Log("ray up find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
                 prevPathScript.findPrevPath(MoveDirection.Back); // 路徑與射線相反
             }
         }
         if(thisDir != MoveDirection.Right)
         {
-            Debug.Log("ray right");
+            // Debug.Log("ray right");
             RaycastHit prevPath;
             if (Physics.Raycast(transform.position, Vector3.right, out prevPath, 2f, LayerMask.GetMask("Path")))
             {
-                Debug.Log("ray right find");
+                // Debug.Log("ray right find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
                 prevPathScript.findPrevPath(MoveDirection.Left); // 路徑與射線相反
             }
         }
         if(thisDir != MoveDirection.Back)
         {
-            Debug.Log("ray down");
+            // Debug.Log("ray down");
             RaycastHit prevPath;
             if (Physics.Raycast(transform.position, Vector3.back, out prevPath, 2f, LayerMask.GetMask("Path")))
             {
-                Debug.Log("ray down find");
+                // Debug.Log("ray down find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
                 prevPathScript.findPrevPath(MoveDirection.Forward); // 路徑與射線相反
             }
         }
         if(thisDir != MoveDirection.Left)
         {
-            Debug.Log("ray left");
+            // Debug.Log("ray left");
             RaycastHit prevPath;
             if (Physics.Raycast(transform.position, Vector3.left, out prevPath, 2f, LayerMask.GetMask("Path")))
             {
-                Debug.Log("ray left find");
+                // Debug.Log("ray left find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
                 prevPathScript.findPrevPath(MoveDirection.Right); // 路徑與射線相反
             }

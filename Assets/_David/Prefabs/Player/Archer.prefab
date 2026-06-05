@@ -121,6 +121,8 @@ GameObject:
   - component: {fileID: 2236859661538410286}
   - component: {fileID: 7763899660381647373}
   - component: {fileID: 8714574034370772502}
+  - component: {fileID: -4868947585890800135}
+  - component: {fileID: 232931369612641872}
   m_Layer: 9
   m_Name: Archer
   m_TagString: Untagged
@@ -209,7 +211,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65f1f23f286bdea4192ccf92cc882f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freezeDebuff: 0
+  freezeDebuff: 10
+  slowDownRatio: 1
+  freezeTimer: 0
+  freezeFadeTime: 5
+  ratioPerFreeze: 0.2
+  stunTimer: 5
 --- !u!114 &8714574034370772502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,3 +234,41 @@ MonoBehaviour:
   rawFireCD: 1
   bulletPrefab: {fileID: 2877052843124857506, guid: 270dde3390a461243981e4ecf3739375, type: 3}
   firePoint: {x: 0, y: 0, z: 0}
+  searchScript: {fileID: -4868947585890800135}
+  buffScript: {fileID: 0}
+--- !u!114 &-4868947585890800135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9004544139079297661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c000a82ef60868488df94696a47e419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffScript: {fileID: 0}
+--- !u!136 &232931369612641872
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9004544139079297661}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

@@ -10,15 +10,19 @@ public class ArcherAI : MonoBehaviour
 
     public GameObject bulletPrefab; // 拖入你的子彈 Prefab
     public Vector3 firePoint;     // 子彈發射的起始點
+    public PlayerFindTarget searchScript;
+    public PlayerBuffManager buffScript;
 
     void Start()
     {
+        buffScript = this.gameObject.GetComponent<PlayerBuffManager>();
+        searchScript = this.gameObject.GetComponent<PlayerFindTarget>();
         fireCD = rawFireCD;
     }
 
     void Update() {
         
-        FindTarget(); // 尋找目標
+        target = searchScript.FindTarget(range); // 尋找目標
         
 
         if (target)
@@ -32,35 +36,18 @@ public class ArcherAI : MonoBehaviour
             // 攻擊計時
             if (fireCDTimer <= 0f) {
                 Attack();
+                fireCD = rawFireCD * buffScript.slowDownRatio;
                 fireCDTimer = fireCD;
+                Debug.Log("fireCD: "+fireCD);
+                Debug.Log("ratio: "+buffScript.slowDownRatio);
             }
             fireCDTimer -= Time.deltaTime;  
         }
     }
 
-    void FindTarget() {
-        // 取得範圍內所有怪物的碰撞體
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Enemy"));
-        float shortestDistance = Mathf.Infinity;
-        GameObject nearestEnemy = null;
-
-        foreach (Collider enemy in enemiesInRange) {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy < shortestDistance) {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy.gameObject;
-            }
-        }
-
-        if (nearestEnemy != null) {
-            target = nearestEnemy.transform;
-        } else {
-            target = null;
-        }
-    }
 
     void Attack() {
-        Debug.Log("發射子彈！攻擊 " + target.name);
+        // Debug.Log("發射子彈！攻擊 " + target.name);
         firePoint = transform.position + 1f*transform.forward;
         // 1. 生成子彈
         GameObject bullet = Instantiate(bulletPrefab, firePoint, transform.rotation);

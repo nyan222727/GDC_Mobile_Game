@@ -2,24 +2,29 @@ using UnityEngine;
 
 public class BomberAI : MonoBehaviour
 {
+    
     public float range = 5f;          // 攻擊範圍
     public Transform target;          // 當前鎖定的目標
     public float rawFireCD = 1f;
-    private float fireCD = 100f;       // 每秒攻擊次數
+    private float fireCD = 100f;       // 每次攻擊回復秒數
     private float fireCDTimer = 0f;
 
     public GameObject bombPrefab; // 拖入你的子彈 Prefab
     public Vector3 firePoint;     // 子彈發射的起始點
     private Vector3 targetDir;
 
+    public PlayerFindTarget searchScript;
+    public PlayerBuffManager buffScript;
+
     void Start()
     {
+        buffScript = this.gameObject.GetComponent<PlayerBuffManager>();
+        searchScript = this.gameObject.GetComponent<PlayerFindTarget>();
         fireCD = rawFireCD;
     }
 
     void Update() {
-        
-        FindTarget(); // 尋找目標
+        target = searchScript.FindTarget(range); // 尋找目標
 
         if (fireCDTimer > 0)
         {
@@ -38,34 +43,15 @@ public class BomberAI : MonoBehaviour
             // 攻擊計時
             if (fireCDTimer <= 0f) {
                 Attack();
-                fireCDTimer = fireCD;
+                fireCDTimer = fireCD * buffScript.slowDownRatio;
             }
         }
     }
 
-    void FindTarget() {
-        // 取得範圍內所有怪物的碰撞體
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Enemy"));
-        float shortestDistance = Mathf.Infinity;
-        GameObject nearestEnemy = null;
 
-        foreach (Collider enemy in enemiesInRange) {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy < shortestDistance) {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy.gameObject;
-            }
-        }
-
-        if (nearestEnemy != null) {
-            target = nearestEnemy.transform;
-        } else {
-            target = null;
-        }
-    }
 
     void Attack() {
-        Debug.Log("投擲炸彈！攻擊 " + target.name);
+        // Debug.Log("投擲炸彈！攻擊 " + target.name);
         firePoint = transform.position + transform.forward;
         // 1. 生成子彈
         Quaternion bulletRotation = Quaternion.LookRotation(targetDir);

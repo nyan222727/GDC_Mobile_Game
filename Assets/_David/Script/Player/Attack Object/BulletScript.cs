@@ -42,7 +42,7 @@ public class BulletScript : MonoBehaviour
             
             if (targetScript != null) {
                 targetScript.LoseHP(damage);
-                Debug.Log("已過 n 秒，怪物扣血！");
+                // Debug.Log("已過 n 秒，怪物扣血！");
             }
         }
 

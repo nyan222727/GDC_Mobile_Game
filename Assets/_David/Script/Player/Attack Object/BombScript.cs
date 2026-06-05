@@ -52,7 +52,7 @@ public class BombScript : MonoBehaviour
             if (enemyScript != null)
             {
                 enemyScript.LoseHP(damage);
-                Debug.Log("已爆炸，怪物扣血！");
+                // Debug.Log("已爆炸，怪物扣血！");
             }
         }
 
