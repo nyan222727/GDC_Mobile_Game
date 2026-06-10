@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class PlayerBuffManager : MonoBehaviour
 {
+    [Header("Element")]
+    [SerializeField]public Element playerElement = Element.None;
+    [SerializeField]public bool isSameElement = false;
+    [SerializeField]private GetTileElement tileScript;
+
     [Header("Freeze")]
     [SerializeField]public int freezeDebuff = 0;
     [SerializeField]public float slowDownRatio=1f;
@@ -15,12 +20,24 @@ public class PlayerBuffManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        tileScript = this.gameObject.GetComponent<GetTileElement>();
         freezeTimer = freezeFadeTime;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Element
+        if(playerElement == tileScript.tileElement)
+        {
+            isSameElement = true;
+        }
+        else
+        {
+            isSameElement = false;
+        }
+
+        // Freeze
         if(freezeDebuff>0)
         {
             if(freezeTimer>0)
@@ -39,6 +56,7 @@ public class PlayerBuffManager : MonoBehaviour
             slowDownRatio = 1f;
         }
 
+        // Stun
         if(stunTimer>0)
         {
             stunTimer -= Time.deltaTime;

@@ -35,7 +35,7 @@ public class SkillGenerateMonster : MonoBehaviour
             Instantiate(monster, transform.position, transform.rotation);
             
             // 4. 印出或使用隨機抽到的元素
-            Debug.Log("隨機選擇的項目是：" + monster);
+            // Debug.Log("隨機選擇的項目是：" + monster);
         }
     }
 }

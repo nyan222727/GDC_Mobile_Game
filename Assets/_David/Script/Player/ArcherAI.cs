@@ -1,23 +1,34 @@
+using System;
 using UnityEngine;
 
 public class ArcherAI : MonoBehaviour
 {
-    public float range = 5f;          // 攻擊範圍
-    public Transform target;          // 當前鎖定的目標
-    public float rawFireCD = 1f;
-    private float fireCD = 100f;       // 每秒攻擊次數
-    private float fireCDTimer = 0f;
+    [Header("Attack")]
+    [SerializeField]public float range = 5f;          // 攻擊範圍
+    [SerializeField]public float defaultDamage = 20f;
+    [SerializeField]public float elementBuffDamage = 1.2f;
+    [SerializeField]private float damage; 
+    [SerializeField]public float defaultFireCD = 1f;
+    [SerializeField]public float elementBuffCD = 0.8f;
+    [SerializeField]private float fireCD = 100f;       // 每秒攻擊次數
+    [SerializeField]private float fireCDTimer = 0f;
 
-    public GameObject bulletPrefab; // 拖入你的子彈 Prefab
-    public Vector3 firePoint;     // 子彈發射的起始點
-    public PlayerFindTarget searchScript;
-    public PlayerBuffManager buffScript;
+    private Transform target;          // 當前鎖定的目標
+
+    [Header("Bullet")]
+    [SerializeField]public GameObject bulletPrefab; // 拖入你的子彈 Prefab
+    [SerializeField]public Vector3 firePoint;     // 子彈發射的起始點
+
+    [Header("Buff Manager")]
+    [SerializeField]public PlayerFindTarget searchScript;
+    [SerializeField]public PlayerBuffManager buffScript;
 
     void Start()
     {
         buffScript = this.gameObject.GetComponent<PlayerBuffManager>();
         searchScript = this.gameObject.GetComponent<PlayerFindTarget>();
-        fireCD = rawFireCD;
+        fireCD = defaultFireCD;
+        damage = defaultDamage;
     }
 
     void Update() {
@@ -36,10 +47,9 @@ public class ArcherAI : MonoBehaviour
             // 攻擊計時
             if (fireCDTimer <= 0f) {
                 Attack();
-                fireCD = rawFireCD * buffScript.slowDownRatio;
-                fireCDTimer = fireCD;
-                Debug.Log("fireCD: "+fireCD);
-                Debug.Log("ratio: "+buffScript.slowDownRatio);
+                fireCDTimer = fireCD * buffScript.slowDownRatio;
+                // Debug.Log("fireCD: "+fireCD);
+                // Debug.Log("ratio: "+buffScript.slowDownRatio);
             }
             fireCDTimer -= Time.deltaTime;  
         }
@@ -49,15 +59,26 @@ public class ArcherAI : MonoBehaviour
     void Attack() {
         // Debug.Log("發射子彈！攻擊 " + target.name);
         firePoint = transform.position + 1f*transform.forward;
+
+        if(buffScript.isSameElement)  // on buff element
+        {
+            damage = elementBuffDamage * defaultDamage;
+            fireCD = elementBuffCD * defaultFireCD;
+        }
+        else  // reset buff
+        {
+            damage = defaultDamage;
+            fireCD = defaultFireCD;
+        }
+
         // 1. 生成子彈
         GameObject bullet = Instantiate(bulletPrefab, firePoint, transform.rotation);
-    
         // 2. 取得子彈腳本並初始化
         BulletScript bulletScript = bullet.GetComponent<BulletScript>();
         if (bulletScript != null) {
             // 將當前的目標傳給子彈
             bulletScript.Seek(target);
-            bulletScript.damage = 2;
+            bulletScript.damage = Mathf.RoundToInt(damage);
         }
         // 在這裡實例化 (Instantiate) 子彈，並給予目標資訊
     }
