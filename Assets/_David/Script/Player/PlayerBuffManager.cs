@@ -7,6 +7,12 @@ public class PlayerBuffManager : MonoBehaviour
     [SerializeField]public bool isSameElement = false;
     [SerializeField]private GetTileElement tileScript;
 
+    [Header("Active")]
+    [SerializeField]public bool isActive;
+    [SerializeField]private float activeTime = 10;
+    [SerializeField]public float activeTimer; // 測試用public，記得改回來
+
+
     [Header("Freeze")]
     [SerializeField]public int freezeDebuff = 0;
     [SerializeField]public float slowDownRatio=1f;
@@ -22,6 +28,8 @@ public class PlayerBuffManager : MonoBehaviour
     {
         tileScript = this.gameObject.GetComponent<GetTileElement>();
         freezeTimer = freezeFadeTime;
+        isActive = false;
+        ResetActiveTimer();
     }
 
     // Update is called once per frame
@@ -35,6 +43,20 @@ public class PlayerBuffManager : MonoBehaviour
         else
         {
             isSameElement = false;
+        }
+
+        // Active
+        if(isActive)
+        {
+            if(activeTimer > 0)
+            {
+                activeTimer -= Time.deltaTime;
+            }
+            else
+            {
+                isActive = false;
+                ResetActiveTimer();
+            }
         }
 
         // Freeze
@@ -61,5 +83,10 @@ public class PlayerBuffManager : MonoBehaviour
         {
             stunTimer -= Time.deltaTime;
         }
+    }
+
+    public void ResetActiveTimer()
+    {
+        activeTimer = activeTime;
     }
 }

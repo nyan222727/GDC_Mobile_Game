@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4551671180430811936}
   - component: {fileID: 4277797538336514188}
   - component: {fileID: 3212083257200760101}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 45821053837636552}
   - component: {fileID: 2000554468120097731}
   - component: {fileID: 7852672754525885863}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 3771806490929734575}
   - component: {fileID: 3914578093230172300}
   - component: {fileID: 7034565543976757200}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,7 +457,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerElement: 0
   isSameElement: 0
-  tileElement: 2
+  tileScript: {fileID: 0}
+  isActive: 0
+  activeTime: 10
+  activeTimer: 0
   freezeDebuff: 0
   slowDownRatio: 1
   freezeTimer: 0

@@ -7,11 +7,14 @@ public class ArcherAI : MonoBehaviour
     [SerializeField]public float range = 5f;          // 攻擊範圍
     [SerializeField]public float defaultDamage = 20f;
     [SerializeField]public float elementBuffDamage = 1.2f;
+    [SerializeField]public float activeBuffDamage = 1.5f;
     [SerializeField]private float damage; 
     [SerializeField]public float defaultFireCD = 1f;
     [SerializeField]public float elementBuffCD = 0.8f;
+    [SerializeField]public float activeBuffCD = 0.3f;
     [SerializeField]private float fireCD = 100f;       // 每秒攻擊次數
     [SerializeField]private float fireCDTimer = 0f;
+    
 
     private Transform target;          // 當前鎖定的目標
 
@@ -34,8 +37,6 @@ public class ArcherAI : MonoBehaviour
     void Update() {
         
         target = searchScript.FindTarget(range); // 尋找目標
-        
-
         if (target)
         {
             // 鎖定邏輯：讓塔轉向目標
@@ -60,15 +61,17 @@ public class ArcherAI : MonoBehaviour
         // Debug.Log("發射子彈！攻擊 " + target.name);
         firePoint = transform.position + 1f*transform.forward;
 
+        damage = defaultDamage;
+        elementBuffCD = defaultFireCD;
         if(buffScript.isSameElement)  // on buff element
         {
-            damage = elementBuffDamage * defaultDamage;
-            fireCD = elementBuffCD * defaultFireCD;
+            damage *= elementBuffDamage;
+            fireCD *= elementBuffCD;
         }
-        else  // reset buff
+        if(buffScript.isActive)
         {
-            damage = defaultDamage;
-            fireCD = defaultFireCD;
+            damage *= activeBuffDamage;
+            fireCD *= activeBuffCD;
         }
 
         // 1. 生成子彈

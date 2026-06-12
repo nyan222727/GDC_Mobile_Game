@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4402860586674337379}
   - component: {fileID: 2366942046564763948}
   - component: {fileID: 6685906437911429167}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerElement: 2
   isSameElement: 0
-  tileElement: 0
+  tileScript: {fileID: 0}
+  isActive: 0
+  activeTime: 10
+  activeTimer: 0
   freezeDebuff: 10
   slowDownRatio: 1
   freezeTimer: 0

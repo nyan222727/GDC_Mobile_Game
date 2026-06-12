@@ -10,7 +10,7 @@ public class BombScript : MonoBehaviour
     private float timer = 0f;
     private Transform target;
     public int damage = 0;
-    private float damageRange = 2;
+    public float damageRange = 2;
     private float initHeight;
 
     public void Seek(Transform _target)
