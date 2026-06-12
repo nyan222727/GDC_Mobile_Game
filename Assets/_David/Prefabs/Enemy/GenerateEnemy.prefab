@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 583155279540616516}
   - component: {fileID: 5735499076386689473}
   - component: {fileID: 1727279448600202087}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,12 +247,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6687f0ac396a8274c99f9d4a2723833f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  element: 2
   hurtCount: 0
-  speed: 0.01
   targetPosition: {x: 0, y: 1, z: 0}
   isMoving: 1
+  defaultSpeed: 1
+  speed: 0.01
+  hpRatio: 1
   maxHP: 100
   HP: 0
+  onTileElement: 2
+  tileDamageRatio: 0.02
+  tileDamageBound: 20
+  tileDamageTimer: 0
+  tileBuffSpeedRatio: 1.2
+  isActive: 0
+  activeTImer: 0
+  activeTime: 5
+  activeDamageRatio: 0.1
+  activeDamageBound: 200
+  activateSpeedRatio: 1.5
 --- !u!114 &8162804371417242812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +295,7 @@ GameObject:
   - component: {fileID: 4341389120018508930}
   - component: {fileID: 8873660359363008491}
   - component: {fileID: 5188450422597805909}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}

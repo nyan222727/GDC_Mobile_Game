@@ -157,29 +157,41 @@ public class TileProperty : MonoBehaviour
                 }
             }
         }
+
+        // 對敵人觸發
         Collider[] enemiesOnActive = Physics.OverlapBox(transform.position + new Vector3(0,1,0), new Vector3(0.5f,0.5f,0.5f), Quaternion.identity, LayerMask.GetMask("Enemy"));
         if(enemiesOnActive.Length != 0)
         {
             foreach(Collider enemy in enemiesOnActive)
             {
-                Debug.Log(enemy);
+                Debug.Log("find enemy");
+                EnemyController enemyScript = enemy.gameObject.GetComponent<EnemyController>();
+                if(enemyScript.element == this.element)
+                {
+                    enemyScript.ResetActiveTimer();
+                }
+                if(enemyScript.element != Element.None && enemyScript.element != this.element)
+                {
+                    enemyScript.DamageByActive();
+                }
             }
         }
+
+        // 對角色觸發
         Collider[] playersOnActive = Physics.OverlapBox(transform.position + new Vector3(0,1,0), new Vector3(0.5f,0.5f,0.5f), Quaternion.identity, LayerMask.GetMask("Player"));
         if(playersOnActive.Length != 0)
         {
             foreach(Collider player in playersOnActive)
             {
-                Debug.Log(player);
+                // Debug.Log(player);
                 PlayerBuffManager playerScript = player.gameObject.GetComponent<PlayerBuffManager>();
                 if(playerScript.playerElement == this.element)
                 {
                     playerScript.ResetActiveTimer();
-                    playerScript.isActive = true;
                 }
             }
         }
-
+        Debug.Log("reset element");
         this.element = Element.None;
         isChainProgress = false;
     }

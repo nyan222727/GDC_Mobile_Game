@@ -10,7 +10,7 @@ public class BombScript : MonoBehaviour
     private float timer = 0f;
     private Transform target;
     public int damage = 0;
-    public float damageRange = 2;
+    public float damageRange = 1;
     private float initHeight;
 
     public void Seek(Transform _target)
@@ -57,7 +57,6 @@ public class BombScript : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.5f);
-        // 傷害造成後銷毀子彈，或是你希望等子彈碰到怪物再銷毀
         Destroy(gameObject);
     }
 

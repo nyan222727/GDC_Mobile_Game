@@ -62,7 +62,7 @@ public class ArcherAI : MonoBehaviour
         firePoint = transform.position + 1f*transform.forward;
 
         damage = defaultDamage;
-        elementBuffCD = defaultFireCD;
+        fireCD = defaultFireCD;
         if(buffScript.isSameElement)  // on buff element
         {
             damage *= elementBuffDamage;

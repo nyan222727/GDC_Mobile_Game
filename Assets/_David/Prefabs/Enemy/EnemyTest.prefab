@@ -138,11 +138,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6687f0ac396a8274c99f9d4a2723833f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  element: 2
+  hurtCount: 0
   targetPosition: {x: 0, y: 1, z: 0}
   isMoving: 1
+  defaultSpeed: 1
+  speed: 0.5
+  hpRatio: 1
   maxHP: 20
   HP: 0
+  onTileElement: 2
+  tileDamageRatio: 0.02
+  tileDamageBound: 20
+  tileDamageTimer: 0
+  tileBuffSpeedRatio: 1.2
+  isActive: 0
+  activeTImer: 0
+  activeTime: 5
+  activeDamageRatio: 0.1
+  activeDamageBound: 200
+  activateSpeedRatio: 1.5
 --- !u!1 &7277990886388756151
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +170,7 @@ GameObject:
   - component: {fileID: 6404253394739652236}
   - component: {fileID: 4160555649152078821}
   - component: {fileID: 2623056365532796194}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

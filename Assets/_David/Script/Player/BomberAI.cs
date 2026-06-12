@@ -10,9 +10,10 @@ public class BomberAI : MonoBehaviour
     [SerializeField]private float damage; 
     [SerializeField]public float defaultFireCD = 1.5f;
     [SerializeField]public float elementBuffCD = 1f;
-    [SerializeField]public float activeBuffCD = 0.3f;
-    [SerializeField]private float fireCD = 100f;       // 每秒攻擊次數
+    [SerializeField]public float activeBuffCD = 0.8f;
+    [SerializeField]private float fireCD = 100f;       // 攻擊CD
     [SerializeField]private float fireCDTimer = 0f;
+    [SerializeField]public float activeBombRange = 1.5f;
 
     public Transform target;          // 當前鎖定的目標
     private Vector3 targetDir;
@@ -63,11 +64,13 @@ public class BomberAI : MonoBehaviour
     void Attack() {
 
         damage = defaultDamage;
-        elementBuffCD = defaultFireCD;
+        fireCD = defaultFireCD;
         if(buffScript.isSameElement)  // on buff element
         {
+            //Debug.Log("onTile buff cd"+ elementBuffCD);
             damage *= elementBuffDamage;
             fireCD *= elementBuffCD;
+            //Debug.Log("on tile cd"+fireCD);
         }
         if(buffScript.isActive)
         {
@@ -89,7 +92,7 @@ public class BomberAI : MonoBehaviour
             bulletScript.damage = Mathf.RoundToInt(damage);
             if(buffScript.isActive)
             {
-                bulletScript.damageRange *= 1.5f;
+                bulletScript.damageRange *= activeBombRange;
             }
         }
         // 在這裡實例化 (Instantiate) 子彈，並給予目標資訊

@@ -88,5 +88,6 @@ public class PlayerBuffManager : MonoBehaviour
     public void ResetActiveTimer()
     {
         activeTimer = activeTime;
+        isActive = true;
     }
 }
