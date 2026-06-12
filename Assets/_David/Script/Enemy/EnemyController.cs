@@ -105,7 +105,7 @@ public class EnemyController : MonoBehaviour
         }
 
 
-        if(onTileElement != Element.None && onTileElement != this.element)
+        if(this.element != Element.None && onTileElement != Element.None && onTileElement != this.element)
         {
             if(tileDamageTimer<=0)
             {

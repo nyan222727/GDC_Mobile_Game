@@ -750,6 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ede6c3c8534cd4aa12790d31597f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeForChangeElement: 10
   tilePrefab: {fileID: 1559220327138583361, guid: 6fc85d7c0a86cfa4c89c141e7aa2e908, type: 3}
   pathPrefab: {fileID: 7740296600036173379, guid: 472f68a0890ed5b418d0bafd07fc16b5, type: 3}
 --- !u!4 &620679478
@@ -2110,6 +2111,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4714063210910517785, guid: 042cb68c992b277478c76c1580886d36, type: 3}
       propertyPath: element
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714063210910517785, guid: 042cb68c992b277478c76c1580886d36, type: 3}
+      propertyPath: hpRatio
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714063210910517785, guid: 042cb68c992b277478c76c1580886d36, type: 3}
+      propertyPath: isMoving
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4714063210910517785, guid: 042cb68c992b277478c76c1580886d36, type: 3}

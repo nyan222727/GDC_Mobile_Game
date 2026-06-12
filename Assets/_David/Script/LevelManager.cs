@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public int timeForChangeElement = 10;
     public GameObject tilePrefab;
     public GameObject pathPrefab;
     private GameObject endPath; 
@@ -38,7 +39,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-        StartCoroutine(ColorChangeRoutine());
+        StartCoroutine(ElementChangeRoutine());
         findPath(endPath);
     }
 
@@ -48,17 +49,17 @@ public class LevelManager : MonoBehaviour
         endPathScript.findPrevPath(MoveDirection.End);
     }
 
-    private IEnumerator ColorChangeRoutine()
+    private IEnumerator ElementChangeRoutine()
     {
+        yield return new WaitForSeconds(2f);
         while (true)
         {
-            float randTime = Random.Range(5f,10f);
-            // 1. 等待時間
-            yield return new WaitForSeconds(2f);
-
-            // 3. 隨機挑選 n 個方塊並變色
-            int randCount = Random.Range(3,5);
+            // 隨機挑選 n 個方塊並變色
+            int randCount = Random.Range(3,6);
             PickAndChangeRandomBlocks(randCount);
+            DealChangeElement();
+            // 等待時間
+            yield return new WaitForSeconds(timeForChangeElement);
         }
     }
 
@@ -78,28 +79,46 @@ public class LevelManager : MonoBehaviour
             int randomIndex = Random.Range(0, pool.Count);
             TileProperty selectedTile = pool[randomIndex];
 
-            int randElement = Random.Range(0,3);
+            if(selectedTile.element != Element.None)
+            {
+                i--;
+                continue;
+            }
+
+            selectedTile.ResetElementTimer();
+
+            int randElement = Random.Range(0,2);
 
             if(randElement == 0)
             {
-                selectedTile.element = Element.None;
-            }
-            if(randElement == 1)
-            {
                 selectedTile.element = Element.Fire;
             }
-            if(randElement == 2)
+            if(randElement == 1)
             {
                 selectedTile.element = Element.Ice;
             }
 
 
-            // // 改變顏色並記錄起來
-            // selectedBlock.ChangeColor(targetColor);
-            // currentlyChangedBlocks.Add(selectedBlock);
-
             // 從暫存清單移除，確保下次循環不會重複抽到同一個
             pool.RemoveAt(randomIndex);
+        }
+    }
+
+    void DealChangeElement()
+    {
+        foreach(TileProperty tileScript in tilePropertyList)
+        {
+            tileScript.DetactActive();
+        }
+        foreach(TileProperty tileScript in tilePropertyList)
+        {
+            while(tileScript.chainCount > 0)
+            {
+                tileScript.chainCount--;
+                int randCount = Random.Range(3,6);
+                PickAndChangeRandomBlocks(randCount);
+                DealChangeElement();
+            }
         }
     }
 }

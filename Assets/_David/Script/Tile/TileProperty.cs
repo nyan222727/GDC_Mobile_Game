@@ -14,6 +14,8 @@ public class TileProperty : MonoBehaviour
     public Material fireMaterial;
     public Material iceMaterial; 
     private Renderer myRenderer;
+    public float elementTime = 30f;
+    private float elementTimer;
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,6 +29,17 @@ public class TileProperty : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(element != Element.None)
+        {
+            if(elementTimer > 0)
+            {
+                elementTimer -= Time.deltaTime;
+            }
+            else
+            {
+                element = Element.None;
+            }
+        }
         switch(element){
             case Element.Fire:
                 if (fireMaterial != null)
@@ -194,6 +207,11 @@ public class TileProperty : MonoBehaviour
         Debug.Log("reset element");
         this.element = Element.None;
         isChainProgress = false;
+    }
+
+    public void ResetElementTimer()
+    {
+        elementTimer = elementTime;
     }
 
 }
