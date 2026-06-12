@@ -350,7 +350,7 @@ MonoBehaviour:
   defaultLevel:
     levelIndex: 1
     displayName: Level 1
-    sceneName: Nyan_Scene
+    sceneName: Sprint1_Scene
     hasNextLevel: 1
     nextLevelIndex: 2
   menuSceneName: Menu_Scene
@@ -408,7 +408,7 @@ MonoBehaviour:
     level:
       levelIndex: 1
       displayName: Level 1
-      sceneName: Nyan_Scene
+      sceneName: Sprint1_Scene
       hasNextLevel: 1
       nextLevelIndex: 2
   - button: {fileID: 220304}
@@ -416,7 +416,7 @@ MonoBehaviour:
     level:
       levelIndex: 2
       displayName: Level 2
-      sceneName: Nyan_Scene
+      sceneName: Sprint1_Scene
       hasNextLevel: 1
       nextLevelIndex: 3
   - button: {fileID: 220404}
@@ -424,7 +424,7 @@ MonoBehaviour:
     level:
       levelIndex: 3
       displayName: Level 3
-      sceneName: Nyan_Scene
+      sceneName: Sprint1_Scene
       hasNextLevel: 0
       nextLevelIndex: 0
   showStartMenuOnAwake: 1

@@ -60,10 +60,12 @@ public sealed class PlacementController : MonoBehaviour
     private readonly Stack<List<PlacedCharacter>> placedBatches = new Stack<List<PlacedCharacter>>();
     private SlotSelectionButton selectedSlot;
     private bool isDraggingPlacement;
+    private bool placementEnabled = true;
     private Material previewMaterial;
     private Material placedMaterial;
 
-    public bool IsPlacementMode => selectedSlot != null;
+    public bool IsPlacementEnabled => placementEnabled;
+    public bool IsPlacementMode => placementEnabled && selectedSlot != null;
     public bool IsDraggingPlacement => isDraggingPlacement;
 
     private void Awake()
@@ -91,6 +93,11 @@ public sealed class PlacementController : MonoBehaviour
 
     private void Update()
     {
+        if (!placementEnabled)
+        {
+            return;
+        }
+
         if (TryGetCancelPressed())
         {
             CancelOrExitPlacementMode();
@@ -143,6 +150,11 @@ public sealed class PlacementController : MonoBehaviour
 
     public void SelectSlot(SlotSelectionButton slot)
     {
+        if (!placementEnabled)
+        {
+            return;
+        }
+
         if (isDraggingPlacement)
         {
             CancelPlacementDrag();
@@ -178,7 +190,7 @@ public sealed class PlacementController : MonoBehaviour
 
     public void TryPlaceOnTile(MapTile tile)
     {
-        if (selectedSlot == null || tile == null || tile.IsOccupied)
+        if (!placementEnabled || selectedSlot == null || tile == null || tile.IsOccupied)
         {
             return;
         }
@@ -216,6 +228,11 @@ public sealed class PlacementController : MonoBehaviour
 
     public void UndoLastPlacementBatch()
     {
+        if (!placementEnabled)
+        {
+            return;
+        }
+
         if (placedBatches.Count == 0)
         {
             return;
@@ -239,6 +256,24 @@ public sealed class PlacementController : MonoBehaviour
             {
                 placed.SourceSlot.RestoreCount(1);
             }
+        }
+
+        RefreshModeUi(false);
+    }
+
+    public void SetPlacementEnabled(bool enabled)
+    {
+        if (placementEnabled == enabled)
+        {
+            RefreshModeUi(false);
+            return;
+        }
+
+        placementEnabled = enabled;
+        if (!placementEnabled)
+        {
+            CancelPlacementDrag();
+            ClearSelectedSlot();
         }
 
         RefreshModeUi(false);
@@ -521,9 +556,9 @@ public sealed class PlacementController : MonoBehaviour
             Input.GetMouseButton(0),
             Input.GetMouseButtonUp(0));
         return pointer.Down || pointer.Held || pointer.Up;
-#endif
-
+#else
         return false;
+#endif
     }
 
     private bool TryGetCancelPressed()
@@ -575,18 +610,19 @@ public sealed class PlacementController : MonoBehaviour
     {
         if (viewModeButton != null)
         {
-            viewModeButton.gameObject.SetActive(selectedSlot != null);
+            viewModeButton.gameObject.SetActive(placementEnabled && selectedSlot != null);
         }
 
         if (undoButton != null)
         {
-            undoButton.gameObject.SetActive(placedBatches.Count > 0);
-            undoButton.interactable = placedBatches.Count > 0;
+            bool canUndo = placementEnabled && placedBatches.Count > 0;
+            undoButton.gameObject.SetActive(canUndo);
+            undoButton.interactable = canUndo;
         }
 
         if (trashDropZone != null)
         {
-            trashDropZone.gameObject.SetActive(showTrash);
+            trashDropZone.gameObject.SetActive(placementEnabled && showTrash);
         }
 
         SetTrashHover(false);
