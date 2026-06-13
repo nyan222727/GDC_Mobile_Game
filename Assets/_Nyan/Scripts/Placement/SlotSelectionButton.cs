@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
@@ -11,10 +12,14 @@ public sealed class SlotSelectionButton : MonoBehaviour
     [SerializeField] private Button button;
     [SerializeField] private Outline selectionOutline;
     [SerializeField] private Graphic slotGraphic;
-    [SerializeField] private Text countText;
-    [SerializeField] private Graphic countBadgeBackground;
+    [FormerlySerializedAs("countText")]
+    [SerializeField] private Text costText;
+    [FormerlySerializedAs("countBadgeBackground")]
+    [SerializeField] private Graphic costBadgeBackground;
     [SerializeField] private GameObject characterPrefab;
-    [SerializeField] private int initialCount = 3;
+    [FormerlySerializedAs("initialCount")]
+    [SerializeField] private int placementCost = 10;
+    [SerializeField] private MonoBehaviour moneyManager;
     [SerializeField] private Color normalSlotColor = new Color32(217, 217, 217, 255);
     [SerializeField] private Color emptySlotColor = new Color32(90, 90, 90, 255);
     [SerializeField] private Color normalBadgeColor = new Color32(45, 45, 45, 235);
@@ -23,19 +28,17 @@ public sealed class SlotSelectionButton : MonoBehaviour
 
     public int SlotIndex => slotIndex;
     public GameObject CharacterPrefab => characterPrefab;
-    public int RemainingCount => Application.isPlaying ? remainingCount : Mathf.Max(0, initialCount);
+    public int PlacementCost => Mathf.Max(0, placementCost);
     public int PreviewReservedCount => reservedPreviewCount;
-    public int AvailableCount => Mathf.Max(0, RemainingCount - reservedPreviewCount);
-    public bool HasAvailableCount => AvailableCount > 0;
+    public bool HasAvailableCount => CanAffordOnePlacement();
 
-    private int remainingCount;
     private int reservedPreviewCount;
     private Coroutine unavailableFlashRoutine;
+    private ILevelMoneyWallet MoneyWallet => moneyManager as ILevelMoneyWallet;
 
     private void Awake()
     {
-        initialCount = Mathf.Max(0, initialCount);
-        remainingCount = initialCount;
+        placementCost = Mathf.Max(0, placementCost);
 
         if (controller == null)
         {
@@ -57,18 +60,28 @@ public sealed class SlotSelectionButton : MonoBehaviour
             slotGraphic = GetComponent<Graphic>();
         }
 
-        if (countText == null)
+        if (costText == null)
         {
-            countText = GetComponentInChildren<Text>(true);
+            costText = GetComponentInChildren<Text>(true);
         }
 
-        if (countBadgeBackground == null && countText != null)
+        if (costBadgeBackground == null && costText != null)
         {
-            Transform badgeTransform = countText.transform.parent;
+            Transform badgeTransform = costText.transform.parent;
             if (badgeTransform != null)
             {
-                countBadgeBackground = badgeTransform.GetComponent<Graphic>();
+                costBadgeBackground = badgeTransform.GetComponent<Graphic>();
             }
+        }
+
+        if (moneyManager == null)
+        {
+            moneyManager = FindMoneyManager();
+        }
+
+        if (MoneyWallet != null)
+        {
+            MoneyWallet.MoneyChanged += RefreshCostUi;
         }
 
         if (button != null)
@@ -77,22 +90,26 @@ public sealed class SlotSelectionButton : MonoBehaviour
         }
 
         SetSelected(false, Color.white, Vector2.zero);
-        RefreshCountUi();
+        RefreshCostUi();
     }
 
     private void OnValidate()
     {
-        initialCount = Mathf.Max(0, initialCount);
+        placementCost = Mathf.Max(0, placementCost);
 
         if (!Application.isPlaying)
         {
-            remainingCount = initialCount;
-            RefreshCountUi();
+            RefreshCostUi();
         }
     }
 
     private void OnDestroy()
     {
+        if (MoneyWallet != null)
+        {
+            MoneyWallet.MoneyChanged -= RefreshCostUi;
+        }
+
         if (button != null)
         {
             button.onClick.RemoveListener(Select);
@@ -121,8 +138,14 @@ public sealed class SlotSelectionButton : MonoBehaviour
             return false;
         }
 
+        if (MoneyWallet != null && !MoneyWallet.TryReserve(PlacementCost))
+        {
+            FlashUnavailable();
+            return false;
+        }
+
         reservedPreviewCount++;
-        RefreshCountUi();
+        RefreshCostUi();
         return true;
     }
 
@@ -133,16 +156,30 @@ public sealed class SlotSelectionButton : MonoBehaviour
             return;
         }
 
+        int releasedCount = reservedPreviewCount;
         reservedPreviewCount = 0;
-        RefreshCountUi();
+
+        if (MoneyWallet != null)
+        {
+            MoneyWallet.ReleaseReserved(PlacementCost * releasedCount);
+        }
+
+        RefreshCostUi();
     }
 
     public void CommitPreviewReservations(int acceptedCount)
     {
         int committedCount = Mathf.Clamp(acceptedCount, 0, reservedPreviewCount);
-        remainingCount = Mathf.Max(0, remainingCount - committedCount);
+        int releasedCount = Mathf.Max(0, reservedPreviewCount - committedCount);
         reservedPreviewCount = 0;
-        RefreshCountUi();
+
+        if (MoneyWallet != null)
+        {
+            MoneyWallet.CommitReserved(PlacementCost * committedCount);
+            MoneyWallet.ReleaseReserved(PlacementCost * releasedCount);
+        }
+
+        RefreshCostUi();
     }
 
     public void RestoreCount(int count)
@@ -152,12 +189,18 @@ public sealed class SlotSelectionButton : MonoBehaviour
             return;
         }
 
-        remainingCount = Mathf.Min(initialCount, remainingCount + count);
-        RefreshCountUi();
+        if (MoneyWallet != null)
+        {
+            MoneyWallet.Refund(PlacementCost * count);
+        }
+
+        RefreshCostUi();
     }
 
     public void FlashUnavailable()
     {
+        MoneyWallet?.ShowInsufficientFunds();
+
         if (!isActiveAndEnabled)
         {
             return;
@@ -190,22 +233,22 @@ public sealed class SlotSelectionButton : MonoBehaviour
             slotGraphic.color = unavailableFlashColor;
         }
 
-        if (countBadgeBackground != null)
+        if (costBadgeBackground != null)
         {
-            countBadgeBackground.color = unavailableFlashColor;
+            costBadgeBackground.color = unavailableFlashColor;
         }
 
         yield return new WaitForSeconds(0.18f);
 
         unavailableFlashRoutine = null;
-        RefreshCountUi();
+        RefreshCostUi();
     }
 
-    private void RefreshCountUi()
+    private void RefreshCostUi()
     {
-        if (countText != null)
+        if (costText != null)
         {
-            countText.text = $"x{AvailableCount}";
+            costText.text = $"${PlacementCost}";
         }
 
         bool hasCount = HasAvailableCount;
@@ -214,14 +257,37 @@ public sealed class SlotSelectionButton : MonoBehaviour
             slotGraphic.color = hasCount ? normalSlotColor : emptySlotColor;
         }
 
-        if (countBadgeBackground != null)
+        if (costBadgeBackground != null)
         {
-            countBadgeBackground.color = hasCount ? normalBadgeColor : emptyBadgeColor;
+            costBadgeBackground.color = hasCount ? normalBadgeColor : emptyBadgeColor;
         }
 
         if (button != null)
         {
-            button.interactable = hasCount;
+            button.interactable = true;
         }
+    }
+
+    private bool CanAffordOnePlacement()
+    {
+        return MoneyWallet == null || MoneyWallet.CanReserve(PlacementCost);
+    }
+
+    private static MonoBehaviour FindMoneyManager()
+    {
+        MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None);
+
+        for (int i = 0; i < behaviours.Length; i++)
+        {
+            MonoBehaviour behaviour = behaviours[i];
+            if (behaviour is ILevelMoneyWallet)
+            {
+                return behaviour;
+            }
+        }
+
+        return null;
     }
 }

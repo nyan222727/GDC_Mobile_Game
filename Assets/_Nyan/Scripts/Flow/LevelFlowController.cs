@@ -11,6 +11,20 @@ public interface ILevelMoneySource
     int CurrentMoney { get; }
 }
 
+public interface ILevelMoneyWallet : ILevelMoneySource
+{
+    event Action MoneyChanged;
+
+    int AvailableMoney { get; }
+    bool CanReserve(int amount);
+    bool TryReserve(int amount);
+    void ReleaseReserved(int amount);
+    void CommitReserved(int amount);
+    void AddMoney(int amount);
+    void Refund(int amount);
+    void ShowInsufficientFunds();
+}
+
 public sealed class LevelFlowController : MonoBehaviour
 {
     public enum LevelState
@@ -68,7 +82,6 @@ public sealed class LevelFlowController : MonoBehaviour
 
     [Header("Money")]
     [SerializeField] private MonoBehaviour moneySource;
-    [SerializeField] private int fallbackResultMoney;
 
     [Header("Waves")]
     [SerializeField] private List<WaveDefinition> waves = new List<WaveDefinition>();
@@ -99,12 +112,6 @@ public sealed class LevelFlowController : MonoBehaviour
     public int CurrentResultMoney => GetCurrentResultMoney();
     public bool IsInPlacementState => currentState == LevelState.Placement;
     public bool IsInCombatState => currentState == LevelState.Combat;
-
-    public void SetFallbackResultMoney(int money)
-    {
-        fallbackResultMoney = Mathf.Max(0, money);
-        RefreshUi();
-    }
 
     private void Awake()
     {
@@ -190,6 +197,12 @@ public sealed class LevelFlowController : MonoBehaviour
 
         if (currentBaseHp <= 0)
         {
+            WaveEnemyTracker defeatedTracker = enemy.GetComponent<WaveEnemyTracker>();
+            if (defeatedTracker != null)
+            {
+                defeatedTracker.Disarm();
+            }
+
             if (destroyEnemy)
             {
                 Destroy(enemy);
@@ -202,7 +215,7 @@ public sealed class LevelFlowController : MonoBehaviour
         WaveEnemyTracker tracker = enemy.GetComponent<WaveEnemyTracker>();
         if (tracker != null)
         {
-            tracker.NotifyDefeated();
+            tracker.NotifyDefeated(false);
         }
 
         if (destroyEnemy)
@@ -213,11 +226,19 @@ public sealed class LevelFlowController : MonoBehaviour
         RefreshUi();
     }
 
-    public void NotifyEnemyDefeated(WaveEnemyTracker tracker, int waveIndex)
+    public void NotifyEnemyDefeated(
+        WaveEnemyTracker tracker,
+        int waveIndex,
+        bool grantsCoinReward)
     {
         if (isQuitting || currentState != LevelState.Combat || waveIndex != currentWaveIndex)
         {
             return;
+        }
+
+        if (grantsCoinReward)
+        {
+            GrantEnemyCoinReward(tracker);
         }
 
         remainingEnemiesInCurrentWave = Mathf.Max(0, remainingEnemiesInCurrentWave - 1);
@@ -234,6 +255,11 @@ public sealed class LevelFlowController : MonoBehaviour
         if (placementController == null)
         {
             placementController = FindAnyObjectByType<PlacementController>();
+        }
+
+        if (!(moneySource is ILevelMoneyWallet))
+        {
+            moneySource = FindMoneyWallet();
         }
     }
 
@@ -577,7 +603,44 @@ public sealed class LevelFlowController : MonoBehaviour
             return Mathf.Max(0, resultMoneySource.CurrentMoney);
         }
 
-        return Mathf.Max(0, fallbackResultMoney);
+        return 0;
+    }
+
+    private void GrantEnemyCoinReward(WaveEnemyTracker tracker)
+    {
+        if (tracker == null || !(moneySource is ILevelMoneyWallet wallet))
+        {
+            return;
+        }
+
+        EnemyCoinReward reward = tracker.GetComponent<EnemyCoinReward>();
+        if (reward == null)
+        {
+            Debug.LogWarning(
+                $"Enemy '{tracker.name}' has no {nameof(EnemyCoinReward)} and grants no money.",
+                tracker);
+            return;
+        }
+
+        wallet.AddMoney(reward.RewardAmount);
+    }
+
+    private static MonoBehaviour FindMoneyWallet()
+    {
+        MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None);
+
+        for (int i = 0; i < behaviours.Length; i++)
+        {
+            MonoBehaviour behaviour = behaviours[i];
+            if (behaviour is ILevelMoneyWallet)
+            {
+                return behaviour;
+            }
+        }
+
+        return null;
     }
 
     private void ReturnToMenu()

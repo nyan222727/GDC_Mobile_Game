@@ -21,7 +21,7 @@ public sealed class WaveEnemyTracker : MonoBehaviour
         waveIndex = -1;
     }
 
-    public void NotifyDefeated()
+    public void NotifyDefeated(bool grantsCoinReward = true)
     {
         if (!isArmed || owner == null)
         {
@@ -34,11 +34,11 @@ public sealed class WaveEnemyTracker : MonoBehaviour
         owner = null;
         waveIndex = -1;
 
-        targetOwner.NotifyEnemyDefeated(this, targetWaveIndex);
+        targetOwner.NotifyEnemyDefeated(this, targetWaveIndex, grantsCoinReward);
     }
 
     private void OnDestroy()
     {
-        NotifyDefeated();
+        NotifyDefeated(true);
     }
 }

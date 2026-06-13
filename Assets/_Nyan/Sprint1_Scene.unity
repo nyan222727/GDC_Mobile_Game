@@ -211,7 +211,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4100000001001}
   m_SourcePrefab: {fileID: 100100000, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
 --- !u!1 &110069690
 GameObject:
@@ -317,7 +320,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4100000001051}
   m_SourcePrefab: {fileID: 100100000, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
 --- !u!1 &330585543
 GameObject:
@@ -796,7 +802,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4100000001011}
   m_SourcePrefab: {fileID: 100100000, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
 --- !u!1 &666478307
 GameObject:
@@ -886,7 +895,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4100000001031}
   m_SourcePrefab: {fileID: 100100000, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
 --- !u!1 &707521543
 GameObject:
@@ -1533,7 +1545,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4100000001021}
   m_SourcePrefab: {fileID: 100100000, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
 --- !u!1 &1629001825
 GameObject:
@@ -1830,7 +1845,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4100000001041}
   m_SourcePrefab: {fileID: 100100000, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
 --- !u!1 &2107132774
 GameObject:
@@ -1980,6 +1998,7 @@ RectTransform:
   - {fileID: 3800000000201}
   - {fileID: 3800000000301}
   - {fileID: 3900000000001}
+  - {fileID: 4100000000101}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7600,10 +7619,11 @@ MonoBehaviour:
   button: {fileID: 3200000000100}
   selectionOutline: {fileID: 3200000000101}
   slotGraphic: {fileID: 346426259}
-  countText: {fileID: 3400000000013}
-  countBadgeBackground: {fileID: 3400000000003}
+  costText: {fileID: 3400000000013}
+  costBadgeBackground: {fileID: 3400000000003}
   characterPrefab: {fileID: 9004544139079297661, guid: ffb4191173dd5bb409586c44873e8b01, type: 3}
-  initialCount: 3
+  placementCost: 30
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -7685,10 +7705,11 @@ MonoBehaviour:
   button: {fileID: 3200000000110}
   selectionOutline: {fileID: 3200000000111}
   slotGraphic: {fileID: 1629001827}
-  countText: {fileID: 3400000000113}
-  countBadgeBackground: {fileID: 3400000000103}
+  costText: {fileID: 3400000000113}
+  costBadgeBackground: {fileID: 3400000000103}
   characterPrefab: {fileID: 8812244356406469331, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
-  initialCount: 1
+  placementCost: 10
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -7770,10 +7791,11 @@ MonoBehaviour:
   button: {fileID: 3200000000120}
   selectionOutline: {fileID: 3200000000121}
   slotGraphic: {fileID: 1227356671}
-  countText: {fileID: 3400000000213}
-  countBadgeBackground: {fileID: 3400000000203}
+  costText: {fileID: 3400000000213}
+  costBadgeBackground: {fileID: 3400000000203}
   characterPrefab: {fileID: 0}
-  initialCount: 5
+  placementCost: 50
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -7855,10 +7877,11 @@ MonoBehaviour:
   button: {fileID: 3200000000130}
   selectionOutline: {fileID: 3200000000131}
   slotGraphic: {fileID: 3200000000133}
-  countText: {fileID: 3400000000313}
-  countBadgeBackground: {fileID: 3400000000303}
+  costText: {fileID: 3400000000313}
+  costBadgeBackground: {fileID: 3400000000303}
   characterPrefab: {fileID: 3487552028559514586, guid: d3ec1dda5fedf9f4fa90e89159652ac1, type: 3}
-  initialCount: 2
+  placementCost: 20
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -7970,10 +7993,11 @@ MonoBehaviour:
   button: {fileID: 3200000000140}
   selectionOutline: {fileID: 3200000000141}
   slotGraphic: {fileID: 707521545}
-  countText: {fileID: 3400000000413}
-  countBadgeBackground: {fileID: 3400000000403}
+  costText: {fileID: 3400000000413}
+  costBadgeBackground: {fileID: 3400000000403}
   characterPrefab: {fileID: 0}
-  initialCount: 3
+  placementCost: 30
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -8055,10 +8079,11 @@ MonoBehaviour:
   button: {fileID: 3200000000150}
   selectionOutline: {fileID: 3200000000151}
   slotGraphic: {fileID: 1110267737}
-  countText: {fileID: 3400000000513}
-  countBadgeBackground: {fileID: 3400000000503}
+  costText: {fileID: 3400000000513}
+  costBadgeBackground: {fileID: 3400000000503}
   characterPrefab: {fileID: 0}
-  initialCount: 1
+  placementCost: 10
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -8140,10 +8165,11 @@ MonoBehaviour:
   button: {fileID: 3200000000160}
   selectionOutline: {fileID: 3200000000161}
   slotGraphic: {fileID: 342581651}
-  countText: {fileID: 3400000000613}
-  countBadgeBackground: {fileID: 3400000000603}
+  costText: {fileID: 3400000000613}
+  costBadgeBackground: {fileID: 3400000000603}
   characterPrefab: {fileID: 0}
-  initialCount: 5
+  placementCost: 50
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -8225,10 +8251,11 @@ MonoBehaviour:
   button: {fileID: 3200000000170}
   selectionOutline: {fileID: 3200000000171}
   slotGraphic: {fileID: 1279002256}
-  countText: {fileID: 3400000000713}
-  countBadgeBackground: {fileID: 3400000000703}
+  costText: {fileID: 3400000000713}
+  costBadgeBackground: {fileID: 3400000000703}
   characterPrefab: {fileID: 0}
-  initialCount: 2
+  placementCost: 20
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -8310,10 +8337,11 @@ MonoBehaviour:
   button: {fileID: 3200000000180}
   selectionOutline: {fileID: 3200000000181}
   slotGraphic: {fileID: 1744834010}
-  countText: {fileID: 3400000000813}
-  countBadgeBackground: {fileID: 3400000000803}
+  costText: {fileID: 3400000000813}
+  costBadgeBackground: {fileID: 3400000000803}
   characterPrefab: {fileID: 0}
-  initialCount: 3
+  placementCost: 30
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -8395,10 +8423,11 @@ MonoBehaviour:
   button: {fileID: 3200000000190}
   selectionOutline: {fileID: 3200000000191}
   slotGraphic: {fileID: 1341340771}
-  countText: {fileID: 3400000000913}
-  countBadgeBackground: {fileID: 3400000000903}
+  costText: {fileID: 3400000000913}
+  costBadgeBackground: {fileID: 3400000000903}
   characterPrefab: {fileID: 0}
-  initialCount: 1
+  placementCost: 10
+  moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   normalBadgeColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.92156863}
@@ -11548,8 +11577,7 @@ MonoBehaviour:
   menuButton: {fileID: 3900000000104}
   retryButton: {fileID: 3900000000204}
   nextLevelButton: {fileID: 3900000000304}
-  moneySource: {fileID: 0}
-  fallbackResultMoney: 0
+  moneySource: {fileID: 4100000000002}
   waves:
   - waveName: 
     enemies:
@@ -12884,6 +12912,245 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb0993a8cf5f9b64f877d5d3b85699f2, type: 3}
+--- !u!1 &4100000001000 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+  m_PrefabInstance: {fileID: 108655656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4100000001001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000001000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 10
+--- !u!1 &4100000001010 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+  m_PrefabInstance: {fileID: 652534072}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4100000001011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000001010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 10
+--- !u!1 &4100000001020 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+  m_PrefabInstance: {fileID: 1577917053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4100000001021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000001020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 10
+--- !u!1 &4100000001030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+  m_PrefabInstance: {fileID: 678197817}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4100000001031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000001030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 10
+--- !u!1 &4100000001040 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+  m_PrefabInstance: {fileID: 1988294010}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4100000001041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000001040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 10
+--- !u!1 &4100000001050 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
+  m_PrefabInstance: {fileID: 241097205}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4100000001051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000001050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 10
+--- !u!1 &4100000000000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4100000000001}
+  - component: {fileID: 4100000000002}
+  m_Layer: 0
+  m_Name: Money Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4100000000001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000000000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4100000000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0492a93687d143fa97b8d4ed5710e7b9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  startingMoney: 100
+  moneyText: {fileID: 4100000000113}
+  moneyFormat: 'Money: {0}'
+  showAvailableMoneyWhilePreviewing: 1
+  flashGraphic: {fileID: 4100000000113}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  insufficientColor: {r: 1, g: 0.29411766, b: 0.29411766, a: 1}
+  flashDuration: 0.18
+--- !u!1 &4100000000100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4100000000101}
+  - component: {fileID: 4100000000102}
+  - component: {fileID: 4100000000113}
+  m_Layer: 5
+  m_Name: Money Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4100000000101
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000000100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2118441323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -24, y: -24}
+  m_SizeDelta: {x: 320, y: 48}
+  m_Pivot: {x: 1, y: 1}
+--- !u!222 &4100000000102
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000000100}
+  m_CullTransparentMesh: 0
+--- !u!114 &4100000000113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100000000100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 28
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 12
+    m_MaxSize: 36
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Money: 100'
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -12900,6 +13167,7 @@ SceneRoots:
   - {fileID: 3600000000301}
   - {fileID: 2107132776}
   - {fileID: 3800000000001}
+  - {fileID: 4100000000001}
   - {fileID: 1255133281}
   - {fileID: 45630572}
   - {fileID: 666478308}
