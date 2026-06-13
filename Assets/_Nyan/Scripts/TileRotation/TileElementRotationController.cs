@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,15 +19,12 @@ public sealed class TileElementRotationController : MonoBehaviour
     [Header("Behavior")]
     [SerializeField] private Vector2Int initialSelectionOrigin = Vector2Int.zero;
     [SerializeField] private bool resetElementTimersAfterRotation = true;
-    [SerializeField] private bool syncTileVisualsAfterRotation = true;
     [SerializeField] private float gridRetryInterval = 0.25f;
 
-    private readonly Dictionary<TileProperty, Material> defaultMaterialByTile = new Dictionary<TileProperty, Material>();
     private Vector2Int selectionOrigin;
     private bool gridReady;
     private bool wasInCombat;
     private Coroutine gridRetryRoutine;
-    private Material fallbackDefaultMaterial;
 
     public Vector2Int SelectionOrigin => selectionOrigin;
     public bool IsReady => gridReady;
@@ -97,14 +93,6 @@ public sealed class TileElementRotationController : MonoBehaviour
             ResetElementTimer(bottomLeft);
         }
 
-        if (syncTileVisualsAfterRotation)
-        {
-            SyncTileVisual(topLeft);
-            SyncTileVisual(topRight);
-            SyncTileVisual(bottomRight);
-            SyncTileVisual(bottomLeft);
-        }
-
         selectionView?.FlashRotated();
     }
 
@@ -155,7 +143,6 @@ public sealed class TileElementRotationController : MonoBehaviour
         }
 
         gridReady = true;
-        CacheDefaultMaterials();
         selectionOrigin = grid.ClampSelectionOrigin(selectionOrigin);
         if (!grid.IsValidSelectionOrigin(selectionOrigin))
         {
@@ -247,50 +234,6 @@ public sealed class TileElementRotationController : MonoBehaviour
         rotateButton?.onClick.RemoveListener(RotateClockwise);
     }
 
-    private void CacheDefaultMaterials()
-    {
-        if (grid == null)
-        {
-            return;
-        }
-
-        foreach (TileProperty tile in grid.Tiles)
-        {
-            if (tile == null || !tile.TryGetComponent(out Renderer tileRenderer))
-            {
-                continue;
-            }
-
-            Material defaultMaterial = tile.defaultMaterial;
-            if (defaultMaterial == null)
-            {
-                Material currentMaterial = tileRenderer.sharedMaterial;
-                if (!IsElementMaterial(tile, currentMaterial))
-                {
-                    defaultMaterial = currentMaterial;
-                }
-            }
-
-            if (defaultMaterial == null)
-            {
-                defaultMaterial = fallbackDefaultMaterial;
-            }
-
-            if (defaultMaterial == null)
-            {
-                continue;
-            }
-
-            fallbackDefaultMaterial = defaultMaterial;
-            defaultMaterialByTile[tile] = defaultMaterial;
-
-            if (tile.defaultMaterial == null)
-            {
-                tile.defaultMaterial = defaultMaterial;
-            }
-        }
-    }
-
     private static void RotateSelectionElementsClockwise(
         TileProperty topLeft,
         TileProperty topRight,
@@ -311,78 +254,11 @@ public sealed class TileElementRotationController : MonoBehaviour
         topLeft.element = before[2];
     }
 
-    private void SyncTileVisual(TileProperty tile)
-    {
-        if (tile == null || !tile.TryGetComponent(out Renderer tileRenderer))
-        {
-            return;
-        }
-
-        Material targetMaterial = ResolveMaterial(tile);
-        if (targetMaterial == null)
-        {
-            return;
-        }
-
-        tileRenderer.sharedMaterial = targetMaterial;
-    }
-
-    private Material ResolveMaterial(TileProperty tile)
-    {
-        switch (tile.element)
-        {
-            case Element.Fire:
-                return tile.fireMaterial;
-            case Element.Ice:
-                return tile.iceMaterial;
-            case Element.None:
-                return ResolveDefaultMaterial(tile);
-            default:
-                return null;
-        }
-    }
-
-    private Material ResolveDefaultMaterial(TileProperty tile)
-    {
-        if (tile.defaultMaterial != null)
-        {
-            return tile.defaultMaterial;
-        }
-
-        if (!defaultMaterialByTile.TryGetValue(tile, out Material defaultMaterial))
-        {
-            defaultMaterial = fallbackDefaultMaterial;
-        }
-
-        if (defaultMaterial != null)
-        {
-            tile.defaultMaterial = defaultMaterial;
-        }
-
-        return defaultMaterial;
-    }
-
     private static void ResetElementTimer(TileProperty tile)
     {
         if (tile != null && tile.element != Element.None)
         {
             tile.ResetElementTimer();
         }
-    }
-
-    private static bool IsElementMaterial(TileProperty tile, Material material)
-    {
-        return MaterialMatches(material, tile.fireMaterial) ||
-               MaterialMatches(material, tile.iceMaterial);
-    }
-
-    private static bool MaterialMatches(Material a, Material b)
-    {
-        if (a == null || b == null)
-        {
-            return false;
-        }
-
-        return a == b || a.name == b.name || a.name == $"{b.name} (Instance)";
     }
 }

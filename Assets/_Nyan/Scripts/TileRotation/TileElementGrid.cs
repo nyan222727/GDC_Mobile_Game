@@ -15,7 +15,6 @@ public sealed class TileElementGrid : MonoBehaviour
     public int Width => xCoordinates.Count;
     public int Height => zCoordinates.Count;
     public int TileCount => tiles.Count;
-    public IEnumerable<TileProperty> Tiles => tiles.Values;
 
     public bool Rebuild()
     {
