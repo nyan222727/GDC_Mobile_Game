@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8989401015078890095}
   - component: {fileID: 8249037068895399969}
   m_Layer: 6
-  m_Name: EnemyTest
+  m_Name: Strong Mob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   defaultSpeed: 1
   speed: 0.5
   hpRatio: 1
-  maxHP: 20
+  maxHP: 500
   HP: 0
   onTileElement: 2
   tileDamageRatio: 0.02

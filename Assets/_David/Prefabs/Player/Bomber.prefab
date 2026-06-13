@@ -430,12 +430,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31adb53a698e30d4ebebe7a907afcca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
+  defaultRange: 3
+  elementRange: 1
+  activeRange: 1
+  activeBombRange: 1.5
+  range: 3
   defaultDamage: 10
   elementBuffDamage: 1.2
+  activeBuffDamage: 1.2
   damage: 0
   defaultFireCD: 1.5
-  elementBuffCD: 1
+  elementFireCD: 1
+  activeFireCD: 0.8
   fireCD: 100
   fireCDTimer: 0
   target: {fileID: 0}
@@ -466,7 +472,7 @@ MonoBehaviour:
   freezeTimer: 0
   freezeFadeTime: 5
   ratioPerFreeze: 0.2
-  stunTimer: 10
+  stunTimer: 0
 --- !u!114 &5800971493609265786
 MonoBehaviour:
   m_ObjectHideFlags: 0

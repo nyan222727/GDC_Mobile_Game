@@ -10,6 +10,8 @@ public class TileProperty : MonoBehaviour
     public Element element;
     public int chainCount;
     private bool isChainProgress = false;
+    public bool isPath = false;
+    public bool isNearPath = false;
     public Material defaultMaterial;
     public Material fireMaterial;
     public Material iceMaterial; 

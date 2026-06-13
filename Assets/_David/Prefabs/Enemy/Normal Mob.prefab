@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8989401015078890095}
   - component: {fileID: 8249037068895399969}
   m_Layer: 6
-  m_Name: EnemyTest
+  m_Name: Normal Mob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,9 +127,9 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 1, z: 0}
   isMoving: 1
   defaultSpeed: 1
-  speed: 0.5
+  speed: 0
   hpRatio: 1
-  maxHP: 20
+  maxHP: 200
   HP: 0
   onTileElement: 2
   tileDamageRatio: 0.02

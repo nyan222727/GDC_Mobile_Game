@@ -15,25 +15,41 @@ public class PlayerFindTarget : MonoBehaviour
         
     }
 
-    public Transform FindTarget(float range) {
+    public Transform FindTarget(float range, int filter = 0) {
         if(buffScript.stunTimer>0)return null;
         Transform target;          // 當前鎖定的目標
 
         // 取得範圍內所有怪物的碰撞體
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Enemy"));
-        float shortestDistance = Mathf.Infinity;
-        GameObject nearestEnemy = null;
+        GameObject targetEnemy = null;
 
-        foreach (Collider enemy in enemiesInRange) {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy < shortestDistance) {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy.gameObject;
+        switch(filter)
+        {
+        case 0:
+            float shortestDistance = Mathf.Infinity;
+            foreach (Collider enemy in enemiesInRange) {
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy < shortestDistance) {
+                    shortestDistance = distanceToEnemy;
+                    targetEnemy = enemy.gameObject;
+                }
             }
+            break;
+        case 1:
+            float highestHP = 0f;
+            foreach (Collider enemy in enemiesInRange) {
+                EnemyController enemyScript = enemy.gameObject.GetComponent<EnemyController>();
+                if (enemyScript.HP > highestHP) {
+                    highestHP = enemyScript.HP;
+                    targetEnemy = enemy.gameObject;
+                }
+            }
+            break;
         }
+        
 
-        if (nearestEnemy != null) {
-            target = nearestEnemy.transform;
+        if (targetEnemy != null) {
+            target = targetEnemy.transform;
         } else {
             target = null;
         }

@@ -231,12 +231,12 @@ MonoBehaviour:
   isActive: 0
   activeTime: 10
   activeTimer: 0
-  freezeDebuff: 10
+  freezeDebuff: 0
   slowDownRatio: 1
   freezeTimer: 0
   freezeFadeTime: 5
   ratioPerFreeze: 0.2
-  stunTimer: 5
+  stunTimer: 0
 --- !u!114 &8714574034370772502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,12 +249,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88c3bcf35391664aab711ba16a1367d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultRange: 5
+  elementRange: 1
+  activeRange: 1.5
   range: 5
   defaultDamage: 20
   elementBuffDamage: 1.2
+  activeBuffDamage: 1.2
   damage: 0
   defaultFireCD: 1
-  elementBuffCD: 0.8
+  elementFireCD: 0.8
+  activeFireCD: 0.3
   fireCD: 100
   fireCDTimer: 0
   bulletPrefab: {fileID: 2877052843124857506, guid: 270dde3390a461243981e4ecf3739375, type: 3}

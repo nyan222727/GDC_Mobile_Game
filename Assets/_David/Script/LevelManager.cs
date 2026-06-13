@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -8,34 +7,46 @@ public class LevelManager : MonoBehaviour
     public int timeForChangeElement = 10;
     public GameObject tilePrefab;
     public GameObject pathPrefab;
+    public GameObject startPrefab;
     private GameObject endPath; 
     private int width = 5;
     private int height = 5;
-    private int[,] pathList = 
+    // none:0 path:1 end:2 nearPath:3 start:4
+    private int[][] map = 
     {
-        {1,1,0,0,0},
-        {0,1,1,0,0},
-        {0,0,1,0,0},
-        {0,0,1,1,0},
-        {0,0,0,2,0}
+        new int[] {4,1,0,0,0},
+        new int[] {0,1,1,0,0},
+        new int[] {0,0,1,0,0},
+        new int[] {0,0,1,1,0},
+        new int[] {0,0,0,2,0}
     };
     private List<TileProperty> tilePropertyList = new List<TileProperty>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        InitializeMap();
         for(int row=0; row < height ; row++)
         {
             for(int col=0; col < width ; col++)
             {
                 GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
                 tilePropertyList.Add(tile.GetComponent<TileProperty>());
-                if(pathList[row,col] == 1)
+                switch(map[row][col])
                 {
+                case 1:
                     Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                }
-                else if(pathList[row,col] == 2)
-                {
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 2:
                     endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    break;
+                case 3:
+                    tile.GetComponent<TileProperty>().isNearPath = true;
+                    break;
+                case 4:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    Instantiate(startPrefab, new Vector3(col, 1, row), Quaternion.identity);
+                    break;
                 }
             }
         }
@@ -118,6 +129,41 @@ public class LevelManager : MonoBehaviour
                 int randCount = Random.Range(3,6);
                 PickAndChangeRandomBlocks(randCount);
                 DealChangeElement();
+            }
+        }
+    }
+
+    void InitializeMap()
+    {
+        for(int i=0 ; i < map.Length ; i++)
+        {
+            for(int j=0 ; j < map[0].Length ; j++)
+            {
+                if(map[i][j] == 1)
+                {
+                    for(int r = -1 ; r <= 1 ; r++)
+                    {
+                        if((i+r) < 0 || (i+r) >= map.Length)
+                        {
+                            continue;
+                        }
+                        if(map[i+r][j] == 0)
+                        {
+                            map[i+r][j] = 3;
+                        }
+                    }
+                    for(int c = -1 ; c <= 1 ; c++)
+                    {
+                        if((j+c) < 0  || (j+c) >= map[0].Length)
+                        {
+                            continue;
+                        }
+                        if(map[i][j+c] == 0)
+                        {
+                            map[i][j+c] = 3;
+                        }
+                    }
+                }
             }
         }
     }
