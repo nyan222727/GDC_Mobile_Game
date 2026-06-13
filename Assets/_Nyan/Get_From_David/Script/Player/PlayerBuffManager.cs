@@ -29,7 +29,6 @@ public class PlayerBuffManager : MonoBehaviour
         tileScript = this.gameObject.GetComponent<GetTileElement>();
         freezeTimer = freezeFadeTime;
         isActive = false;
-        ResetActiveTimer();
     }
 
     // Update is called once per frame
@@ -55,7 +54,6 @@ public class PlayerBuffManager : MonoBehaviour
             else
             {
                 isActive = false;
-                ResetActiveTimer();
             }
         }
 

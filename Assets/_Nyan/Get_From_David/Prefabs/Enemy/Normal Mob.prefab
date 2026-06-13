@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 9051781388782519691}
   - component: {fileID: 5382662717976095583}
   - component: {fileID: 8989401015078890095}
-  - component: {fileID: 9170068736559123759}
   - component: {fileID: 8249037068895399969}
   m_Layer: 6
-  m_Name: EnemyTest
+  m_Name: Normal Mob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,21 +110,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9170068736559123759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4428645707453406323}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9d9d4ac7ef45fa419662ef7e7cfeff2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
-  maxHP: 100
-  HP: 0
 --- !u!114 &8249037068895399969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,9 +127,9 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 1, z: 0}
   isMoving: 1
   defaultSpeed: 1
-  speed: 0.5
+  speed: 0
   hpRatio: 1
-  maxHP: 20
+  maxHP: 200
   HP: 0
   onTileElement: 2
   tileDamageRatio: 0.02
@@ -155,6 +139,7 @@ MonoBehaviour:
   isActive: 0
   activeTImer: 0
   activeTime: 5
+  activeDamageIgnore: 0
   activeDamageRatio: 0.1
   activeDamageBound: 200
   activateSpeedRatio: 1.5
