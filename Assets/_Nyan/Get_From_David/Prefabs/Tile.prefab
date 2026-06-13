@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6188078944455534753}
   - component: {fileID: -3058402966024578161}
   - component: {fileID: 1794911704785728466}
+  - component: {fileID: -7595667877029125996}
   m_Layer: 7
   m_Name: Tile
   m_TagString: Untagged
@@ -102,9 +103,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 0
   chainCount: 0
+  isPath: 0
+  isNearPath: 0
   defaultMaterial: {fileID: 2100000, guid: f9baac4a0cf2015458973de33fb38141, type: 2}
   fireMaterial: {fileID: 2100000, guid: 2cc89b9887e7b364bbc1471b58d262f1, type: 2}
   iceMaterial: {fileID: 2100000, guid: 25f896234c3de72448057ebfae34c65f, type: 2}
+  elementTime: 30
 --- !u!65 &1794911704785728466
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,3 +130,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7595667877029125996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559220327138583361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df821de4e1034a3dbf171f98d7cadf1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupant: {fileID: 0}
+  tileRenderer: {fileID: 0}

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public sealed class MapTile : MonoBehaviour
 {
-    [SerializeField] private PlacementController controller;
     [SerializeField] private Transform occupant;
     [SerializeField] private Renderer tileRenderer;
 
@@ -66,11 +65,6 @@ public sealed class MapTile : MonoBehaviour
 
     private void Awake()
     {
-        if (controller == null)
-        {
-            controller = FindAnyObjectByType<PlacementController>();
-        }
-
         CacheRenderer();
     }
 
