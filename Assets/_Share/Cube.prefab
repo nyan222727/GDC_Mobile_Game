@@ -123,6 +123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 0
+  chainCount: 0
+  defaultMaterial: {fileID: 0}
+  fireMaterial: {fileID: 2100000, guid: 2cc89b9887e7b364bbc1471b58d262f1, type: 2}
+  iceMaterial: {fileID: 2100000, guid: 25f896234c3de72448057ebfae34c65f, type: 2}
+  elementTime: 30
 --- !u!114 &8501986489238128170
 MonoBehaviour:
   m_ObjectHideFlags: 0
