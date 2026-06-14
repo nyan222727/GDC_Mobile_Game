@@ -7,6 +7,7 @@ public sealed class TileElementRotationController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LevelFlowController levelFlowController;
+    [SerializeField] private LevelManager levelManager;
     [SerializeField] private TileElementGrid grid;
     [SerializeField] private TileElementSelectionView selectionView;
     [SerializeField] private GameObject combatHud;
@@ -91,6 +92,15 @@ public sealed class TileElementRotationController : MonoBehaviour
             ResetElementTimer(topRight);
             ResetElementTimer(bottomRight);
             ResetElementTimer(bottomLeft);
+        }
+
+        if (levelManager == null)
+        {
+            Debug.LogError("Level Manager is not configured for tile chain detection.", this);
+        }
+        else
+        {
+            levelManager.ResolveElementChains();
         }
 
         selectionView?.FlashRotated();

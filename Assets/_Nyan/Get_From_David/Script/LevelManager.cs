@@ -70,7 +70,7 @@ public class LevelManager : MonoBehaviour
             // 隨機挑選 n 個方塊並變色
             int randCount = Random.Range(3,6);
             PickAndChangeRandomBlocks(randCount);
-            DealChangeElement();
+            ResolveElementChains();
             // 等待時間
             yield return new WaitForSeconds(timeForChangeElement);
         }
@@ -117,7 +117,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void DealChangeElement()
+    public void ResolveElementChains()
     {
         foreach(TileProperty tileScript in tilePropertyList)
         {
@@ -130,7 +130,7 @@ public class LevelManager : MonoBehaviour
                 tileScript.chainCount--;
                 int randCount = Random.Range(3,6);
                 PickAndChangeRandomBlocks(randCount);
-                DealChangeElement();
+                ResolveElementChains();
             }
         }
     }
