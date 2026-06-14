@@ -19,7 +19,6 @@ public sealed class TileElementRotationController : MonoBehaviour
 
     [Header("Behavior")]
     [SerializeField] private Vector2Int initialSelectionOrigin = Vector2Int.zero;
-    [SerializeField] private bool resetElementTimersAfterRotation = true;
     [SerializeField] private float gridRetryInterval = 0.25f;
 
     private Vector2Int selectionOrigin;
@@ -85,14 +84,6 @@ public sealed class TileElementRotationController : MonoBehaviour
         }
 
         RotateSelectionElementsClockwise(topLeft, topRight, bottomLeft, bottomRight);
-
-        if (resetElementTimersAfterRotation)
-        {
-            ResetElementTimer(topLeft);
-            ResetElementTimer(topRight);
-            ResetElementTimer(bottomRight);
-            ResetElementTimer(bottomLeft);
-        }
 
         if (levelManager == null)
         {
@@ -258,17 +249,17 @@ public sealed class TileElementRotationController : MonoBehaviour
             bottomRight.element
         };
 
-        topRight.element = before[0];
-        bottomRight.element = before[1];
-        bottomLeft.element = before[3];
-        topLeft.element = before[2];
-    }
-
-    private static void ResetElementTimer(TileProperty tile)
-    {
-        if (tile != null && tile.element != Element.None)
+        float[] remainingTimes =
         {
-            tile.ResetElementTimer();
-        }
+            topLeft.RemainingElementTime,
+            topRight.RemainingElementTime,
+            bottomLeft.RemainingElementTime,
+            bottomRight.RemainingElementTime
+        };
+
+        topRight.SetElementState(before[0], remainingTimes[0]);
+        bottomRight.SetElementState(before[1], remainingTimes[1]);
+        bottomLeft.SetElementState(before[3], remainingTimes[3]);
+        topLeft.SetElementState(before[2], remainingTimes[2]);
     }
 }

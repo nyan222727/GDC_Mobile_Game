@@ -14324,7 +14324,6 @@ MonoBehaviour:
   moveRightButton: {fileID: 4300000000404}
   rotateButton: {fileID: 4300000000504}
   initialSelectionOrigin: {x: 0, y: 0}
-  resetElementTimersAfterRotation: 1
   gridRetryInterval: 0.25
 --- !u!1 &4400000000100
 GameObject:

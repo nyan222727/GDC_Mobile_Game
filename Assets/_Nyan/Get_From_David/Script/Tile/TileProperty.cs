@@ -19,6 +19,8 @@ public class TileProperty : MonoBehaviour
     public float elementTime = 30f;
     private float elementTimer;
 
+    public float RemainingElementTime => Mathf.Max(0f, elementTimer);
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -214,6 +216,12 @@ public class TileProperty : MonoBehaviour
     public void ResetElementTimer()
     {
         elementTimer = elementTime;
+    }
+
+    public void SetElementState(Element newElement, float remainingTime)
+    {
+        element = newElement;
+        elementTimer = newElement == Element.None ? 0f : Mathf.Max(0f, remainingTime);
     }
 
 }
