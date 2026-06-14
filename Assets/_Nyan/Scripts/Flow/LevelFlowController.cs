@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -42,16 +43,37 @@ public sealed class LevelFlowController : MonoBehaviour
     }
 
     [Serializable]
+    public sealed class WaveSpawnDefinition
+    {
+        [SerializeField] private string spawnName = "Spawn";
+        [SerializeField] private GenerateDoorSpawner spawner;
+        [SerializeField] private List<GameObject> enemyPrefabs = new List<GameObject>();
+        [SerializeField] private int spawnCount = 5;
+        [SerializeField] private float spawnInterval = 1f;
+
+        public string SpawnName => spawnName;
+        public GenerateDoorSpawner Spawner => spawner;
+        public IReadOnlyList<GameObject> EnemyPrefabs => enemyPrefabs;
+        public int SpawnCount => Mathf.Max(0, spawnCount);
+        public float SpawnInterval => Mathf.Max(0f, spawnInterval);
+        public bool HasEnemyPrefabs => enemyPrefabs != null && enemyPrefabs.Count > 0;
+    }
+
+    [Serializable]
     public sealed class WaveDefinition
     {
         [SerializeField] private string waveName = "Wave";
         [SerializeField] private List<GameObject> enemies = new List<GameObject>();
+        [SerializeField] private List<WaveSpawnDefinition> spawns = new List<WaveSpawnDefinition>();
         [SerializeField] private int rewardOnClear;
 
         public string WaveName => waveName;
         public IReadOnlyList<GameObject> Enemies => enemies;
+        public IReadOnlyList<WaveSpawnDefinition> Spawns => spawns;
         public int RewardOnClear => rewardOnClear;
         public bool HasEnemies => enemies != null && enemies.Count > 0;
+        public bool HasSpawnEntries => spawns != null && spawns.Count > 0;
+        public bool HasContent => HasEnemies || HasSpawnEntries;
 
         public void AddEnemy(GameObject enemy)
         {
@@ -88,18 +110,27 @@ public sealed class LevelFlowController : MonoBehaviour
     [SerializeField] private bool autoBuildSingleWaveFromSceneEnemies = true;
     [SerializeField] private bool deactivateEnemiesOnAwake = true;
 
+    [Header("Spawner Waves")]
+    [SerializeField] private bool useSpawnerWaves = true;
+    [SerializeField] private bool autoUseSceneSpawners = true;
+    [SerializeField] private bool includeLegacySceneEnemies;
+    [SerializeField] private int defaultSpawnerWaveCount = 3;
+
     [Header("Base")]
     [SerializeField] private int baseMaxHp = 3;
     [SerializeField] private Text baseHpText;
 
     private readonly List<WaveDefinition> runtimeWaves = new List<WaveDefinition>();
     private readonly List<GameObject> waveEnemyBuffer = new List<GameObject>();
+    private readonly List<GenerateDoorSpawner> spawnerBuffer = new List<GenerateDoorSpawner>();
+    private readonly List<Coroutine> activeSpawnRoutines = new List<Coroutine>();
     private readonly HashSet<GameObject> trackedEnemies = new HashSet<GameObject>();
     private readonly HashSet<int> enemiesHandledAtGoal = new HashSet<int>();
     private LevelState currentState;
     private ResultOutcome resultOutcome;
     private int currentWaveIndex;
     private int remainingEnemiesInCurrentWave;
+    private int activeSpawnerRoutineCount;
     private int currentBaseHp;
     private bool isQuitting;
 
@@ -125,6 +156,7 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private void OnDestroy()
     {
+        StopActiveSpawnRoutines();
         UnregisterUiActions();
         isQuitting = true;
     }
@@ -143,41 +175,28 @@ public sealed class LevelFlowController : MonoBehaviour
         }
 
         var wave = runtimeWaves[currentWaveIndex];
+        StopActiveSpawnRoutines();
         currentState = LevelState.Combat;
         remainingEnemiesInCurrentWave = 0;
         enemiesHandledAtGoal.Clear();
-        CollectWaveEnemies(wave, waveEnemyBuffer);
 
         if (placementController != null)
         {
             placementController.SetPlacementEnabled(false);
         }
 
-        for (int i = 0; i < waveEnemyBuffer.Count; i++)
+        if (!useSpawnerWaves || includeLegacySceneEnemies)
         {
-            GameObject enemy = waveEnemyBuffer[i];
-            if (enemy == null)
+            CollectWaveEnemies(wave, waveEnemyBuffer);
+            for (int i = 0; i < waveEnemyBuffer.Count; i++)
             {
-                continue;
+                RegisterWaveEnemy(waveEnemyBuffer[i], currentWaveIndex, true);
             }
-
-            WaveEnemyTracker tracker = enemy.GetComponent<WaveEnemyTracker>();
-            if (tracker == null)
-            {
-                tracker = enemy.AddComponent<WaveEnemyTracker>();
-            }
-
-            tracker.Arm(this, currentWaveIndex);
-            enemy.SetActive(true);
-            remainingEnemiesInCurrentWave++;
         }
 
+        StartSpawnerWave(wave, currentWaveIndex);
         RefreshUi();
-
-        if (remainingEnemiesInCurrentWave == 0)
-        {
-            CompleteCurrentWave();
-        }
+        TryCompleteCurrentWaveWhenEmpty();
     }
 
     public void NotifyEnemyReachedGoal(GameObject enemy, int damageToBase = 1, bool destroyEnemy = true)
@@ -226,6 +245,12 @@ public sealed class LevelFlowController : MonoBehaviour
         RefreshUi();
     }
 
+    public void RegisterSpawnedEnemy(GameObject enemy)
+    {
+        RegisterWaveEnemy(enemy, currentWaveIndex, true);
+        RefreshUi();
+    }
+
     public void NotifyEnemyDefeated(
         WaveEnemyTracker tracker,
         int waveIndex,
@@ -243,8 +268,153 @@ public sealed class LevelFlowController : MonoBehaviour
 
         remainingEnemiesInCurrentWave = Mathf.Max(0, remainingEnemiesInCurrentWave - 1);
         RefreshUi();
+        TryCompleteCurrentWaveWhenEmpty();
+    }
 
-        if (remainingEnemiesInCurrentWave == 0)
+    private void RegisterWaveEnemy(GameObject enemy, int waveIndex, bool activateEnemy)
+    {
+        if (enemy == null || currentState != LevelState.Combat || waveIndex != currentWaveIndex)
+        {
+            return;
+        }
+
+        WaveEnemyTracker tracker = enemy.GetComponent<WaveEnemyTracker>();
+        if (tracker == null)
+        {
+            tracker = enemy.AddComponent<WaveEnemyTracker>();
+        }
+
+        tracker.Arm(this, waveIndex);
+        if (activateEnemy)
+        {
+            enemy.SetActive(true);
+        }
+
+        remainingEnemiesInCurrentWave++;
+    }
+
+    private void StartSpawnerWave(WaveDefinition wave, int waveIndex)
+    {
+        if (!useSpawnerWaves)
+        {
+            return;
+        }
+
+        bool startedSpawner = false;
+        IReadOnlyList<WaveSpawnDefinition> spawnEntries = wave != null ? wave.Spawns : null;
+        if (spawnEntries != null)
+        {
+            for (int i = 0; i < spawnEntries.Count; i++)
+            {
+                WaveSpawnDefinition spawnEntry = spawnEntries[i];
+                if (spawnEntry == null)
+                {
+                    continue;
+                }
+
+                if (spawnEntry.Spawner != null)
+                {
+                    StartSpawnerRoutine(spawnEntry.Spawner, spawnEntry, waveIndex);
+                    startedSpawner = true;
+                    continue;
+                }
+
+                if (autoUseSceneSpawners)
+                {
+                    FindSceneSpawners(spawnerBuffer);
+                    for (int spawnerIndex = 0; spawnerIndex < spawnerBuffer.Count; spawnerIndex++)
+                    {
+                        StartSpawnerRoutine(spawnerBuffer[spawnerIndex], spawnEntry, waveIndex);
+                        startedSpawner = true;
+                    }
+                }
+            }
+        }
+
+        if (!startedSpawner && autoUseSceneSpawners)
+        {
+            FindSceneSpawners(spawnerBuffer);
+            for (int i = 0; i < spawnerBuffer.Count; i++)
+            {
+                StartSpawnerRoutine(spawnerBuffer[i], null, waveIndex);
+            }
+        }
+    }
+
+    private void StartSpawnerRoutine(
+        GenerateDoorSpawner spawner,
+        WaveSpawnDefinition spawnEntry,
+        int waveIndex)
+    {
+        if (spawner == null)
+        {
+            return;
+        }
+
+        Coroutine routine = StartCoroutine(SpawnWaveRoutine(spawner, spawnEntry, waveIndex));
+        activeSpawnRoutines.Add(routine);
+    }
+
+    private IEnumerator SpawnWaveRoutine(
+        GenerateDoorSpawner spawner,
+        WaveSpawnDefinition spawnEntry,
+        int waveIndex)
+    {
+        activeSpawnerRoutineCount++;
+
+        IReadOnlyList<GameObject> enemyPrefabs = spawnEntry != null && spawnEntry.HasEnemyPrefabs
+            ? spawnEntry.EnemyPrefabs
+            : null;
+
+        int spawnCount = spawnEntry != null ? spawnEntry.SpawnCount : 0;
+        float spawnInterval = spawnEntry != null ? spawnEntry.SpawnInterval : 0f;
+
+        yield return spawner.SpawnWave(
+            enemyPrefabs,
+            spawnCount,
+            spawnInterval,
+            enemy => RegisterWaveEnemy(enemy, waveIndex, true));
+
+        activeSpawnerRoutineCount = Mathf.Max(0, activeSpawnerRoutineCount - 1);
+        RefreshUi();
+        TryCompleteCurrentWaveWhenEmpty();
+    }
+
+    private void StopActiveSpawnRoutines()
+    {
+        for (int i = 0; i < activeSpawnRoutines.Count; i++)
+        {
+            if (activeSpawnRoutines[i] != null)
+            {
+                StopCoroutine(activeSpawnRoutines[i]);
+            }
+        }
+
+        activeSpawnRoutines.Clear();
+        activeSpawnerRoutineCount = 0;
+    }
+
+    private static void FindSceneSpawners(List<GenerateDoorSpawner> results)
+    {
+        results.Clear();
+        GenerateDoorSpawner[] spawners = FindObjectsByType<GenerateDoorSpawner>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None);
+
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            if (spawners[i] != null)
+            {
+                results.Add(spawners[i]);
+            }
+        }
+    }
+
+    private void TryCompleteCurrentWaveWhenEmpty()
+    {
+        if (currentState == LevelState.Combat &&
+            activeSpawnerRoutineCount == 0 &&
+            remainingEnemiesInCurrentWave == 0)
         {
             CompleteCurrentWave();
         }
@@ -272,11 +442,22 @@ public sealed class LevelFlowController : MonoBehaviour
             for (int i = 0; i < waves.Count; i++)
             {
                 WaveDefinition wave = waves[i];
-                if (wave != null && wave.HasEnemies)
+                if (wave != null && (wave.HasContent || useSpawnerWaves))
                 {
                     runtimeWaves.Add(wave);
                 }
             }
+        }
+
+        if (useSpawnerWaves && runtimeWaves.Count == 0)
+        {
+            int waveCount = Mathf.Max(1, defaultSpawnerWaveCount);
+            for (int i = 0; i < waveCount; i++)
+            {
+                runtimeWaves.Add(new WaveDefinition());
+            }
+
+            return;
         }
 
         if (runtimeWaves.Count > 0 || !autoBuildSingleWaveFromSceneEnemies)
@@ -462,6 +643,7 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private void EnterResultState(ResultOutcome outcome)
     {
+        StopActiveSpawnRoutines();
         currentState = LevelState.Result;
         resultOutcome = outcome;
         remainingEnemiesInCurrentWave = 0;

@@ -190,8 +190,14 @@ public sealed class PlacementController : MonoBehaviour
 
     public void TryPlaceOnTile(MapTile tile)
     {
-        if (!placementEnabled || selectedSlot == null || tile == null || tile.IsOccupied)
+        if (!placementEnabled || selectedSlot == null || tile == null)
         {
+            return;
+        }
+
+        if (!tile.CanPlace)
+        {
+            tile.FlashInvalid(tileInvalidColor);
             return;
         }
 
@@ -358,8 +364,14 @@ public sealed class PlacementController : MonoBehaviour
     private void TryAddPreviewAt(Vector2 screenPosition)
     {
         MapTile tile = GetTileAt(screenPosition);
-        if (tile == null || tile.IsOccupied || previewsByTile.ContainsKey(tile))
+        if (tile == null || previewsByTile.ContainsKey(tile))
         {
+            return;
+        }
+
+        if (!tile.CanPlace)
+        {
+            tile.FlashInvalid(tileInvalidColor);
             return;
         }
 

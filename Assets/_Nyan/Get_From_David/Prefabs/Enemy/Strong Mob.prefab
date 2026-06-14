@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5382662717976095583}
   - component: {fileID: 8989401015078890095}
   - component: {fileID: 8249037068895399969}
+  - component: {fileID: 611001000000000003}
   m_Layer: 6
   m_Name: Strong Mob
   m_TagString: Untagged
@@ -143,6 +144,19 @@ MonoBehaviour:
   activeDamageRatio: 0.1
   activeDamageBound: 200
   activateSpeedRatio: 1.5
+--- !u!114 &611001000000000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428645707453406323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bacb05554a4218820bfbc593b249f9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rewardAmount: 5
 --- !u!1 &7277990886388756151
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,12 +39,14 @@ public class LevelManager : MonoBehaviour
                     break;
                 case 2:
                     endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
                     break;
                 case 3:
                     tile.GetComponent<TileProperty>().isNearPath = true;
                     break;
                 case 4:
                     Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
                     Instantiate(startPrefab, new Vector3(col, 1, row), Quaternion.identity);
                     break;
                 }

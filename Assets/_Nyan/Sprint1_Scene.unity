@@ -1326,7 +1326,7 @@ Transform:
   m_GameObject: {fileID: 1255133277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75485253, y: 2.598668, z: 0.40650693}
+  m_LocalPosition: {x: 3.24, y: 0.76, z: 3.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11481,6 +11481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3800000000001}
   - component: {fileID: 3800000000002}
+  - component: {fileID: 3800000000003}
   m_Layer: 0
   m_Name: Level Flow Controller
   m_TagString: Untagged
@@ -11541,8 +11542,28 @@ MonoBehaviour:
     rewardOnClear: 0
   autoBuildSingleWaveFromSceneEnemies: 1
   deactivateEnemiesOnAwake: 1
+  useSpawnerWaves: 1
+  autoUseSceneSpawners: 1
+  includeLegacySceneEnemies: 0
+  defaultSpawnerWaveCount: 3
   baseMaxHp: 1
   baseHpText: {fileID: 0}
+--- !u!114 &3800000000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800000000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba78bb3659e4af591f36889b13e5067, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  levelFlowController: {fileID: 3800000000002}
+  pathMarkerPrefab: {fileID: 3100000000000000001, guid: 9b76fb2e2efb4bb78af07875af4a7f09, type: 3}
+  pathColor: {r: 1, g: 0.8039216, b: 0.3137255, a: 1}
+  refreshInterval: 0.5
 --- !u!1 &3800000000100
 GameObject:
   m_ObjectHideFlags: 0
