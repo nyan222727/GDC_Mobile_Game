@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Waves : MonoBehaviour
 {
+    public bool isEnd = false;
     public int wave = 1;
     private bool isEndGenerate = false;
     private List<GameObject> onFieldEnemys = new List<GameObject>();
@@ -46,7 +47,7 @@ public class Waves : MonoBehaviour
         onFieldEnemys.RemoveAll(item => item == null);
         if(isEndGenerate && onFieldEnemys.Count == 0)
         {
-            Debug.Log("Next Wave");
+            isEnd = true;
         }
     }
 
