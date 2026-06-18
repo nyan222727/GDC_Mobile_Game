@@ -944,6 +944,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 1559220327138583361, guid: 6fc85d7c0a86cfa4c89c141e7aa2e908, type: 3}
   pathPrefab: {fileID: 7740296600036173379, guid: 472f68a0890ed5b418d0bafd07fc16b5, type: 3}
   startPrefab: {fileID: 1601593920729218102, guid: df1720a4490f7784e9d85fbb4825617b, type: 3}
+  level: 1
 --- !u!4 &620679478
 Transform:
   m_ObjectHideFlags: 0
@@ -1499,6 +1500,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground Miner
       objectReference: {fileID: 0}
+    - target: {fileID: 3830376903451027853, guid: 21308e5700de9da4d9cf4d60d8640a25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1571,7 +1576,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5226988612585383932, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.87
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5226988612585383932, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1579,7 +1584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5226988612585383932, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.59
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5226988612585383932, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1615,7 +1620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8812244356406469331, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2510,7 +2515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9004544139079297661, guid: ffb4191173dd5bb409586c44873e8b01, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 232931369612641872, guid: ffb4191173dd5bb409586c44873e8b01, type: 3}
