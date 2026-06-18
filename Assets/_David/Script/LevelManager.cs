@@ -4,6 +4,27 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    [Header("Initialize Tiles")]
+    [SerializeField]public GameObject tilePrefab;
+    [SerializeField]public GameObject pathPrefab;
+    [SerializeField]private GameObject endPath; 
+    [SerializeField]private int width = 5;
+    [SerializeField]private int height = 5;
+    // none:0 path:1 end:2 nearPath:3 start:4
+    [SerializeField]private int[][] map;
+    [SerializeField]private int[][] level1 = 
+    {
+        new int[] {0,0,4,0,0,0,0,0,0,0},
+        new int[] {0,0,1,0,0,0,0,0,0,0},
+        new int[] {0,0,1,0,0,1,1,1,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,1,1,1,0,0,1,0},
+        new int[] {0,0,0,0,0,0,0,0,2,0}
+    };
     public int timeForChangeElement = 10;
     public int level = 1;
     
@@ -12,6 +33,16 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(ElementChangeRoutine());
+        ConstructTiles();
+        findPath(endPath);
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            ResolveElementChains();
+        }
     }
 
     private IEnumerator ElementChangeRoutine()
@@ -71,19 +102,109 @@ public class LevelManager : MonoBehaviour
 
     public void ResolveElementChains()
     {
+        
         foreach(TileProperty tileScript in tilePropertyList)
         {
             tileScript.DetactActive();
         }
         foreach(TileProperty tileScript in tilePropertyList)
         {
+            tileScript.isChainProgress = false;
+        }
+        foreach(TileProperty tileScript in tilePropertyList)
+        {
             while(tileScript.chainCount > 0)
             {
+                Debug.Log(tileScript.chainCount);
                 tileScript.chainCount--;
                 int randCount = Random.Range(3,6);
                 PickAndChangeRandomBlocks(randCount);
                 ResolveElementChains();
             }
         }
+    }
+
+        void ConstructTiles()
+    {
+        switch(level)
+        {
+        case 1:
+            map = level1;
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        }
+        width = map[0].Length;
+        height = map.Length;
+        InitializeMap();
+        for(int row=0; row < height ; row++)
+        {
+            for(int col=0; col < width ; col++)
+            {
+                GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
+                tilePropertyList.Add(tile.GetComponent<TileProperty>());
+                switch(map[row][col])
+                {
+                case 1:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 2:
+                    endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 3:
+                    tile.GetComponent<TileProperty>().isNearPath = true;
+                    break;
+                case 4:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    void InitializeMap()
+    {
+        for(int i=0 ; i < height ; i++)
+        {
+            for(int j=0 ; j < width ; j++)
+            {
+                if(map[i][j] == 1)
+                {
+                    for(int r = -1 ; r <= 1 ; r++)
+                    {
+                        if((i+r) < 0 || (i+r) >= height)
+                        {
+                            continue;
+                        }
+                        if(map[i+r][j] == 0)
+                        {
+                            map[i+r][j] = 3;
+                        }
+                    }
+                    for(int c = -1 ; c <= 1 ; c++)
+                    {
+                        if((j+c) < 0  || (j+c) >= width)
+                        {
+                            continue;
+                        }
+                        if(map[i][j+c] == 0)
+                        {
+                            map[i][j+c] = 3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void findPath(GameObject endPath)
+    {
+        PathDetactor endPathScript = endPath.GetComponent<PathDetactor>();
+        endPathScript.findPrevPath(MoveDirection.End);
     }
 }

@@ -187,7 +187,6 @@ public sealed class LevelFlowController : MonoBehaviour
     {
         if(IsInCombatState)
         {
-            Debug.Log("in wave");
             if(runtimeWaves[currentWaveIndex].Enemies[0].GetComponent<Waves>().isEnd)
             {
                 CompleteCurrentWave();
@@ -673,11 +672,11 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private void CompleteCurrentWave()
     {
+        runtimeWaves[currentWaveIndex].Enemies[0].SetActive(false);
         currentWaveIndex++;
 
         if (currentWaveIndex < runtimeWaves.Count)
         {
-            runtimeWaves[currentWaveIndex].Enemies[0].SetActive(false);
             EnterPlacementState();
             return;
         }
