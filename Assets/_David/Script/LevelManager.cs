@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
     
     public List<TileProperty> tilePropertyList = new List<TileProperty>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
         StartCoroutine(ElementChangeRoutine());
         ConstructTiles();

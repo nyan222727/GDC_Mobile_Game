@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour
 {
+    public Element element = Element.None;
+    private float sameElementDamage=0.8f;
     private float distance;
     private Transform target;
     public float speed = 2f;
@@ -38,10 +40,17 @@ public class BulletScript : MonoBehaviour
         if (target != null) {
             // 尋找怪物身上的腳本（假設腳本名稱叫 EnemyHealth）
             // 請將 EnemyHealth 替換成你實際寫 LoseHP 的那個腳本名稱
-            var targetScript = target.GetComponent<EnemyController>(); 
+            var enemyScript = target.GetComponent<EnemyController>(); 
             
-            if (targetScript != null) {
-                targetScript.LoseHP(damage);
+            if (enemyScript != null) {
+                if(enemyScript.element == this.element)
+                {
+                    enemyScript.LoseHP(Mathf.RoundToInt(damage*sameElementDamage));
+                }
+                else
+                {
+                    enemyScript.LoseHP(damage);
+                }
                 // Debug.Log("已過 n 秒，怪物扣血！");
             }
         }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BombScript : MonoBehaviour
 {
+    public Element element = Element.None;
+    private float sameElementDamage=0.8f;
     public float forwardSpeed = 5f;   // 水平移動速度
     public float waveHeight = 1f;     // 震盪的高度（振幅）
     public float inAirTime = 1f;
@@ -55,7 +57,14 @@ public class BombScript : MonoBehaviour
 
             if (enemyScript != null)
             {
-                enemyScript.LoseHP(damage);
+                if(enemyScript.element == this.element)
+                {
+                    enemyScript.LoseHP(Mathf.RoundToInt(damage*sameElementDamage));
+                }
+                else
+                {
+                    enemyScript.LoseHP(damage);
+                }
                 // Debug.Log("已爆炸，怪物扣血！");
             }
         }

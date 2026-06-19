@@ -101,6 +101,7 @@ public class SniperAI : MonoBehaviour
             // 將當前的目標傳給子彈
             bulletScript.Seek(target);
             bulletScript.damage = Mathf.RoundToInt(damage);
+            bulletScript.element = this.buffScript.playerElement;
         }
         // 在這裡實例化 (Instantiate) 子彈，並給予目標資訊
     }
