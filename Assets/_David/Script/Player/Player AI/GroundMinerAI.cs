@@ -71,6 +71,7 @@ public class GroundMinerAI : MonoBehaviour
         GameObject mine = Instantiate(minePrefab, pos, Quaternion.identity);
         GroundMineScript mineScript = mine.GetComponent<GroundMineScript>();
         mineScript.damage = Mathf.RoundToInt(damage);
+        mineScript.element = this.buffScript.playerElement;
     }
 
     private Vector3 FindNeighborTile()

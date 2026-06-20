@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -144,6 +145,32 @@ public sealed class LevelFlowController : MonoBehaviour
     public bool IsInPlacementState => currentState == LevelState.Placement;
     public bool IsInCombatState => currentState == LevelState.Combat;
 
+    [Header("Initialize Tiles")]
+    [SerializeField]public GameObject waveManager;
+    [SerializeField]public GameObject tilePrefab;
+    [SerializeField]public GameObject pathPrefab;
+    [SerializeField]private GameObject endPath; 
+    [SerializeField]private int width = 5;
+    [SerializeField]private int height = 5;
+    [SerializeField]public int level = 1;
+    // none:0 path:1 end:2 nearPath:3 start:4
+    [SerializeField]private int[][] map;
+    [SerializeField]private int[][] level1 = 
+    {
+        new int[] {0,0,4,0,0,0,0,0,0,0},
+        new int[] {0,0,1,0,0,0,0,0,0,0},
+        new int[] {0,0,1,0,0,1,1,1,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
+        new int[] {0,0,1,1,1,1,0,0,1,0},
+        new int[] {0,0,0,0,0,0,0,0,2,0}
+    };
+    
+    [SerializeField]private List<TileProperty> tilePropertyList = new List<TileProperty>();
+
     private void Awake()
     {
         ResolveReferences();
@@ -152,6 +179,20 @@ public sealed class LevelFlowController : MonoBehaviour
         PrepareWaveEnemies();
         RegisterUiActions();
         EnterPlacementState();
+        ConstructTiles();
+        findPath(endPath);
+    }
+
+    void Update()
+    {
+        if(IsInCombatState)
+        {
+            if(runtimeWaves[currentWaveIndex].Enemies[0].GetComponent<Waves>().isEnd)
+            {
+                CompleteCurrentWave();
+                waveManager.SetActive(false);
+            }
+        }
     }
 
     private void OnDestroy()
@@ -196,7 +237,6 @@ public sealed class LevelFlowController : MonoBehaviour
 
         StartSpawnerWave(wave, currentWaveIndex);
         RefreshUi();
-        TryCompleteCurrentWaveWhenEmpty();
     }
 
     public void NotifyEnemyReachedGoal(GameObject enemy, int damageToBase = 1, bool destroyEnemy = true)
@@ -268,7 +308,6 @@ public sealed class LevelFlowController : MonoBehaviour
 
         remainingEnemiesInCurrentWave = Mathf.Max(0, remainingEnemiesInCurrentWave - 1);
         RefreshUi();
-        TryCompleteCurrentWaveWhenEmpty();
     }
 
     private void RegisterWaveEnemy(GameObject enemy, int waveIndex, bool activateEnemy)
@@ -299,6 +338,10 @@ public sealed class LevelFlowController : MonoBehaviour
         {
             return;
         }
+
+        waveManager.SetActive(true);
+
+        wave.Enemies[0].SetActive(true);
 
         bool startedSpawner = false;
         IReadOnlyList<WaveSpawnDefinition> spawnEntries = wave != null ? wave.Spawns : null;
@@ -377,7 +420,6 @@ public sealed class LevelFlowController : MonoBehaviour
 
         activeSpawnerRoutineCount = Mathf.Max(0, activeSpawnerRoutineCount - 1);
         RefreshUi();
-        TryCompleteCurrentWaveWhenEmpty();
     }
 
     private void StopActiveSpawnRoutines()
@@ -630,6 +672,7 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private void CompleteCurrentWave()
     {
+        runtimeWaves[currentWaveIndex].Enemies[0].SetActive(false);
         currentWaveIndex++;
 
         if (currentWaveIndex < runtimeWaves.Count)
@@ -849,6 +892,91 @@ public sealed class LevelFlowController : MonoBehaviour
         {
             SceneManager.LoadScene(nextLevel.SceneName);
         }
+    }
+
+    void ConstructTiles()
+    {
+        switch(level)
+        {
+        case 1:
+            map = level1;
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        }
+        width = map[0].Length;
+        height = map.Length;
+        InitializeMap();
+        for(int row=0; row < height ; row++)
+        {
+            for(int col=0; col < width ; col++)
+            {
+                GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
+                tilePropertyList.Add(tile.GetComponent<TileProperty>());
+                switch(map[row][col])
+                {
+                case 1:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 2:
+                    endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 3:
+                    tile.GetComponent<TileProperty>().isNearPath = true;
+                    break;
+                case 4:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                }
+            }
+        }
+        waveManager.GetComponent<LevelManager>().tilePropertyList = tilePropertyList;
+    }
+
+    void InitializeMap()
+    {
+        for(int i=0 ; i < height ; i++)
+        {
+            for(int j=0 ; j < width ; j++)
+            {
+                if(map[i][j] == 1)
+                {
+                    for(int r = -1 ; r <= 1 ; r++)
+                    {
+                        if((i+r) < 0 || (i+r) >= height)
+                        {
+                            continue;
+                        }
+                        if(map[i+r][j] == 0)
+                        {
+                            map[i+r][j] = 3;
+                        }
+                    }
+                    for(int c = -1 ; c <= 1 ; c++)
+                    {
+                        if((j+c) < 0  || (j+c) >= width)
+                        {
+                            continue;
+                        }
+                        if(map[i][j+c] == 0)
+                        {
+                            map[i][j+c] = 3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void findPath(GameObject endPath)
+    {
+        PathDetactor endPathScript = endPath.GetComponent<PathDetactor>();
+        endPathScript.findPrevPath(MoveDirection.End);
     }
 }
 

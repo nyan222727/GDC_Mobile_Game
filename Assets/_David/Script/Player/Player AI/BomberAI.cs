@@ -108,6 +108,7 @@ public class BomberAI : MonoBehaviour
             // 將當前的目標傳給子彈
             bulletScript.Seek(target);
             bulletScript.damage = Mathf.RoundToInt(damage);
+            bulletScript.element = this.buffScript.playerElement;
             if(buffScript.isActive)
             {
                 bulletScript.damageRange *= activeBombRange;

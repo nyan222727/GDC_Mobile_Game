@@ -9,7 +9,7 @@ public class TileProperty : MonoBehaviour
 {
     public Element element;
     public int chainCount;
-    private bool isChainProgress = false;
+    public bool isChainProgress = false;
     public bool isPath = false;
     public bool isNearPath = false;
     public Material defaultMaterial;
@@ -64,14 +64,15 @@ public class TileProperty : MonoBehaviour
                 }
                 break; 
         }
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            DetactActive();
-        }
+        // if(Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     DetactActive();
+        // }
     }
 
     public void DetactActive()
     {
+        Debug.Log("detact chain");
         if(this.element == Element.None)
         {
             return;
@@ -117,6 +118,7 @@ public class TileProperty : MonoBehaviour
 
     public void ActiveChain(Direction lastDir= Direction.None)
     {
+        Debug.Log("Find Chain");
         if(isChainProgress)
         {
             return;
@@ -181,7 +183,7 @@ public class TileProperty : MonoBehaviour
         {
             foreach(Collider enemy in enemiesOnActive)
             {
-                Debug.Log("find enemy");
+                // Debug.Log("find enemy");
                 EnemyController enemyScript = enemy.gameObject.GetComponent<EnemyController>();
                 if(enemyScript.element == this.element)
                 {
@@ -208,9 +210,9 @@ public class TileProperty : MonoBehaviour
                 }
             }
         }
-        Debug.Log("reset element");
+        // Debug.Log("reset element");
         this.element = Element.None;
-        isChainProgress = false;
+        // isChainProgress = false;
     }
 
     public void ResetElementTimer()

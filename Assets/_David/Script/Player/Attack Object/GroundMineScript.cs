@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class GroundMineScript : MonoBehaviour
 {
-
+    public Element element = Element.None;
+    private float sameElementDamage=0.8f;
     public int damage = 0;
     public float damageRange = 0;
 
@@ -27,7 +28,14 @@ public class GroundMineScript : MonoBehaviour
 
                 if (enemyScript != null)
                 {
-                    enemyScript.LoseHP(damage);
+                    if(enemyScript.element == this.element)
+                    {
+                        enemyScript.LoseHP(Mathf.RoundToInt(damage*sameElementDamage));
+                    }
+                    else
+                    {
+                        enemyScript.LoseHP(damage);
+                    }
                     // Debug.Log("已爆炸，怪物扣血！");
                 }
             }

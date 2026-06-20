@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public int timeForChangeElement = 10;
-    public GameObject tilePrefab;
-    public GameObject pathPrefab;
-    public GameObject startPrefab;
-    private GameObject endPath; 
-    private int width = 5;
-    private int height = 5;
-    public int level = 1;
+    [Header("Initialize Tiles")]
+    [SerializeField]public GameObject tilePrefab;
+    [SerializeField]public GameObject pathPrefab;
+    [SerializeField]private GameObject endPath; 
+    [SerializeField]private int width = 5;
+    [SerializeField]private int height = 5;
     // none:0 path:1 end:2 nearPath:3 start:4
-    private int[][] map;
-    private int[][] level1 = 
+    [SerializeField]private int[][] map;
+    [SerializeField]private int[][] level1 = 
     {
         new int[] {0,0,4,0,0,0,0,0,0,0},
         new int[] {0,0,1,0,0,0,0,0,0,0},
@@ -27,59 +25,24 @@ public class LevelManager : MonoBehaviour
         new int[] {0,0,1,1,1,1,0,0,1,0},
         new int[] {0,0,0,0,0,0,0,0,2,0}
     };
+    public int timeForChangeElement = 10;
+    public int level = 1;
     
-    private List<TileProperty> tilePropertyList = new List<TileProperty>();
+    public List<TileProperty> tilePropertyList = new List<TileProperty>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
-        switch(level)
-        {
-        case 1:
-            map = level1;
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        }
-        width = map[0].Length;
-        height = map.Length;
-        InitializeMap();
-        for(int row=0; row < height ; row++)
-        {
-            for(int col=0; col < width ; col++)
-            {
-                GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
-                tilePropertyList.Add(tile.GetComponent<TileProperty>());
-                switch(map[row][col])
-                {
-                case 1:
-                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                    tile.GetComponent<TileProperty>().isPath = true;
-                    break;
-                case 2:
-                    endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                    tile.GetComponent<TileProperty>().isPath = true;
-                    break;
-                case 3:
-                    tile.GetComponent<TileProperty>().isNearPath = true;
-                    break;
-                case 4:
-                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                    tile.GetComponent<TileProperty>().isPath = true;
-                    Instantiate(startPrefab, new Vector3(col, 1, row), Quaternion.identity);
-                    break;
-                }
-            }
-        }
         StartCoroutine(ElementChangeRoutine());
+        ConstructTiles();
         findPath(endPath);
     }
 
-    public void findPath(GameObject endPath)
+    void Update()
     {
-        PathDetactor endPathScript = endPath.GetComponent<PathDetactor>();
-        endPathScript.findPrevPath(MoveDirection.End);
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            ResolveElementChains();
+        }
     }
 
     private IEnumerator ElementChangeRoutine()
@@ -139,18 +102,67 @@ public class LevelManager : MonoBehaviour
 
     public void ResolveElementChains()
     {
+        
         foreach(TileProperty tileScript in tilePropertyList)
         {
             tileScript.DetactActive();
         }
         foreach(TileProperty tileScript in tilePropertyList)
         {
+            tileScript.isChainProgress = false;
+        }
+        foreach(TileProperty tileScript in tilePropertyList)
+        {
             while(tileScript.chainCount > 0)
             {
+                Debug.Log(tileScript.chainCount);
                 tileScript.chainCount--;
                 int randCount = Random.Range(3,6);
                 PickAndChangeRandomBlocks(randCount);
                 ResolveElementChains();
+            }
+        }
+    }
+
+        void ConstructTiles()
+    {
+        switch(level)
+        {
+        case 1:
+            map = level1;
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        }
+        width = map[0].Length;
+        height = map.Length;
+        InitializeMap();
+        for(int row=0; row < height ; row++)
+        {
+            for(int col=0; col < width ; col++)
+            {
+                GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
+                tilePropertyList.Add(tile.GetComponent<TileProperty>());
+                switch(map[row][col])
+                {
+                case 1:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 2:
+                    endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                case 3:
+                    tile.GetComponent<TileProperty>().isNearPath = true;
+                    break;
+                case 4:
+                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    tile.GetComponent<TileProperty>().isPath = true;
+                    break;
+                }
             }
         }
     }
@@ -188,5 +200,11 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void findPath(GameObject endPath)
+    {
+        PathDetactor endPathScript = endPath.GetComponent<PathDetactor>();
+        endPathScript.findPrevPath(MoveDirection.End);
     }
 }

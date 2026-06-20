@@ -28,6 +28,7 @@ public sealed class TileElementRotationController : MonoBehaviour
 
     public Vector2Int SelectionOrigin => selectionOrigin;
     public bool IsReady => gridReady;
+    public GameObject waveManager;
 
     private void Awake()
     {
@@ -95,6 +96,7 @@ public sealed class TileElementRotationController : MonoBehaviour
         }
 
         selectionView?.FlashRotated();
+        waveManager.GetComponent<LevelManager>().ResolveElementChains();
     }
 
     private void TryMove(Vector2Int direction)
