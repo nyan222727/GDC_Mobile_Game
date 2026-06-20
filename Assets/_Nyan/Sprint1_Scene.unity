@@ -7918,7 +7918,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 1629001827}
   costText: {fileID: 3400000000113}
   costBadgeBackground: {fileID: 3400000000103}
-  characterPrefab: {fileID: 8812244356406469331, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
+  characterPrefab: {fileID: 9004544139079297661, guid: f301203205a291041a6d5f7e3d0e1ebc, type: 3}
   placementCost: 10
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8004,7 +8004,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 1227356671}
   costText: {fileID: 3400000000213}
   costBadgeBackground: {fileID: 3400000000203}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 8812244356406469331, guid: c083e722c9038ea4caccae92a2ad2f91, type: 3}
   placementCost: 50
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8090,7 +8090,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 3200000000133}
   costText: {fileID: 3400000000313}
   costBadgeBackground: {fileID: 3400000000303}
-  characterPrefab: {fileID: 3487552028559514586, guid: d3ec1dda5fedf9f4fa90e89159652ac1, type: 3}
+  characterPrefab: {fileID: 8812244356406469331, guid: bde9ec3e9ad3cc34c8b69df8c39770f9, type: 3}
   placementCost: 20
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8206,7 +8206,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 707521545}
   costText: {fileID: 3400000000413}
   costBadgeBackground: {fileID: 3400000000403}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 3830376903451027853, guid: 21308e5700de9da4d9cf4d60d8640a25, type: 3}
   placementCost: 30
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8292,7 +8292,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 1110267737}
   costText: {fileID: 3400000000513}
   costBadgeBackground: {fileID: 3400000000503}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 3830376903451027853, guid: 1780c9027614d714f8c4fdda6dee28e1, type: 3}
   placementCost: 10
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8378,7 +8378,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 342581651}
   costText: {fileID: 3400000000613}
   costBadgeBackground: {fileID: 3400000000603}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 3830376903451027853, guid: fe52a691df7415f46bb11860fc604368, type: 3}
   placementCost: 50
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8464,7 +8464,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 1279002256}
   costText: {fileID: 3400000000713}
   costBadgeBackground: {fileID: 3400000000703}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 3830376903451027853, guid: 494ee0645802b454f9415f679dcf65a4, type: 3}
   placementCost: 20
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8550,7 +8550,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 1744834010}
   costText: {fileID: 3400000000813}
   costBadgeBackground: {fileID: 3400000000803}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 9004544139079297661, guid: ffb4191173dd5bb409586c44873e8b01, type: 3}
   placementCost: 30
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -8636,7 +8636,7 @@ MonoBehaviour:
   slotGraphic: {fileID: 1341340771}
   costText: {fileID: 3400000000913}
   costBadgeBackground: {fileID: 3400000000903}
-  characterPrefab: {fileID: 0}
+  characterPrefab: {fileID: 9004544139079297661, guid: f301203205a291041a6d5f7e3d0e1ebc, type: 3}
   placementCost: 10
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
@@ -11823,11 +11823,11 @@ RectTransform:
   - {fileID: 3800000000111}
   m_Father: {fileID: 4200000000101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -150, y: -24}
-  m_SizeDelta: {x: 220, y: 64}
-  m_Pivot: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -600, y: 10}
+  m_SizeDelta: {x: 120, y: 88}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &3800000000102
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11988,7 +11988,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start Wave
+  m_Text: 'Start '
 --- !u!1 &3800000000200
 GameObject:
   m_ObjectHideFlags: 0
@@ -13417,7 +13417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4200000000301
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13463,8 +13463,8 @@ RectTransform:
   m_GameObject: {fileID: 4300000000000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.4999999, y: 1.4999999, z: 1.4999999}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4300000000101}
   - {fileID: 4300000000201}
@@ -13475,7 +13475,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -160, y: 160}
+  m_AnchoredPosition: {x: -250, y: 250}
   m_SizeDelta: {x: 240, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4300000000100
@@ -14314,8 +14314,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 72, y: 72}
+  m_AnchoredPosition: {x: -1063, y: 0}
+  m_SizeDelta: {x: 108, y: 108}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4300000000502
 CanvasRenderer:

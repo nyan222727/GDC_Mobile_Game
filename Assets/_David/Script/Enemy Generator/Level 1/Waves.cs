@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class Waves : MonoBehaviour
 {
+    private LevelFlowController levelFlowController;
     public bool isEnd = false;
     public int wave = 1;
     private bool isEndGenerate = false;
     private List<GameObject> onFieldEnemys = new List<GameObject>();
     public GameObject[] monsters;
+
+    void Awake()
+    {
+        levelFlowController = FindAnyObjectByType<LevelFlowController>();
+    }
+
     void Start()
     {
         switch(wave)
@@ -42,6 +49,12 @@ public class Waves : MonoBehaviour
 
     }
 
+    private void TrackSpawnedEnemy(GameObject enemy)
+    {
+        onFieldEnemys.Add(enemy);
+        levelFlowController?.RegisterSpawnedEnemy(enemy);
+    }
+
     void Update()
     {
         onFieldEnemys.RemoveAll(item => item == null);
@@ -65,7 +78,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
@@ -87,7 +100,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<30 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(0.5f * monsterScript.maxHP);
@@ -114,7 +127,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1.25f * monsterScript.maxHP);
@@ -130,7 +143,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1.25f * monsterScript.maxHP);
@@ -154,7 +167,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<20 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
@@ -181,7 +194,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
@@ -197,7 +210,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
@@ -224,7 +237,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
@@ -240,7 +253,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
@@ -269,7 +282,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<15 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
@@ -285,7 +298,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<20 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
@@ -301,7 +314,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<20 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
@@ -333,7 +346,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<20 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
@@ -350,7 +363,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
@@ -367,7 +380,7 @@ public class Waves : MonoBehaviour
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            onFieldEnemys.Add(newMonster);
+            TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
@@ -381,9 +394,8 @@ public class Waves : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
-        Debug.Log("Start Genearte Stun");
         GameObject newMonster = Instantiate(monsters[6], this.transform.position, Quaternion.identity);
-        onFieldEnemys.Add(newMonster);
+        TrackSpawnedEnemy(newMonster);
         EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
         monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
