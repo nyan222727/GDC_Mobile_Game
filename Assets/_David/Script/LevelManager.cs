@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     [Header("Initialize Tiles")]
     [SerializeField]public GameObject tilePrefab;
     [SerializeField]public GameObject pathPrefab;
+    [SerializeField]public GameObject egg;
     [SerializeField]private GameObject endPath; 
     [SerializeField]private int width = 5;
     [SerializeField]private int height = 5;
@@ -15,8 +16,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField]private int[][] level1 = 
     {
         new int[] {0,0,4,0,0,0,0,0,0,0},
-        new int[] {0,0,1,0,0,0,0,0,0,0},
         new int[] {0,0,1,0,0,1,1,1,1,0},
+        new int[] {0,0,1,0,0,1,0,0,1,0},
         new int[] {0,0,1,0,0,1,0,0,1,0},
         new int[] {0,0,1,0,0,1,0,0,1,0},
         new int[] {0,0,1,0,0,1,0,0,1,0},
@@ -33,20 +34,22 @@ public class LevelManager : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(ElementChangeRoutine());
-        ConstructTiles();
-        findPath(endPath);
+        ConstructTiles();   //remember to delete
+        findPath(endPath);  //remember to delete
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            ResolveElementChains();
-        }
+        // if(Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     ResolveElementChains();
+        // }
     }
 
     private IEnumerator ElementChangeRoutine()
     {
+        yield return new WaitForSeconds(0.01f);
+        PickAndChangeRandomBlocks(10);
         yield return new WaitForSeconds(2f);
         while (true)
         {
@@ -124,7 +127,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-        void ConstructTiles()
+    void ConstructTiles()
     {
         switch(level)
         {
@@ -153,6 +156,7 @@ public class LevelManager : MonoBehaviour
                     break;
                 case 2:
                     endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    Instantiate(egg, new Vector3(col, 1, row), Quaternion.identity);
                     tile.GetComponent<TileProperty>().isPath = true;
                     break;
                 case 3:

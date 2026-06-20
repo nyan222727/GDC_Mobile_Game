@@ -69,7 +69,7 @@ public class Waves : MonoBehaviour
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
             monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(4);
         }
     }
 
@@ -90,7 +90,7 @@ public class Waves : MonoBehaviour
             onFieldEnemys.Add(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(0.25f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(0.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
 
             yield return new WaitForSeconds(0.5f);
@@ -314,10 +314,14 @@ public class Waves : MonoBehaviour
     //===== Wave 8 =====
     IEnumerator Wave8()
     {
-        yield return GenerateNormal8();
-        yield return GenerateSpeed8();
-        yield return GenerateStrong8();
-        yield return GenerateStun8();
+        Coroutine task1 = StartCoroutine(GenerateNormal8());
+        Coroutine task2 = StartCoroutine(GenerateSpeed8());
+        Coroutine task3 = StartCoroutine(GenerateStrong8());
+        Coroutine task4 = StartCoroutine(GenerateStun8());
+        yield return task1;
+        yield return task2;
+        yield return task3;
+        yield return task4;
         isEndGenerate=true;
         Debug.Log("end Generate");
     }
@@ -325,6 +329,7 @@ public class Waves : MonoBehaviour
     IEnumerator GenerateNormal8()
     {
         yield return new WaitForSeconds(2);
+        Debug.Log("Start Genearte Normal");
         for(int i=0 ; i<20 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
@@ -341,6 +346,7 @@ public class Waves : MonoBehaviour
     IEnumerator GenerateSpeed8()
     {
         yield return new WaitForSeconds(20);
+        Debug.Log("Start Genearte Speed");
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
@@ -357,6 +363,7 @@ public class Waves : MonoBehaviour
     IEnumerator GenerateStrong8()
     {
         yield return new WaitForSeconds(4);
+        Debug.Log("Start Genearte Strong");
         for(int i=0 ; i<10 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
@@ -374,7 +381,8 @@ public class Waves : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
-        GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
+        Debug.Log("Start Genearte Stun");
+        GameObject newMonster = Instantiate(monsters[6], this.transform.position, Quaternion.identity);
         onFieldEnemys.Add(newMonster);
         EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 

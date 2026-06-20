@@ -127,6 +127,7 @@ MonoBehaviour:
   hurtCount: 0
   targetPosition: {x: 0, y: 1, z: 0}
   isMoving: 1
+  damage: 20
   defaultSpeed: 2
   speed: 0.5
   hpRatio: 1

@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
     public int hurtCount = 0;
     public Vector3 targetPosition=new Vector3(0,1,0);
     public bool isMoving = true;
+    public int damage;
 
     [Header("Speed")]
     [SerializeField]public float defaultSpeed = 1;
