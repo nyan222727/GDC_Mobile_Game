@@ -149,6 +149,7 @@ public sealed class LevelFlowController : MonoBehaviour
     [SerializeField]public GameObject waveManager;
     [SerializeField]public GameObject tilePrefab;
     [SerializeField]public GameObject pathPrefab;
+    [SerializeField]public GameObject egg;
     [SerializeField]private GameObject endPath; 
     [SerializeField]private int width = 5;
     [SerializeField]private int height = 5;
@@ -923,6 +924,7 @@ public sealed class LevelFlowController : MonoBehaviour
                     break;
                 case 2:
                     endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    Instantiate(egg, new Vector3(col, 0.7f, row), Quaternion.identity);
                     tile.GetComponent<TileProperty>().isPath = true;
                     break;
                 case 3:
