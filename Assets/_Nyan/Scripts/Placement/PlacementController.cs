@@ -423,22 +423,12 @@ public sealed class PlacementController : MonoBehaviour
         character.transform.localPosition = characterOffset;
         character.transform.localScale = characterScale;
 
-        DisableCharacterColliders(character);
         if (material != null && (!usesPrefab || overridePrefabMaterial))
         {
             ApplyCharacterMaterial(character, material);
         }
 
         return character;
-    }
-
-    private static void DisableCharacterColliders(GameObject character)
-    {
-        var colliders = character.GetComponentsInChildren<Collider>();
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            Destroy(colliders[i]);
-        }
     }
 
     private void ClearPreviews(bool destroyObjects)
