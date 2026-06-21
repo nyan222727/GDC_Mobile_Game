@@ -127,7 +127,7 @@ public sealed class LevelFlowController : MonoBehaviour
     private readonly List<Coroutine> activeSpawnRoutines = new List<Coroutine>();
     private readonly HashSet<GameObject> trackedEnemies = new HashSet<GameObject>();
     private readonly HashSet<int> enemiesHandledAtGoal = new HashSet<int>();
-    private LevelState currentState;
+    public LevelState currentState;
     private ResultOutcome resultOutcome;
     private int currentWaveIndex;
     private int remainingEnemiesInCurrentWave;
@@ -148,6 +148,7 @@ public sealed class LevelFlowController : MonoBehaviour
     [Header("Initialize Tiles")]
     [SerializeField]public GameObject waveManager;
     [SerializeField]public GameObject tilePrefab;
+    [SerializeField]public GameObject egg;
     [SerializeField]public GameObject pathPrefab;
     [SerializeField]private GameObject endPath; 
     [SerializeField]private int width = 5;
@@ -923,6 +924,7 @@ public sealed class LevelFlowController : MonoBehaviour
                     break;
                 case 2:
                     endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+                    Instantiate(egg, new Vector3(col, 1, row), Quaternion.identity);
                     tile.GetComponent<TileProperty>().isPath = true;
                     break;
                 case 3:

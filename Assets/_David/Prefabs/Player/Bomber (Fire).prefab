@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31adb53a698e30d4ebebe7a907afcca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultRange: 3
+  defaultRange: 2
   elementRange: 1
   activeRange: 1
   activeBombRange: 1.5

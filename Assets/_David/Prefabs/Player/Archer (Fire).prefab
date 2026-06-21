@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88c3bcf35391664aab711ba16a1367d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultRange: 5
+  defaultRange: 3
   elementRange: 1
   activeRange: 1.5
   range: 5

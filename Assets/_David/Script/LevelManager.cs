@@ -34,8 +34,8 @@ public class LevelManager : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(ElementChangeRoutine());
-        ConstructTiles();   //remember to delete
-        findPath(endPath);  //remember to delete
+        // ConstructTiles();   //remember to delete
+        // findPath(endPath);  //remember to delete
     }
 
     void Update()
