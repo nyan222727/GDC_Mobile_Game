@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a817b015c63ff4f8c75c3bcced8ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillRange: 8
+  skillRange: 5
 --- !u!114 &8249037068895399969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +143,7 @@ MonoBehaviour:
   hurtCount: 0
   targetPosition: {x: 0, y: 1, z: 0}
   isMoving: 1
+  damage: 100
   defaultSpeed: 0.75
   speed: 0.5
   hpRatio: 1

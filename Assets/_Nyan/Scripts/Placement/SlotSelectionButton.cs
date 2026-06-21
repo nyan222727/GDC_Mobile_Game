@@ -16,6 +16,7 @@ public sealed class SlotSelectionButton : MonoBehaviour
     [SerializeField] private Text costText;
     [FormerlySerializedAs("countBadgeBackground")]
     [SerializeField] private Graphic costBadgeBackground;
+    [SerializeField] private Text selectedNameText;
     [SerializeField] private GameObject characterPrefab;
     [FormerlySerializedAs("initialCount")]
     [SerializeField] private int placementCost = 10;
@@ -216,14 +217,17 @@ public sealed class SlotSelectionButton : MonoBehaviour
 
     public void SetSelected(bool selected, Color outlineColor, Vector2 outlineDistance)
     {
-        if (selectionOutline == null)
+        if (selectionOutline != null)
         {
-            return;
+            selectionOutline.enabled = selected;
+            selectionOutline.effectColor = outlineColor;
+            selectionOutline.effectDistance = outlineDistance;
         }
 
-        selectionOutline.enabled = selected;
-        selectionOutline.effectColor = outlineColor;
-        selectionOutline.effectDistance = outlineDistance;
+        if (selectedNameText != null)
+        {
+            selectedNameText.gameObject.SetActive(selected);
+        }
     }
 
     private IEnumerator FlashUnavailableRoutine()

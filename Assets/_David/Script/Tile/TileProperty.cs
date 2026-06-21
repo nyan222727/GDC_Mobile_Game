@@ -72,7 +72,7 @@ public class TileProperty : MonoBehaviour
 
     public void DetactActive()
     {
-        Debug.Log("detact chain");
+        // Debug.Log("detact chain");
         if(this.element == Element.None)
         {
             return;

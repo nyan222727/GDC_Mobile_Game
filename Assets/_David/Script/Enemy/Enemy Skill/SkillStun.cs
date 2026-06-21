@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SkillStun : MonoBehaviour
 {
-    private float timePerTrigger = 2f;
+    public float timePerTrigger = 2f;
     public float skillRange = 5f;
     public int restrict = 5;
     private EnemyController infoScript;
