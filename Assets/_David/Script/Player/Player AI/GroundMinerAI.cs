@@ -20,12 +20,16 @@ public class GroundMinerAI : MonoBehaviour
 
     [Header("Mine")]
     [SerializeField]public GameObject minePrefab; // 拖入你的子彈 Prefab
+    [SerializeField]public GameObject flowManager;
+    [SerializeField]private LevelFlowController flowScript;
 
     [Header("Buff Manager")]
     [SerializeField]public PlayerBuffManager buffScript;
 
     void Start()
     {
+        flowManager = GameObject.FindGameObjectWithTag("GameController");
+        flowScript = flowManager.GetComponent<LevelFlowController>();
         buffScript = this.gameObject.GetComponent<PlayerBuffManager>();
         fireCD = defaultFireCD;
         damage = defaultDamage;
@@ -38,12 +42,12 @@ public class GroundMinerAI : MonoBehaviour
             ActivePlace();
             buffScript.activeTimer = 0;
         }
-
+        Debug.Log(flowScript.currentState);
         if(fireCDTimer > 0)
         {
             fireCDTimer -= Time.deltaTime;
         }
-        else
+        else if(flowScript.currentState == LevelFlowController.LevelState.Combat)
         {
             Vector3 emptyPathPos = FindNeighborTile();
             if(emptyPathPos.y != -1)

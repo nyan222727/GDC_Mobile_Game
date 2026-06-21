@@ -32,8 +32,16 @@ public class ArcherAI : MonoBehaviour
     [SerializeField]public PlayerFindTarget searchScript;
     [SerializeField]public PlayerBuffManager buffScript;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip attackSound; // 在 Inspector 把你的音效檔案（.mp3/.wav）拉進來
+    
+    private AudioSource audioSource;
+
     void Start()
     {
+        // 取得身上的 AudioSource 組件
+        audioSource = GetComponent<AudioSource>();
+
         buffScript = this.gameObject.GetComponent<PlayerBuffManager>();
         searchScript = this.gameObject.GetComponent<PlayerFindTarget>();
         fireCD = defaultFireCD;
@@ -104,6 +112,11 @@ public class ArcherAI : MonoBehaviour
             bulletScript.element = this.buffScript.playerElement;
         }
         // 在這裡實例化 (Instantiate) 子彈，並給予目標資訊
+        if (audioSource != null && attackSound != null)
+        {
+            // PlayOneShot 適合這種短促的特效音，後面的 1.0f 是音量大小（0.0 ~ 1.0）
+            audioSource.PlayOneShot(attackSound, 1.0f); 
+        }
     }
 
     // 在編輯器畫出範圍，方便除錯

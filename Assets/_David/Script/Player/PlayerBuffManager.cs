@@ -11,6 +11,7 @@ public class PlayerBuffManager : MonoBehaviour
     [SerializeField]public bool isActive;
     [SerializeField]private float activeTime = 10;
     [SerializeField]public float activeTimer; // 測試用public，記得改回來
+    [SerializeField]public GameObject activeEffect;
 
 
     [Header("Freeze")]
@@ -47,6 +48,10 @@ public class PlayerBuffManager : MonoBehaviour
         // Active
         if(isActive)
         {
+            if(activeEffect != null)
+            {
+                activeEffect.SetActive(true);
+            }
             if(activeTimer > 0)
             {
                 activeTimer -= Time.deltaTime;
@@ -54,6 +59,10 @@ public class PlayerBuffManager : MonoBehaviour
             else
             {
                 isActive = false;
+                if(activeEffect != null)
+                {
+                    activeEffect.SetActive(false);
+                }
             }
         }
 
