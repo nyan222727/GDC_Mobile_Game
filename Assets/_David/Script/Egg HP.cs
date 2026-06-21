@@ -18,4 +18,12 @@ public class EggHP : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+
+    void Update()
+    {
+        if(HP<0)
+        {
+            HP = 0;
+        }
+    }
 }
