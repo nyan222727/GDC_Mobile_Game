@@ -75,14 +75,14 @@ public class Waves : MonoBehaviour
     IEnumerator GenerateNormal1()
     {
         yield return new WaitForSeconds(2);
-        for(int i=0 ; i<10 ; i++)
+        for(int i=0 ; i<20 ; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
-            yield return new WaitForSeconds(4);
+            monsterScript.maxHP = Mathf.RoundToInt(0.5f * monsterScript.maxHP);
+            yield return new WaitForSeconds(2);
         }
     }
 

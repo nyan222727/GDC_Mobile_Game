@@ -18,6 +18,17 @@ public class BombScript : MonoBehaviour
     public GameObject bombRender;
     public GameObject explosionEffect;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip attackSound; // 在 Inspector 把你的音效檔案（.mp3/.wav）拉進來
+    
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        // 取得身上的 AudioSource 組件
+        audioSource = GetComponent<AudioSource>();
+    }
+
 
     public void Seek(Transform _target)
     {
@@ -77,6 +88,11 @@ public class BombScript : MonoBehaviour
         {
             explosionEffect.transform.localScale = new Vector3(damageRange,damageRange,damageRange);
             explosionEffect.SetActive(true); // 啟動子物件，特效會自動 Play On Awake
+        }
+        if (audioSource != null && attackSound != null)
+        {
+            // PlayOneShot 適合這種短促的特效音，後面的 1.0f 是音量大小（0.0 ~ 1.0）
+            audioSource.PlayOneShot(attackSound, 1.0f); 
         }
 
         yield return new WaitForSeconds(0.5f);
