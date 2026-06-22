@@ -54,7 +54,7 @@ public class SkillStun : MonoBehaviour
         if (audioSource != null && attackSound != null)
         {
             // PlayOneShot 適合這種短促的特效音，後面的 1.0f 是音量大小（0.0 ~ 1.0）
-            audioSource.PlayOneShot(attackSound, 0.3f); 
+            audioSource.PlayOneShot(attackSound, 0.7f); 
         }
         if (skillEffect != null)
         {

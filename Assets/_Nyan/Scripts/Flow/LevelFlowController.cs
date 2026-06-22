@@ -169,6 +169,54 @@ public sealed class LevelFlowController : MonoBehaviour
         new int[] {0,0,1,1,1,1,0,0,1,0},
         new int[] {0,0,0,0,0,0,0,0,2,0}
     };
+
+    [SerializeField]private int[][] level2 = 
+    {
+        new int[] {0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        new int[] {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+        new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+        new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+        new int[] {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+        new int[] {0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        new int[] {0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,1,1,1,1,1,1,1,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,1,1,1,1,2,0,0,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0},
+        new int[] {0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0},
+        new int[] {0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+        new int[] {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+        new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+    };
+
+    [SerializeField]private int[][] level3 = 
+    {
+        new int[] {0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        new int[] {0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,1,1,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,1,1,1,1,1,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,2,1,1,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,1,0,1,0,0},
+        new int[] {0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0},
+        new int[] {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0},
+        new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0}
+    };
     
     [SerializeField]private List<TileProperty> tilePropertyList = new List<TileProperty>();
 
@@ -188,7 +236,15 @@ public sealed class LevelFlowController : MonoBehaviour
     {
         if(IsInCombatState)
         {
-            if(runtimeWaves[currentWaveIndex].Enemies[0].GetComponent<Waves>().isEnd)
+            bool isEnd = true;
+            foreach(GameObject aGenerator in runtimeWaves[currentWaveIndex].Enemies)
+            {
+                if(! aGenerator.GetComponent<Waves>().isEnd)
+                {
+                    isEnd = false;
+                }
+            }
+            if(isEnd)
             {
                 CompleteCurrentWave();
                 waveManager.SetActive(false);
@@ -342,7 +398,10 @@ public sealed class LevelFlowController : MonoBehaviour
 
         waveManager.SetActive(true);
 
-        wave.Enemies[0].SetActive(true);
+        foreach(GameObject aGenerator in runtimeWaves[currentWaveIndex].Enemies)
+        {
+            aGenerator.SetActive(true);
+        }
 
         bool startedSpawner = false;
         IReadOnlyList<WaveSpawnDefinition> spawnEntries = wave != null ? wave.Spawns : null;
@@ -673,7 +732,10 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private void CompleteCurrentWave()
     {
-        runtimeWaves[currentWaveIndex].Enemies[0].SetActive(false);
+        foreach(GameObject aGenerator in runtimeWaves[currentWaveIndex].Enemies)
+        {
+            aGenerator.SetActive(false);
+        }
         currentWaveIndex++;
 
         if (currentWaveIndex < runtimeWaves.Count)
@@ -903,8 +965,10 @@ public sealed class LevelFlowController : MonoBehaviour
             map = level1;
             break;
         case 2:
+            map = level2;
             break;
         case 3:
+            map = level3;
             break;
         }
         width = map[0].Length;

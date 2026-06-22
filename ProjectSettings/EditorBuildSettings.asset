@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_Nyan/Nyan_Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/_Nyan/Sprint1_Scene.unity
+    path: Assets/_Nyan/Level 1.unity
     guid: 4b12942809a1a984d85d304385a6b242
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
