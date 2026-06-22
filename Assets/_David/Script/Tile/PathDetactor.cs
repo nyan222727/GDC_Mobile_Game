@@ -35,7 +35,7 @@ public class PathDetactor : MonoBehaviour
         {
             // Debug.Log("ray up");
             RaycastHit prevPath;
-            if (Physics.Raycast(transform.position, Vector3.forward, out prevPath, 2f, LayerMask.GetMask("Path")))
+            if (Physics.Raycast(transform.position, Vector3.forward, out prevPath, 1f, LayerMask.GetMask("Path")))
             {
                 // Debug.Log("ray up find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
@@ -46,7 +46,7 @@ public class PathDetactor : MonoBehaviour
         {
             // Debug.Log("ray right");
             RaycastHit prevPath;
-            if (Physics.Raycast(transform.position, Vector3.right, out prevPath, 2f, LayerMask.GetMask("Path")))
+            if (Physics.Raycast(transform.position, Vector3.right, out prevPath, 1f, LayerMask.GetMask("Path")))
             {
                 // Debug.Log("ray right find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
@@ -57,7 +57,7 @@ public class PathDetactor : MonoBehaviour
         {
             // Debug.Log("ray down");
             RaycastHit prevPath;
-            if (Physics.Raycast(transform.position, Vector3.back, out prevPath, 2f, LayerMask.GetMask("Path")))
+            if (Physics.Raycast(transform.position, Vector3.back, out prevPath, 1f, LayerMask.GetMask("Path")))
             {
                 // Debug.Log("ray down find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
@@ -68,7 +68,7 @@ public class PathDetactor : MonoBehaviour
         {
             // Debug.Log("ray left");
             RaycastHit prevPath;
-            if (Physics.Raycast(transform.position, Vector3.left, out prevPath, 2f, LayerMask.GetMask("Path")))
+            if (Physics.Raycast(transform.position, Vector3.left, out prevPath, 1f, LayerMask.GetMask("Path")))
             {
                 // Debug.Log("ray left find");
                 PathDetactor prevPathScript = prevPath.collider.GetComponent<PathDetactor>();
