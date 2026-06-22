@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mineRange: 2.5
-  defaultDamage: 100
+  defaultDamage: 200
   elementBuffDamage: 1
   activeBuffDamage: 1
   damage: 0

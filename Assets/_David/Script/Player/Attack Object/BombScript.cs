@@ -92,7 +92,7 @@ public class BombScript : MonoBehaviour
         if (audioSource != null && attackSound != null)
         {
             // PlayOneShot 適合這種短促的特效音，後面的 1.0f 是音量大小（0.0 ~ 1.0）
-            audioSource.PlayOneShot(attackSound, 1.0f); 
+            audioSource.PlayOneShot(attackSound, 0.3f); 
         }
 
         yield return new WaitForSeconds(0.5f);

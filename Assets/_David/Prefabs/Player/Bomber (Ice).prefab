@@ -210,7 +210,7 @@ MonoBehaviour:
   activeRange: 1
   activeBombRange: 1.5
   range: 3
-  defaultDamage: 10
+  defaultDamage: 15
   elementBuffDamage: 1.2
   activeBuffDamage: 1.2
   damage: 0
