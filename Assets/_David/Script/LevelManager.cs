@@ -26,6 +26,13 @@ public class LevelManager : MonoBehaviour
         new int[] {0,0,1,1,1,1,0,0,1,0},
         new int[] {0,0,0,0,0,0,0,0,2,0}
     };
+
+    [Header("Element")]
+    [SerializeField]public int startElementCount = 10;
+    [SerializeField]public int minChange = 10;
+    [SerializeField]public int maxChange = 15;
+    [SerializeField]public float elementTime = 30f;
+
     public int timeForChangeElement = 10;
     public int level = 1;
     
@@ -49,12 +56,13 @@ public class LevelManager : MonoBehaviour
     private IEnumerator ElementChangeRoutine()
     {
         yield return new WaitForSeconds(0.01f);
-        PickAndChangeRandomBlocks(5);
+        PickAndChangeRandomBlocks(startElementCount);
+        ResolveElementChains();
         yield return new WaitForSeconds(2f);
         while (true)
         {
             // 隨機挑選 n 個方塊並變色
-            int randCount = Random.Range(3,6);
+            int randCount = Random.Range(minChange,maxChange+1);
             PickAndChangeRandomBlocks(randCount);
             ResolveElementChains();
             // 等待時間
@@ -84,7 +92,7 @@ public class LevelManager : MonoBehaviour
                 continue;
             }
 
-            selectedTile.ResetElementTimer();
+            selectedTile.elementTimer = elementTime;
 
             int randElement = Random.Range(0,2);
 
@@ -120,7 +128,7 @@ public class LevelManager : MonoBehaviour
             {
                 // Debug.Log(tileScript.chainCount);
                 tileScript.chainCount--;
-                int randCount = Random.Range(3,6);
+                int randCount = Random.Range(minChange,maxChange+1);
                 PickAndChangeRandomBlocks(randCount);
                 ResolveElementChains();
             }

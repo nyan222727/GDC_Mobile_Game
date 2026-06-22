@@ -21,7 +21,7 @@ public class EnemyController : MonoBehaviour
     [Header("Element Buff")]
     [SerializeField]private Element onTileElement = Element.None;
     [SerializeField]public float tileDamageRatio = 0.02f;
-    [SerializeField]public int tileDamageBound = 20;
+    [SerializeField]private int tileDamageBound = 40;
     [SerializeField]private float tileDamageTimer = 0;
     [SerializeField]public float tileBuffSpeedRatio = 1.2f;
 
@@ -31,7 +31,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]public float activeTime = 5f;
     [SerializeField]private float activeDamageIgnore = 0;
     [SerializeField]public float activeDamageRatio = 0.1f;
-    [SerializeField]public int activeDamageBound = 200;
+    [SerializeField]private int activeDamageBound = 400;
     [SerializeField]public float activateSpeedRatio = 1.5f;
     
     

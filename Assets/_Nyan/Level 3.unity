@@ -2057,8 +2057,12 @@ MonoBehaviour:
   endPath: {fileID: 0}
   width: 5
   height: 5
+  startElementCount: 15
+  minChange: 10
+  maxChange: 15
+  elementTime: 60
   timeForChangeElement: 10
-  level: 1
+  level: 3
   tilePropertyList: []
 --- !u!4 &2107132776
 Transform:

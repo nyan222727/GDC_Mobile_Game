@@ -16,8 +16,7 @@ public class TileProperty : MonoBehaviour
     public Material fireMaterial;
     public Material iceMaterial; 
     private Renderer myRenderer;
-    public float elementTime = 30f;
-    private float elementTimer;
+    public float elementTimer;
 
     public float RemainingElementTime => Mathf.Max(0f, elementTimer);
 
@@ -231,11 +230,6 @@ public class TileProperty : MonoBehaviour
         // Debug.Log("reset element");
         this.element = Element.None;
         // isChainProgress = false;
-    }
-
-    public void ResetElementTimer()
-    {
-        elementTimer = elementTime;
     }
 
     public void SetElementState(Element newElement, float remainingTime)
