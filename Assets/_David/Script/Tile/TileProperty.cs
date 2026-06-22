@@ -21,10 +21,18 @@ public class TileProperty : MonoBehaviour
 
     public float RemainingElementTime => Mathf.Max(0f, elementTimer);
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip attackSound; // 在 Inspector 把你的音效檔案（.mp3/.wav）拉進來
+    
+    private AudioSource audioSource;
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // 取得身上的 AudioSource 組件
+        audioSource = GetComponent<AudioSource>();
+
         chainCount = 0;
         element = Element.None;
         myRenderer = GetComponent<Renderer>();
@@ -89,6 +97,11 @@ public class TileProperty : MonoBehaviour
                     TileProperty backTileScript = backTile.collider.GetComponent<TileProperty>();
                     if(backTileScript.element == this.element)
                     {
+                        if (audioSource != null && attackSound != null)
+                        {
+                            // PlayOneShot 適合這種短促的特效音，後面的 1.0f 是音量大小（0.0 ~ 1.0）
+                            audioSource.PlayOneShot(attackSound, 0.3f); 
+                        }
                         ActiveChain(Direction.None);
                         chainCount += 1;
                     }
@@ -107,6 +120,11 @@ public class TileProperty : MonoBehaviour
                     TileProperty leftTileScript = leftTile.collider.GetComponent<TileProperty>();
                     if(leftTileScript.element == this.element)
                     {
+                        if (audioSource != null && attackSound != null)
+                        {
+                            // PlayOneShot 適合這種短促的特效音，後面的 1.0f 是音量大小（0.0 ~ 1.0）
+                            audioSource.PlayOneShot(attackSound, 0.3f); 
+                        }
                         ActiveChain(Direction.None);
                         chainCount += 1;
                     }
@@ -118,7 +136,7 @@ public class TileProperty : MonoBehaviour
 
     public void ActiveChain(Direction lastDir= Direction.None)
     {
-        Debug.Log("Find Chain");
+        // Debug.Log("Find Chain");
         if(isChainProgress)
         {
             return;

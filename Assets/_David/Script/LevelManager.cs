@@ -34,8 +34,8 @@ public class LevelManager : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(ElementChangeRoutine());
-        ConstructTiles();   //remember to delete
-        findPath(endPath);  //remember to delete
+        // ConstructTiles();   //remember to delete
+        // findPath(endPath);  //remember to delete
     }
 
     void Update()
@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
     private IEnumerator ElementChangeRoutine()
     {
         yield return new WaitForSeconds(0.01f);
-        PickAndChangeRandomBlocks(10);
+        PickAndChangeRandomBlocks(5);
         yield return new WaitForSeconds(2f);
         while (true)
         {
@@ -118,7 +118,7 @@ public class LevelManager : MonoBehaviour
         {
             while(tileScript.chainCount > 0)
             {
-                Debug.Log(tileScript.chainCount);
+                // Debug.Log(tileScript.chainCount);
                 tileScript.chainCount--;
                 int randCount = Random.Range(3,6);
                 PickAndChangeRandomBlocks(randCount);
@@ -127,88 +127,88 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void ConstructTiles()
-    {
-        switch(level)
-        {
-        case 1:
-            map = level1;
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        }
-        width = map[0].Length;
-        height = map.Length;
-        InitializeMap();
-        for(int row=0; row < height ; row++)
-        {
-            for(int col=0; col < width ; col++)
-            {
-                GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
-                tilePropertyList.Add(tile.GetComponent<TileProperty>());
-                switch(map[row][col])
-                {
-                case 1:
-                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                    tile.GetComponent<TileProperty>().isPath = true;
-                    break;
-                case 2:
-                    endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                    Instantiate(egg, new Vector3(col, 1, row), Quaternion.identity);
-                    tile.GetComponent<TileProperty>().isPath = true;
-                    break;
-                case 3:
-                    tile.GetComponent<TileProperty>().isNearPath = true;
-                    break;
-                case 4:
-                    Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
-                    tile.GetComponent<TileProperty>().isPath = true;
-                    break;
-                }
-            }
-        }
-    }
+    // void ConstructTiles()
+    // {
+    //     switch(level)
+    //     {
+    //     case 1:
+    //         map = level1;
+    //         break;
+    //     case 2:
+    //         break;
+    //     case 3:
+    //         break;
+    //     }
+    //     width = map[0].Length;
+    //     height = map.Length;
+    //     InitializeMap();
+    //     for(int row=0; row < height ; row++)
+    //     {
+    //         for(int col=0; col < width ; col++)
+    //         {
+    //             GameObject tile = Instantiate(tilePrefab, new Vector3(col,0,row), Quaternion.identity);
+    //             tilePropertyList.Add(tile.GetComponent<TileProperty>());
+    //             switch(map[row][col])
+    //             {
+    //             case 1:
+    //                 Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+    //                 tile.GetComponent<TileProperty>().isPath = true;
+    //                 break;
+    //             case 2:
+    //                 endPath = Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+    //                 Instantiate(egg, new Vector3(col, 1, row), Quaternion.identity);
+    //                 tile.GetComponent<TileProperty>().isPath = true;
+    //                 break;
+    //             case 3:
+    //                 tile.GetComponent<TileProperty>().isNearPath = true;
+    //                 break;
+    //             case 4:
+    //                 Instantiate(pathPrefab, new Vector3(col,0,row), Quaternion.identity);
+    //                 tile.GetComponent<TileProperty>().isPath = true;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 
-    void InitializeMap()
-    {
-        for(int i=0 ; i < height ; i++)
-        {
-            for(int j=0 ; j < width ; j++)
-            {
-                if(map[i][j] == 1)
-                {
-                    for(int r = -1 ; r <= 1 ; r++)
-                    {
-                        if((i+r) < 0 || (i+r) >= height)
-                        {
-                            continue;
-                        }
-                        if(map[i+r][j] == 0)
-                        {
-                            map[i+r][j] = 3;
-                        }
-                    }
-                    for(int c = -1 ; c <= 1 ; c++)
-                    {
-                        if((j+c) < 0  || (j+c) >= width)
-                        {
-                            continue;
-                        }
-                        if(map[i][j+c] == 0)
-                        {
-                            map[i][j+c] = 3;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // void InitializeMap()
+    // {
+    //     for(int i=0 ; i < height ; i++)
+    //     {
+    //         for(int j=0 ; j < width ; j++)
+    //         {
+    //             if(map[i][j] == 1)
+    //             {
+    //                 for(int r = -1 ; r <= 1 ; r++)
+    //                 {
+    //                     if((i+r) < 0 || (i+r) >= height)
+    //                     {
+    //                         continue;
+    //                     }
+    //                     if(map[i+r][j] == 0)
+    //                     {
+    //                         map[i+r][j] = 3;
+    //                     }
+    //                 }
+    //                 for(int c = -1 ; c <= 1 ; c++)
+    //                 {
+    //                     if((j+c) < 0  || (j+c) >= width)
+    //                     {
+    //                         continue;
+    //                     }
+    //                     if(map[i][j+c] == 0)
+    //                     {
+    //                         map[i][j+c] = 3;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    public void findPath(GameObject endPath)
-    {
-        PathDetactor endPathScript = endPath.GetComponent<PathDetactor>();
-        endPathScript.findPrevPath(MoveDirection.End);
-    }
+    // public void findPath(GameObject endPath)
+    // {
+    //     PathDetactor endPathScript = endPath.GetComponent<PathDetactor>();
+    //     endPathScript.findPrevPath(MoveDirection.End);
+    // }
 }
