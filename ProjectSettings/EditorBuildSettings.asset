@@ -8,12 +8,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Nyan/Menu_Scene.unity
     guid: fbad4e9b3a3d49e9a41f27c1d7100003
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Nyan/Nyan_Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/_Nyan/Sprint1_Scene.unity
+    guid: 4b12942809a1a984d85d304385a6b242
   - enabled: 1
     path: Assets/_Nyan/Level 1.unity
-    guid: 4b12942809a1a984d85d304385a6b242
+    guid: 13aa302a4b989194f9c51e8f1c2be684
+  - enabled: 1
+    path: Assets/_Nyan/Level 2.unity
+    guid: 20d6fe445853c094a9a0c386c1630493
+  - enabled: 1
+    path: Assets/_Nyan/Level 3.unity
+    guid: 11f79a45b795f3c4ba282bc0367c9d2a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
