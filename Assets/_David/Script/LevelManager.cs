@@ -91,6 +91,7 @@ public class LevelManager : MonoBehaviour
             }
 
             selectedTile.elementTimer = elementTime;
+            selectedTile.elementTime = elementTime;
 
             int randElement = Random.Range(0,2);
 

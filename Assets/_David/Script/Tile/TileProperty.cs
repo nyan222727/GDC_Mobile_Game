@@ -17,6 +17,7 @@ public class TileProperty : MonoBehaviour
     public Material iceMaterial; 
     private Renderer myRenderer;
     public float elementTimer;
+    public float elementTime;
 
     public float RemainingElementTime => Mathf.Max(0f, elementTimer);
     [SerializeField]public GameObject flowManager;
@@ -51,6 +52,10 @@ public class TileProperty : MonoBehaviour
                 if(flowScript.currentState == LevelFlowController.LevelState.Combat)
                 {
                     elementTimer -= Time.deltaTime;
+                }
+                if(flowScript.currentState == LevelFlowController.LevelState.Placement)
+                {
+                    elementTimer = elementTime;
                 }
             }
             else
