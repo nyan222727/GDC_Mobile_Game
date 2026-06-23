@@ -58,30 +58,45 @@ public class TileProperty : MonoBehaviour
                 element = Element.None;
             }
         }
-        switch(element){
-            case Element.Fire:
-                if (fireMaterial != null)
-                {
-                    myRenderer.material = fireMaterial;
-                }
-                break;
-            case Element.Ice:
-                if (iceMaterial != null)
-                {
-                    myRenderer.material = iceMaterial;
-                }
-                break;
-            case Element.None:
-                if (defaultMaterial != null)
-                {
-                    myRenderer.material = defaultMaterial;
-                }
-                break; 
+
+        // 🎨 處理材質球顏色切換
+        Material targetMaterial = defaultMaterial;
+        switch(element)
+        {
+            case Element.Fire: targetMaterial = fireMaterial; break;
+            case Element.Ice:  targetMaterial = iceMaterial;  break;
+            case Element.None: targetMaterial = defaultMaterial; break; 
         }
-        // if(Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     DetactActive();
-        // }
+
+        if (myRenderer != null && targetMaterial != null)
+        {
+            // 💡 關鍵：先將材質球指定過去
+            myRenderer.material = targetMaterial;
+
+            // 🌗 核心暗化邏輯：如果剩下不到 10 秒，且目前有屬性加成
+            if (element != Element.None && elementTimer <= 20f)
+            {
+                // 計算變暗的比例 (t 會從 1.0 漸變到 0.0)
+                // 當 elementTimer = 10 時，t = 1.0 (原本亮度)
+                // 當 elementTimer = 0  時，t = 0.0 (最暗)
+                float t = Mathf.Clamp01(elementTimer / 20f);
+
+                // 調整最低亮度（例如 0.2f），防止方塊全黑到看不見
+                float brightness = Mathf.Lerp(0.2f, 1.0f, t);
+
+                // 取得原本材質球的顏色，並乘以亮度係數
+                Color originalColor = targetMaterial.color;
+                Color darkerColor = new Color(
+                    originalColor.r * brightness, 
+                    originalColor.g * brightness, 
+                    originalColor.b * brightness, 
+                    originalColor.a
+                );
+
+                // 把變暗後的顏色指定給當前渲染器
+                myRenderer.material.color = darkerColor;
+            }
+        }
     }
 
     public void DetactActive()

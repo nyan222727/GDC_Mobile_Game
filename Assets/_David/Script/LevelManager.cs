@@ -86,6 +86,7 @@ public class LevelManager : MonoBehaviour
                     avoidSameCounts--;
                     i--;
                 }
+                selectedTile.elementTimer = elementTime;
                 continue;
             }
 
