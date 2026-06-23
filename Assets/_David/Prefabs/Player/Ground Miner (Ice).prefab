@@ -228,9 +228,6 @@ MonoBehaviour:
   activeEffect: {fileID: 2120250945437210020}
   freezeDebuff: 0
   slowDownRatio: 1
-  freezeTimer: 0
-  freezeFadeTime: 5
-  ratioPerFreeze: 0.2
   stunTimer: 0
 --- !u!114 &1966408498632343788
 MonoBehaviour:
@@ -258,7 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mineRange: 2.5
-  defaultDamage: 200
+  defaultDamage: 400
   elementBuffDamage: 1
   activeBuffDamage: 1
   damage: 0

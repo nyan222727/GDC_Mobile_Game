@@ -86,10 +86,12 @@ public class LevelManager : MonoBehaviour
                     avoidSameCounts--;
                     i--;
                 }
+                selectedTile.elementTimer = elementTime;
                 continue;
             }
 
             selectedTile.elementTimer = elementTime;
+            selectedTile.elementTime = elementTime;
 
             int randElement = Random.Range(0,2);
 

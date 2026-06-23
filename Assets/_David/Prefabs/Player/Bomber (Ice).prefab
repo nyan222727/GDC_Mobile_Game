@@ -245,9 +245,6 @@ MonoBehaviour:
   activeEffect: {fileID: 4689024996710538597}
   freezeDebuff: 0
   slowDownRatio: 1
-  freezeTimer: 0
-  freezeFadeTime: 5
-  ratioPerFreeze: 0.2
   stunTimer: 0
 --- !u!114 &5800971493609265786
 MonoBehaviour:

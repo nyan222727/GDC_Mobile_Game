@@ -1201,7 +1201,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5523096005081309310, guid: af15ec84fcfafd548b2ed227177ccd53, type: 3}
       propertyPath: wave
-      value: 16
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1601593920729218102, guid: af15ec84fcfafd548b2ed227177ccd53, type: 3}
       propertyPath: m_Name
