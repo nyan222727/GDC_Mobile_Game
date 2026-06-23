@@ -158,9 +158,6 @@ MonoBehaviour:
   activeEffect: {fileID: 8229782906799667985}
   freezeDebuff: 0
   slowDownRatio: 1
-  freezeTimer: 0
-  freezeFadeTime: 5
-  ratioPerFreeze: 0.2
   stunTimer: 0
 --- !u!114 &1966408498632343788
 MonoBehaviour:
@@ -207,10 +204,10 @@ AudioSource:
   m_GameObject: {fileID: 3830376903451027853}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -77800920118603415, guid: e9ee788e39bcbbf4aaca123fb7bb0d10, type: 2}
+  OutputAudioMixerGroup: {fileID: 1676499808410277006, guid: a622e5b3f4a8bac408b489c13b69cda1, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.8
   m_Pitch: 1
   Loop: 0

@@ -307,10 +307,10 @@ AudioSource:
   m_GameObject: {fileID: 2715480771911735215}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 3036063754411473218, guid: a622e5b3f4a8bac408b489c13b69cda1, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

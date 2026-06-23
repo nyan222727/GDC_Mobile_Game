@@ -110,7 +110,10 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: 5f6abc067638a9c49974979b6281ef3b, type: 2}
   fireMaterial: {fileID: 2100000, guid: 3e62d91e5974c5f43bcf9775a80a8f76, type: 2}
   iceMaterial: {fileID: 2100000, guid: 09bd949030e46b34e8a3d0cbb5c9394f, type: 2}
+  elementTimer: 0
   elementTime: 30
+  flowManager: {fileID: 0}
+  flowScript: {fileID: 0}
   attackSound: {fileID: 8300000, guid: 61932b71bd0afa04586b2f7bd760baf2, type: 3}
 --- !u!65 &1794911704785728466
 BoxCollider:
@@ -156,10 +159,10 @@ AudioSource:
   m_GameObject: {fileID: 1559220327138583361}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 454804746356726818, guid: a622e5b3f4a8bac408b489c13b69cda1, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
