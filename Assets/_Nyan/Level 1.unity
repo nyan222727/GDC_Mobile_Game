@@ -12600,7 +12600,7 @@ MonoBehaviour:
   autoUseSceneSpawners: 1
   includeLegacySceneEnemies: 0
   defaultSpawnerWaveCount: 3
-  baseMaxHp: 1
+  baseMaxHp: 3
   baseHpText: {fileID: 0}
   currentState: 0
   waveManager: {fileID: 2107132774}
