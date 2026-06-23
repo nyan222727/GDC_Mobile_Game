@@ -17,9 +17,9 @@ public class PlayerBuffManager : MonoBehaviour
     [Header("Freeze")]
     [SerializeField]public int freezeDebuff = 0;
     [SerializeField]public float slowDownRatio=1f;
-    [SerializeField]private float freezeTimer = 0;
-    [SerializeField]private float freezeFadeTime = 5f;
-    [SerializeField]private float ratioPerFreeze = 0.2f;
+    private float freezeTimer = 0;
+    private float freezeFadeTime = 5f;
+    private float ratioPerFreeze = 0.02f;
 
     [Header("Stun")]
     [SerializeField]public float stunTimer = 0;
@@ -69,6 +69,7 @@ public class PlayerBuffManager : MonoBehaviour
         // Freeze
         if(freezeDebuff>0)
         {
+            
             if(freezeTimer>0)
             {
                 freezeTimer -= Time.deltaTime;

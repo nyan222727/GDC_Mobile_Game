@@ -13,19 +13,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField]private int height = 5;
     // none:0 path:1 end:2 nearPath:3 start:4
     [SerializeField]private int[][] map;
-    [SerializeField]private int[][] level1 = 
-    {
-        new int[] {0,0,4,0,0,0,0,0,0,0},
-        new int[] {0,0,1,0,0,1,1,1,1,0},
-        new int[] {0,0,1,0,0,1,0,0,1,0},
-        new int[] {0,0,1,0,0,1,0,0,1,0},
-        new int[] {0,0,1,0,0,1,0,0,1,0},
-        new int[] {0,0,1,0,0,1,0,0,1,0},
-        new int[] {0,0,1,0,0,1,0,0,1,0},
-        new int[] {0,0,1,0,0,1,0,0,1,0},
-        new int[] {0,0,1,1,1,1,0,0,1,0},
-        new int[] {0,0,0,0,0,0,0,0,2,0}
-    };
 
     [Header("Element")]
     [SerializeField]public int startElementCount = 10;
@@ -33,8 +20,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField]public int maxChange = 15;
     [SerializeField]public float elementTime = 30f;
 
+    private bool isFirst = true;
     public int timeForChangeElement = 10;
-    public int level = 1;
     
     public List<TileProperty> tilePropertyList = new List<TileProperty>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,6 +30,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(ElementChangeRoutine());
         // ConstructTiles();   //remember to delete
         // findPath(endPath);  //remember to delete
+        
     }
 
     void Update()
@@ -56,8 +44,12 @@ public class LevelManager : MonoBehaviour
     private IEnumerator ElementChangeRoutine()
     {
         yield return new WaitForSeconds(0.01f);
-        PickAndChangeRandomBlocks(startElementCount);
-        ResolveElementChains();
+        if(isFirst)
+        {
+            PickAndChangeRandomBlocks(startElementCount);
+            ResolveElementChains();
+            isFirst = false;
+        }
         yield return new WaitForSeconds(2f);
         while (true)
         {
@@ -76,6 +68,7 @@ public class LevelManager : MonoBehaviour
 
         // 安全機制：如果想要改變的數量大於總數，就限制它
         n = Mathf.Min(n, tilePropertyList.Count);
+        int avoidSameCounts = 5;
 
         // 複製一份暫存清單，用來進行不重複抽樣
         List<TileProperty> pool = new List<TileProperty>(tilePropertyList);
@@ -88,7 +81,11 @@ public class LevelManager : MonoBehaviour
 
             if(selectedTile.element != Element.None)
             {
-                i--;
+                if(avoidSameCounts > 0)
+                {
+                    avoidSameCounts--;
+                    i--;
+                }
                 continue;
             }
 
@@ -128,7 +125,7 @@ public class LevelManager : MonoBehaviour
             {
                 // Debug.Log(tileScript.chainCount);
                 tileScript.chainCount--;
-                int randCount = Random.Range(minChange,maxChange+1);
+                int randCount = Random.Range(2,4);
                 PickAndChangeRandomBlocks(randCount);
                 ResolveElementChains();
             }

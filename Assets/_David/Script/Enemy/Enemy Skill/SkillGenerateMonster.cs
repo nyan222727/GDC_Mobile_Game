@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillGenerateMonster : MonoBehaviour
 {
+    private List<GameObject> aliveMobs = new List<GameObject>();
+    private LevelFlowController levelFlowController;
     public GameObject[] monsters;
     public float CD = 5;
     private float timer = 0;
@@ -25,6 +28,12 @@ public class SkillGenerateMonster : MonoBehaviour
         }
     }
 
+    private void TrackSpawnedEnemy(GameObject enemy)
+    {
+        aliveMobs.Add(enemy);
+        levelFlowController?.RegisterSpawnedEnemy(enemy);
+    }
+
     void GenerateMonster()
     {
         if (monsters != null && monsters.Length > 0)
@@ -32,10 +41,25 @@ public class SkillGenerateMonster : MonoBehaviour
             // 3. 取得隨機索引 (左閉右開區間，包含 0，但不包含陣列長度)
             int randomIndex = Random.Range(0, monsters.Length);
             GameObject monster = monsters[randomIndex];
-            Instantiate(monster, transform.position, transform.rotation);
-            
+            GameObject mob = Instantiate(monster, transform.position, transform.rotation);
+            EnemyController mobScript = mob.GetComponent<EnemyController>();
+            if(!mobScript)
+            {
+                Debug.Log("not found enemy controller");
+            }
+            mobScript.maxHP = Mathf.RoundToInt(monster.GetComponent<EnemyController>().maxHP* GetComponent<EnemyController>().hpRatio);
+            mobScript.HP = mobScript.maxHP;
+            TrackSpawnedEnemy(mob);
             // 4. 印出或使用隨機抽到的元素
             // Debug.Log("隨機選擇的項目是：" + monster);
+        }
+    }
+
+    void OnDestroy()
+    {
+        foreach(GameObject mob in aliveMobs)
+        {
+            Destroy(mob);
         }
     }
 }

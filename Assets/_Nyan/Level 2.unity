@@ -1199,13 +1199,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5523096005081309310, guid: af15ec84fcfafd548b2ed227177ccd53, type: 3}
+      propertyPath: wave
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 1601593920729218102, guid: af15ec84fcfafd548b2ed227177ccd53, type: 3}
       propertyPath: m_Name
       value: Wave 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601593920729218102, guid: af15ec84fcfafd548b2ed227177ccd53, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5927544488300148333, guid: af15ec84fcfafd548b2ed227177ccd53, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3189,12 +3189,11 @@ MonoBehaviour:
   endPath: {fileID: 0}
   width: 5
   height: 5
-  startElementCount: 25
+  startElementCount: 20
   minChange: 10
   maxChange: 15
   elementTime: 60
   timeForChangeElement: 10
-  level: 2
   tilePropertyList: []
 --- !u!4 &2107132776
 Transform:
@@ -13497,7 +13496,7 @@ MonoBehaviour:
   autoUseSceneSpawners: 1
   includeLegacySceneEnemies: 0
   defaultSpawnerWaveCount: 3
-  baseMaxHp: 1
+  baseMaxHp: 5
   baseHpText: {fileID: 0}
   currentState: 0
   waveManager: {fileID: 2107132774}
@@ -15057,7 +15056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0492a93687d143fa97b8d4ed5710e7b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingMoney: 150
+  startingMoney: 300
   moneyText: {fileID: 4100000000113}
   moneyFormat: 'Money: {0}'
   showAvailableMoneyWhilePreviewing: 1
@@ -15143,7 +15142,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Money: 150'
+  m_Text: 'Money: 300'
 --- !u!1 &4200000000000
 GameObject:
   m_ObjectHideFlags: 0
@@ -16406,7 +16405,7 @@ MonoBehaviour:
   rotateButton: {fileID: 4300000000504}
   initialSelectionOrigin: {x: 0, y: 0}
   gridRetryInterval: 0.25
-  waveManager: {fileID: 0}
+  waveManager: {fileID: 2107132774}
 --- !u!1 &4400000000100
 GameObject:
   m_ObjectHideFlags: 0

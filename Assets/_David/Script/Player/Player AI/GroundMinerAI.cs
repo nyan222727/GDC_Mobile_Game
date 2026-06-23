@@ -42,7 +42,7 @@ public class GroundMinerAI : MonoBehaviour
             ActivePlace();
             buffScript.activeTimer = 0;
         }
-        Debug.Log(flowScript.currentState);
+        // Debug.Log(flowScript.currentState);
         if(fireCDTimer > 0)
         {
             fireCDTimer -= Time.deltaTime;

@@ -19,6 +19,8 @@ public class TileProperty : MonoBehaviour
     public float elementTimer;
 
     public float RemainingElementTime => Mathf.Max(0f, elementTimer);
+    [SerializeField]public GameObject flowManager;
+    [SerializeField]private LevelFlowController flowScript;
 
     [Header("Audio")]
     [SerializeField] private AudioClip attackSound; // 在 Inspector 把你的音效檔案（.mp3/.wav）拉進來
@@ -29,6 +31,8 @@ public class TileProperty : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        flowManager = GameObject.FindGameObjectWithTag("GameController");
+        flowScript = flowManager.GetComponent<LevelFlowController>();
         // 取得身上的 AudioSource 組件
         audioSource = GetComponent<AudioSource>();
 
@@ -44,7 +48,10 @@ public class TileProperty : MonoBehaviour
         {
             if(elementTimer > 0)
             {
-                elementTimer -= Time.deltaTime;
+                if(flowScript.currentState == LevelFlowController.LevelState.Combat)
+                {
+                    elementTimer -= Time.deltaTime;
+                }
             }
             else
             {

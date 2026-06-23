@@ -149,7 +149,7 @@ MonoBehaviour:
   defaultSpeed: 0.75
   speed: 0.5
   hpRatio: 1
-  maxHP: 2500
+  maxHP: 3000
   HP: 0
   onTileElement: 2
   tileDamageRatio: 0.02

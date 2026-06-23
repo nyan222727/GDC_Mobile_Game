@@ -2358,7 +2358,6 @@ MonoBehaviour:
   maxChange: 5
   elementTime: 30
   timeForChangeElement: 10
-  level: 1
   tilePropertyList: []
 --- !u!4 &2107132776
 Transform:
@@ -15510,7 +15509,7 @@ MonoBehaviour:
   rotateButton: {fileID: 4300000000504}
   initialSelectionOrigin: {x: 0, y: 0}
   gridRetryInterval: 0.25
-  waveManager: {fileID: 0}
+  waveManager: {fileID: 2107132774}
 --- !u!1 &4400000000100
 GameObject:
   m_ObjectHideFlags: 0

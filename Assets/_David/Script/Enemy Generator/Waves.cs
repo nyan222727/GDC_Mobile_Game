@@ -7,6 +7,7 @@ public class Waves : MonoBehaviour
     private LevelFlowController levelFlowController;
     public bool isEnd = false;
     public int wave = 1;
+    public int level=1;
     private bool isEndGenerate = false;
     private List<GameObject> onFieldEnemys = new List<GameObject>();
     public GameObject[] monsters;
@@ -18,35 +19,36 @@ public class Waves : MonoBehaviour
 
     void Start()
     {
-        switch(wave)
+        if(level == 1)
         {
-        case 1:
-            StartCoroutine(Wave1());
-            break;
-        case 2:
-            StartCoroutine(Wave2());
-            break;
-        case 3:
-            StartCoroutine(Wave3());
-            break;
-        case 4:
-            StartCoroutine(Wave4());
-            break;
-        case 5:
-            StartCoroutine(Wave5());
-            break;
-        case 6:
-            StartCoroutine(Wave6());
-            break;
-        case 7:
-            StartCoroutine(Wave7());
-            break;
-        case 8:
-            StartCoroutine(Wave8());
-            break;
+            switch(wave)
+            {
+            case 1:
+                StartCoroutine(Wave1());
+                break;
+            case 2:
+                StartCoroutine(Wave2());
+                break;
+            case 3:
+                StartCoroutine(Wave3());
+                break;
+            case 4:
+                StartCoroutine(Wave4());
+                break;
+            case 5:
+                StartCoroutine(Wave5());
+                break;
+            case 6:
+                StartCoroutine(Wave6());
+                break;
+            case 7:
+                StartCoroutine(Wave7());
+                break;
+            case 8:
+                StartCoroutine(Wave8());
+                break;
+            }  
         }
-        
-
     }
 
     private void TrackSpawnedEnemy(GameObject enemy)

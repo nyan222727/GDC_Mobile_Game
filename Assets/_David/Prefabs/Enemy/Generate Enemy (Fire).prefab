@@ -134,7 +134,7 @@ MonoBehaviour:
   defaultSpeed: 0.75
   speed: 0.01
   hpRatio: 1
-  maxHP: 2500
+  maxHP: 3000
   HP: 0
   onTileElement: 2
   tileDamageRatio: 0.02
@@ -161,8 +161,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsters:
-  - {fileID: 4428645707453406323, guid: 3a3590b5a9122134ca22d85b6b48880a, type: 3}
-  - {fileID: 2715480771911735215, guid: cf51393e96d607440b4cc2c13d956cf5, type: 3}
+  - {fileID: 4428645707453406323, guid: fea432d3ee53e3949b94f5533eaf76a6, type: 3}
+  - {fileID: 4428645707453406323, guid: bc41323ab1ee58e40a8064a2ef39cbca, type: 3}
+  - {fileID: 4428645707453406323, guid: b755b6cfa0f29ec4cafa1f08247f3a18, type: 3}
+  - {fileID: 4428645707453406323, guid: 9ce1a8493254d6d47afbbe116cb2ba7d, type: 3}
+  - {fileID: 4428645707453406323, guid: 54b7c13834644b6499712e6ae1b359c7, type: 3}
+  - {fileID: 4428645707453406323, guid: ca24f90bb51f7e0439b1ae9116c8db43, type: 3}
   CD: 5
 --- !u!114 &611001000000000007
 MonoBehaviour:
@@ -293,7 +297,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9060f1f746dfdfa40a9dd48c6f44b348, type: 3}
   m_Name: 
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
 --- !u!1 &7200000000000000301
 GameObject:
   m_ObjectHideFlags: 0

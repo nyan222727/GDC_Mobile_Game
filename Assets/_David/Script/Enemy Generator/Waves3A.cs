@@ -44,6 +44,12 @@ public class Waves3A : MonoBehaviour
         case 8:
             StartCoroutine(Wave8());
             break;
+        case 9:
+            StartCoroutine(Wave9());
+            break;
+        case 10:
+            StartCoroutine(Wave10());
+            break;
         }
         
 
@@ -60,7 +66,7 @@ public class Waves3A : MonoBehaviour
         onFieldEnemys.RemoveAll(item => item == null);
         if(isEndGenerate && onFieldEnemys.Count == 0)
         {
-            isEnd = true;
+            GetComponent<Waves>().isEnd = true;
         }
     }
 
@@ -68,44 +74,45 @@ public class Waves3A : MonoBehaviour
     IEnumerator Wave1()
     {
         yield return StartCoroutine(GenerateNormal1());
-        isEndGenerate=true;
+        isEndGenerate = true;
         Debug.Log("end Generate");
     }
 
     IEnumerator GenerateNormal1()
     {
         yield return new WaitForSeconds(2);
-        for(int i=0 ; i<20 ; i++)
+        for (int i = 0; i < 20; i++)
         {
-            GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[0+result], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(0.5f * monsterScript.maxHP);
-            yield return new WaitForSeconds(2);
+            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(1);
         }
     }
 
     //==================== Wave 2 ====================
     IEnumerator Wave2()
     {
-        yield return StartCoroutine(GenerateNormal2());
-        isEndGenerate=true;
+        yield return StartCoroutine(GenerateSpeed3());
+        isEndGenerate = true;
         Debug.Log("end Generate");
     }
 
-    IEnumerator GenerateNormal2()
+    IEnumerator GenerateSpeed3()
     {
         yield return new WaitForSeconds(2);
-        for(int i=0 ; i<30 ; i++)
+        for (int i = 0; i < 40; i++)
         {
-            GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
+            GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(0.5f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -113,292 +120,374 @@ public class Waves3A : MonoBehaviour
     //==================== Wave 3 ====================
     IEnumerator Wave3()
     {
-        Coroutine task1 = StartCoroutine(GenerateNormal3());
-        Coroutine task2 = StartCoroutine(GenerateSpeed3());
-        yield return task1;
-        yield return task2;
-        isEndGenerate=true;
-        Debug.Log("end Generate");
-    }
-
-    IEnumerator GenerateNormal3()
-    {
-        yield return new WaitForSeconds(2);
-        for(int i=0 ; i<10 ; i++)
-        {
-            GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
-            TrackSpawnedEnemy(newMonster);
-            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
-
-            monsterScript.maxHP = Mathf.RoundToInt(1.25f * monsterScript.maxHP);
-            monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
-        }
-    }
-
-    IEnumerator GenerateSpeed3()
-    {
-        yield return new WaitForSeconds(4);
-        for(int i=0 ; i<10 ; i++)
-        {
-            GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
-            TrackSpawnedEnemy(newMonster);
-            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
-
-            monsterScript.maxHP = Mathf.RoundToInt(1.25f * monsterScript.maxHP);
-            monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
-        }
-    }
-
-    //==================== Wave 4 ====================
-    IEnumerator Wave4()
-    {
-        yield return GenerateStrong4();
-        isEndGenerate=true;
-        Debug.Log("end Generate");
-    }
-
-    IEnumerator GenerateStrong4()
-    {
-        yield return new WaitForSeconds(2);
-        for(int i=0 ; i<20 ; i++)
-        {
-            GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            TrackSpawnedEnemy(newMonster);
-            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
-
-            monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
-            monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(1);
-        }
-    }
-
-    //==================== Wave 5 ====================
-    IEnumerator Wave5()
-    {
         Coroutine task1 = StartCoroutine(GenerateNormal5());
-        Coroutine task2 = StartCoroutine(GenerateStrong5());
+        Coroutine task2 = StartCoroutine(GenerateSpeed5());
+        Coroutine task3 = StartCoroutine(GenerateStrong5());
+        Coroutine task4 = StartCoroutine(GenerateFreeze5());
         yield return task1;
         yield return task2;
-        isEndGenerate=true;
+        yield return task3;
+        yield return task4;
+        isEndGenerate = true;
         Debug.Log("end Generate");
     }
 
     IEnumerator GenerateNormal5()
     {
-        yield return new WaitForSeconds(2);
-        for(int i=0 ; i<10 ; i++)
+        yield return new WaitForSeconds(10);
+        for (int i = 0; i < 20; i++)
         {
             GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(2f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
         }
     }
 
-    IEnumerator GenerateStrong5()
+    IEnumerator GenerateSpeed5()
     {
-        yield return new WaitForSeconds(3);
-        for(int i=0 ; i<10 ; i++)
-        {
-            GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            TrackSpawnedEnemy(newMonster);
-            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
-
-            monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
-            monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
-        }
-    }
-
-    //==================== Wave 6 ====================
-    IEnumerator Wave6()
-    {
-        Coroutine task1 = StartCoroutine(GenerateSpeed6());
-        Coroutine task2 = StartCoroutine(GenerateStrong6());
-        yield return task1;
-        yield return task2;
-        isEndGenerate=true;
-        Debug.Log("end Generate");
-    }
-
-    IEnumerator GenerateSpeed6()
-    {
-        yield return new WaitForSeconds(4);
-        for(int i=0 ; i<10 ; i++)
+        yield return new WaitForSeconds(20);
+        for (int i = 0; i < 20; i++)
         {
             GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(2f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
         }
     }
 
-    IEnumerator GenerateStrong6()
+    IEnumerator GenerateStrong5()
     {
         yield return new WaitForSeconds(2);
-        for(int i=0 ; i<10 ; i++)
+        for (int i = 0; i < 10; i++)
         {
             GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(2f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
             yield return new WaitForSeconds(3);
         }
     }
 
-    //==================== Wave 7 ====================
-    IEnumerator Wave7()
+    IEnumerator GenerateFreeze5()
+    {
+        yield return new WaitForSeconds(9);
+        GameObject newMonster = Instantiate(monsters[8], this.transform.position, Quaternion.identity);
+        TrackSpawnedEnemy(newMonster);
+        EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+        monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+        monsterScript.HP = monsterScript.maxHP;
+    }
+
+    //==================== Wave 4 ====================
+    IEnumerator Wave4()
     {
         Coroutine task1 = StartCoroutine(GenerateNormal7());
         Coroutine task2 = StartCoroutine(GenerateSpeed7());
-        Coroutine task3 = StartCoroutine(GenerateStrong7());
         yield return task1;
         yield return task2;
-        yield return task3;
-        isEndGenerate=true;
+        isEndGenerate = true;
         Debug.Log("end Generate");
     }
 
     IEnumerator GenerateNormal7()
     {
         yield return new WaitForSeconds(2);
-        for(int i=0 ; i<15 ; i++)
+        for (int i = 0; i < 20; i++)
         {
-            GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[0+result], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(3.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(2);
         }
     }
 
     IEnumerator GenerateSpeed7()
     {
-        yield return new WaitForSeconds(10);
-        for(int i=0 ; i<20 ; i++)
+        yield return new WaitForSeconds(5);
+        for (int i = 0; i < 20; i++)
         {
-            GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[2+result], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(4.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
             yield return new WaitForSeconds(2);
         }
     }
 
-    IEnumerator GenerateStrong7()
+    //==================== Wave 5 ====================
+    IEnumerator Wave5()
     {
-        yield return new WaitForSeconds(4);
-        for(int i=0 ; i<20 ; i++)
-        {
-            GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
-            TrackSpawnedEnemy(newMonster);
-            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
-
-            monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
-            monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
-        }
-    }
-
-    //===== Wave 8 =====
-    IEnumerator Wave8()
-    {
-        Coroutine task1 = StartCoroutine(GenerateNormal8());
-        Coroutine task2 = StartCoroutine(GenerateSpeed8());
-        Coroutine task3 = StartCoroutine(GenerateStrong8());
-        Coroutine task4 = StartCoroutine(GenerateStun8());
+        Coroutine task1 = StartCoroutine(GenerateSpeed9());
+        Coroutine task2 = StartCoroutine(GenerateStrong9());
         yield return task1;
         yield return task2;
-        yield return task3;
-        yield return task4;
-        isEndGenerate=true;
+        isEndGenerate = true;
         Debug.Log("end Generate");
     }
 
-    IEnumerator GenerateNormal8()
+    IEnumerator GenerateSpeed9()
     {
         yield return new WaitForSeconds(2);
-        Debug.Log("Start Genearte Normal");
-        for(int i=0 ; i<20 ; i++)
+        for (int i = 0; i < 10; i++)
         {
-            GameObject newMonster = Instantiate(monsters[0], this.transform.position, Quaternion.identity);
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[2+result], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(7f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(3f);
         }
     }
 
-    IEnumerator GenerateSpeed8()
+    IEnumerator GenerateStrong9()
     {
-        yield return new WaitForSeconds(20);
-        Debug.Log("Start Genearte Speed");
-        for(int i=0 ; i<10 ; i++)
+        yield return new WaitForSeconds(2);
+        for (int i = 0; i < 15; i++)
         {
-            GameObject newMonster = Instantiate(monsters[2], this.transform.position, Quaternion.identity);
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[4+result], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(7f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
             yield return new WaitForSeconds(2);
         }
     }
 
-    IEnumerator GenerateStrong8()
+    //==================== Wave 6 ====================
+    IEnumerator Wave6()
     {
-        yield return new WaitForSeconds(4);
-        Debug.Log("Start Genearte Strong");
-        for(int i=0 ; i<10 ; i++)
+        yield return StartCoroutine(GenerateNormal11());
+        isEndGenerate = true;
+        Debug.Log("end Generate");
+    }
+
+    IEnumerator GenerateNormal11()
+    {
+        yield return new WaitForSeconds(2);
+        for (int i = 0; i < 50; i++)
         {
-            GameObject newMonster = Instantiate(monsters[4], this.transform.position, Quaternion.identity);
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[0+result], this.transform.position, Quaternion.identity);
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(2 * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(3.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
-
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
-    IEnumerator GenerateStun8()
+    //==================== Wave 7 ====================
+    IEnumerator Wave7()
     {
-        yield return new WaitForSeconds(5);
+        Coroutine task1 = StartCoroutine(GenerateSpeed13());
+        Coroutine task2 = StartCoroutine(GenerateStun13());
+        Coroutine task3 = StartCoroutine(GenerateNormal13());
+        yield return task1;
+        yield return task2;
+        yield return task3;
+        isEndGenerate = true;
+        Debug.Log("end Generate");
+    }
 
+    IEnumerator GenerateNormal13()
+    {
+        yield return new WaitForSeconds(2);
+        for (int i = 0; i < 10; i++)
+        {
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[0+result], this.transform.position, Quaternion.identity);
+            TrackSpawnedEnemy(newMonster);
+            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+            monsterScript.maxHP = Mathf.RoundToInt(9f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(2);
+        }
+    }
+
+    IEnumerator GenerateSpeed13()
+    {
+        yield return new WaitForSeconds(15);
+        for (int i = 0; i < 50; i++)
+        {
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[2+result], this.transform.position, Quaternion.identity);
+            TrackSpawnedEnemy(newMonster);
+            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+            monsterScript.maxHP = Mathf.RoundToInt(7f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    IEnumerator GenerateStun13()
+    {
+        yield return new WaitForSeconds(3);
+        for (int i = 0; i < 2; i++)
+        {
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[6+result], this.transform.position, Quaternion.identity);
+            TrackSpawnedEnemy(newMonster);
+            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+            monsterScript.maxHP = Mathf.RoundToInt(5f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(25);
+        }
+    }
+
+    //==================== Wave 8 ====================
+    IEnumerator Wave8()
+    {
+        yield return StartCoroutine(GenerateSpeed15());
+        isEndGenerate = true;
+        Debug.Log("end Generate");
+    }
+
+    IEnumerator GenerateSpeed15()
+    {
+        yield return new WaitForSeconds(2);
+        for (int i = 0; i < 80; i++)
+        {
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[2+result], this.transform.position, Quaternion.identity);
+            TrackSpawnedEnemy(newMonster);
+            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+            monsterScript.maxHP = Mathf.RoundToInt(5f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    //==================== Wave 9 ====================
+    IEnumerator Wave9()
+    {
+        Coroutine task1 = StartCoroutine(GenerateNormal17());
+        Coroutine task2 = StartCoroutine(GenerateGenerate17());
+        Coroutine task3 = StartCoroutine(GenerateStun17());
+        yield return task1;
+        yield return task2;
+        yield return task3;
+        isEndGenerate = true;
+        Debug.Log("end Generate");
+    }
+
+    IEnumerator GenerateNormal17()
+    {
+        yield return new WaitForSeconds(2);
+        for (int i = 0; i < 40; i++)
+        {
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[0+result], this.transform.position, Quaternion.identity);
+            TrackSpawnedEnemy(newMonster);
+            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+            monsterScript.maxHP = Mathf.RoundToInt(10f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    IEnumerator GenerateGenerate17()
+    {
+        yield return new WaitForSeconds(20);
+        GameObject newMonster = Instantiate(monsters[11], this.transform.position, Quaternion.identity);
+        TrackSpawnedEnemy(newMonster);
+        EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+        monsterScript.maxHP = Mathf.RoundToInt(5f * monsterScript.maxHP);
+        monsterScript.HP = monsterScript.maxHP;
+        yield return null;
+    }
+
+    IEnumerator GenerateStun17()
+    {
+        yield return new WaitForSeconds(3);
         GameObject newMonster = Instantiate(monsters[6], this.transform.position, Quaternion.identity);
         TrackSpawnedEnemy(newMonster);
         EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-        monsterScript.maxHP = Mathf.RoundToInt(1 * monsterScript.maxHP);
+        monsterScript.maxHP = Mathf.RoundToInt(7f * monsterScript.maxHP);
         monsterScript.HP = monsterScript.maxHP;
+        yield return null;
+    }
+
+    //==================== Wave 10 ====================
+    IEnumerator Wave10()
+    {
+        Coroutine task1 = StartCoroutine(GenerateStrong19());
+        Coroutine task2 = StartCoroutine(GenerateFreeze19());
+        Coroutine task3 = StartCoroutine(GenerateStun19());
+        yield return task1;
+        yield return task2;
+        yield return task3;
+        isEndGenerate = true;
+        Debug.Log("end Generate");
+    }
+
+    IEnumerator GenerateStrong19()
+    {
+        yield return new WaitForSeconds(1);
+        for (int i = 0; i < 40; i++)
+        {
+            int result = (Random.value < 0.5f) ? 0 : 1;
+            GameObject newMonster = Instantiate(monsters[4+result], this.transform.position, Quaternion.identity);
+            TrackSpawnedEnemy(newMonster);
+            EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+            monsterScript.maxHP = Mathf.RoundToInt(4f * monsterScript.maxHP);
+            monsterScript.HP = monsterScript.maxHP;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    IEnumerator GenerateFreeze19()
+    {
+        yield return new WaitForSeconds(20);
+        int result = (Random.value < 0.5f) ? 0 : 1;
+        GameObject newMonster = Instantiate(monsters[8+result], this.transform.position, Quaternion.identity);
+        TrackSpawnedEnemy(newMonster);
+        EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+        monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
+        monsterScript.HP = monsterScript.maxHP;
+        yield return null;
+    }
+
+    IEnumerator GenerateStun19()
+    {
+        yield return new WaitForSeconds(20);
+        int result = (Random.value < 0.5f) ? 0 : 1;
+        GameObject newMonster = Instantiate(monsters[6+result], this.transform.position, Quaternion.identity);
+        TrackSpawnedEnemy(newMonster);
+        EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
+
+        monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
+        monsterScript.HP = monsterScript.maxHP;
+        yield return null;
     }
 }
