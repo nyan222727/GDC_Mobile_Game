@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f6abc067638a9c49974979b6281ef3b, type: 2}
+  - {fileID: 2100000, guid: ff7c9d8e55b08b24f8adf134cc0db486, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,9 +107,9 @@ MonoBehaviour:
   isChainProgress: 0
   isPath: 0
   isNearPath: 0
-  defaultMaterial: {fileID: 2100000, guid: 5f6abc067638a9c49974979b6281ef3b, type: 2}
-  fireMaterial: {fileID: 2100000, guid: 3e62d91e5974c5f43bcf9775a80a8f76, type: 2}
-  iceMaterial: {fileID: 2100000, guid: 09bd949030e46b34e8a3d0cbb5c9394f, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: ff7c9d8e55b08b24f8adf134cc0db486, type: 2}
+  fireMaterial: {fileID: 2100000, guid: 2d180c69f1235b344996a294027a9275, type: 2}
+  iceMaterial: {fileID: 2100000, guid: 04cd672bd6c9f51449544c569045175c, type: 2}
   elementTimer: 0
   elementTime: 30
   flowManager: {fileID: 0}
