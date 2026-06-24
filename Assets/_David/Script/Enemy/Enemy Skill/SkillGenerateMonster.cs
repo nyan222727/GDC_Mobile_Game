@@ -42,13 +42,16 @@ public class SkillGenerateMonster : MonoBehaviour
             int randomIndex = Random.Range(0, monsters.Length);
             GameObject monster = monsters[randomIndex];
             GameObject mob = Instantiate(monster, transform.position, transform.rotation);
+            EnemyController selfScript = GetComponent<EnemyController>();
             EnemyController mobScript = mob.GetComponent<EnemyController>();
             if(!mobScript)
             {
                 Debug.Log("not found enemy controller");
             }
-            mobScript.maxHP = Mathf.RoundToInt(monster.GetComponent<EnemyController>().maxHP* GetComponent<EnemyController>().hpRatio);
+            float hpRatio = (float)selfScript.HP / selfScript.maxHP;
+            mobScript.maxHP = Mathf.RoundToInt(monster.GetComponent<EnemyController>().maxHP * selfScript.hpRatio * (hpRatio>0.5f ? (hpRatio * 1.5f) - 0.5f : 0.25f ));
             mobScript.HP = mobScript.maxHP;
+            Debug.Log((hpRatio>0.5f ? (hpRatio * 1.5f) - 0.5f : 0.25f ));
             TrackSpawnedEnemy(mob);
             // 4. 印出或使用隨機抽到的元素
             // Debug.Log("隨機選擇的項目是：" + monster);

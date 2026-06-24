@@ -90,7 +90,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(2);
         }
@@ -106,7 +106,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(1.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(2);
         }
@@ -135,7 +135,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(2.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(1);
         }
@@ -151,7 +151,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(2f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(1.5f);
         }
@@ -167,7 +167,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(1f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(2f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(2);
         }
@@ -193,7 +193,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(3.5f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(2);
         }
@@ -287,9 +287,9 @@ public class Waves3B : MonoBehaviour
         TrackSpawnedEnemy(newMonster);
         EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-        monsterScript.maxHP = Mathf.RoundToInt(2.5f * monsterScript.maxHP);
+        monsterScript.maxHP = Mathf.RoundToInt(2f * monsterScript.maxHP);
         monsterScript.HP = monsterScript.maxHP;
-        monsterScript.hpRatio = 3f;
+        monsterScript.hpRatio = 2f;
     }
 
     //==================== Wave 6 ====================
@@ -312,7 +312,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(8f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(12f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(2);
         }
@@ -327,7 +327,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(8f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(12f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(4);
         }
@@ -351,7 +351,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(14f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(10f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(4);
         }
@@ -378,7 +378,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(15f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(12f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(3);
         }
@@ -393,7 +393,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(15f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(12f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(3);
         }
@@ -422,7 +422,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(10f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(6f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(0.5f);
         }
@@ -438,7 +438,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(6f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(4f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(0.5f);
         }
@@ -454,7 +454,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(8f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(4f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(1);
         }
@@ -472,7 +472,7 @@ public class Waves3B : MonoBehaviour
         yield return task1;
         yield return task2;
         yield return task3;
-        yield return task4;
+        // yield return task4;
         yield return task5;
         yield return task6;
         isEndGenerate = true;
