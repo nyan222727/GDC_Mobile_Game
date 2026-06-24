@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06291259d175d946ae3172296e1b7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timePerTrigger: 3
+  timePerTrigger: 2
   skillRange: 3
   restrict: 25
   attackSound: {fileID: 8300000, guid: d6ae7b022c5d31b488f27c9578d44dc6, type: 3}

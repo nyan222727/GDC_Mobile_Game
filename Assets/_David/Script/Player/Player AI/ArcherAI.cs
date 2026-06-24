@@ -63,7 +63,10 @@ public class ArcherAI : MonoBehaviour
         
         if(fireCDTimer > 0)
         {
-            fireCDTimer -= Time.deltaTime; 
+            if(buffScript.stunTimer<=0)
+            {
+                fireCDTimer -= Time.deltaTime; 
+            }
         }
         if (target)
         {

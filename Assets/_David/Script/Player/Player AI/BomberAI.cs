@@ -56,7 +56,10 @@ public class BomberAI : MonoBehaviour
         
         if(fireCDTimer > 0)
         {
-            fireCDTimer -= Time.deltaTime; 
+            if(buffScript.stunTimer<=0)
+            {
+                fireCDTimer -= Time.deltaTime; 
+            }
         }
         if (target)
         {
