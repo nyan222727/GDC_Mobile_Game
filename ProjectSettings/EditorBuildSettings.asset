@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Nyan/Level 3.unity
     guid: 11f79a45b795f3c4ba282bc0367c9d2a
+  - enabled: 1
+    path: Assets/_Nyan/Level 2.5.unity
+    guid: 71305ad6a78294a428ebd1360f15d4c4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
