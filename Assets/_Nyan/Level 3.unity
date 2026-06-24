@@ -9306,7 +9306,7 @@ MonoBehaviour:
   costBadgeBackground: {fileID: 3400000000403}
   selectedNameText: {fileID: 3610000000503}
   characterPrefab: {fileID: 3830376903451027853, guid: 21308e5700de9da4d9cf4d60d8640a25, type: 3}
-  placementCost: 100
+  placementCost: 50
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
@@ -9393,7 +9393,7 @@ MonoBehaviour:
   costBadgeBackground: {fileID: 3400000000503}
   selectedNameText: {fileID: 3610000000603}
   characterPrefab: {fileID: 3830376903451027853, guid: 1780c9027614d714f8c4fdda6dee28e1, type: 3}
-  placementCost: 100
+  placementCost: 50
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
@@ -11763,7 +11763,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: $100
+  m_Text: $50
 --- !u!1 &3400000000500
 GameObject:
   m_ObjectHideFlags: 0
@@ -11918,7 +11918,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: $100
+  m_Text: $50
 --- !u!1 &3400000000600
 GameObject:
   m_ObjectHideFlags: 0
