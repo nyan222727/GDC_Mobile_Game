@@ -71,7 +71,7 @@ public class ArcherAI : MonoBehaviour
             }
             
             // 🔒 只有這時候才執行昂貴的物理與 GetComponent 搜尋！
-            target = searchScript.FindTarget(range, 1); 
+            target = searchScript.FindTarget(range); 
         }
         
         if(fireCDTimer > 0)
