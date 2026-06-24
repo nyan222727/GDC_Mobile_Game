@@ -783,6 +783,7 @@ public class Waves2 : MonoBehaviour
 
         monsterScript.maxHP = Mathf.RoundToInt(5f * monsterScript.maxHP);
         monsterScript.HP = monsterScript.maxHP;
+        monsterScript.hpRatio = 5f;
         yield return null;
     }
 
@@ -1017,6 +1018,7 @@ public class Waves2 : MonoBehaviour
 
         monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
         monsterScript.HP = monsterScript.maxHP;
+        monsterScript.hpRatio = 3f;
         yield return null;
     }
 }

@@ -466,13 +466,11 @@ public class Waves3B : MonoBehaviour
         Coroutine task1 = StartCoroutine(GenerateNormal20());
         Coroutine task2 = StartCoroutine(GenerateSpeed20());
         Coroutine task3 = StartCoroutine(GenerateStrong20());
-        Coroutine task4 = StartCoroutine(GenerateFreeze20());
         Coroutine task5 = StartCoroutine(GenerateStun20());
         Coroutine task6 = StartCoroutine(GenerateGenerate20());
         yield return task1;
         yield return task2;
         yield return task3;
-        // yield return task4;
         yield return task5;
         yield return task6;
         isEndGenerate = true;
@@ -505,7 +503,7 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(6f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(4f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(1);
         }
@@ -521,23 +519,10 @@ public class Waves3B : MonoBehaviour
             TrackSpawnedEnemy(newMonster);
             EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-            monsterScript.maxHP = Mathf.RoundToInt(6f * monsterScript.maxHP);
+            monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
             monsterScript.HP = monsterScript.maxHP;
             yield return new WaitForSeconds(2);
         }
-    }
-
-    IEnumerator GenerateFreeze20()
-    {
-        yield return new WaitForSeconds(7);
-        int result = (Random.value < 0.5f) ? 0 : 1;
-        GameObject newMonster = Instantiate(monsters[8+result], this.transform.position, Quaternion.identity);
-        TrackSpawnedEnemy(newMonster);
-        EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
-
-        monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
-        monsterScript.HP = monsterScript.maxHP;
-        yield return null;
     }
 
     IEnumerator GenerateStun20()
@@ -561,8 +546,9 @@ public class Waves3B : MonoBehaviour
         TrackSpawnedEnemy(newMonster);
         EnemyController monsterScript = newMonster.GetComponent<EnemyController>();
 
-        monsterScript.maxHP = Mathf.RoundToInt(3f * monsterScript.maxHP);
+        monsterScript.maxHP = Mathf.RoundToInt(2.5f * monsterScript.maxHP);
         monsterScript.HP = monsterScript.maxHP;
+        monsterScript.hpRatio = 2.5f;
         yield return null;
     }
 }

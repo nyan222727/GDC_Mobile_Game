@@ -39,6 +39,11 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         maxHP = Mathf.RoundToInt(maxHP*hpRatio);
+        if (DifficultyManager.IsEasyMode)
+        {
+            Debug.Log("生成easy monster");
+            maxHP = Mathf.RoundToInt(maxHP * 0.5f); // 簡單模式下，怪物的血量增幅比例變為 0.5 倍
+        }
         HP = maxHP;
         speed = defaultSpeed;
         // 初始對齊格子中心
