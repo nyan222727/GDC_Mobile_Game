@@ -8620,7 +8620,7 @@ MonoBehaviour:
   costBadgeBackground: {fileID: 3400000000403}
   selectedNameText: {fileID: 3610000000503}
   characterPrefab: {fileID: 3830376903451027853, guid: 21308e5700de9da4d9cf4d60d8640a25, type: 3}
-  placementCost: 100
+  placementCost: 50
   moneyManager: {fileID: 4100000000002}
   normalSlotColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   emptySlotColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
@@ -11077,7 +11077,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: $100
+  m_Text: $50
 --- !u!1 &3400000000500
 GameObject:
   m_ObjectHideFlags: 0
@@ -14536,6 +14536,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4300000000001}
+  - {fileID: 4300000000501}
   m_Father: {fileID: 2118441323}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -14575,7 +14576,6 @@ RectTransform:
   - {fileID: 4300000000201}
   - {fileID: 4300000000301}
   - {fileID: 4300000000401}
-  - {fileID: 4300000000501}
   m_Father: {fileID: 4200000000301}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
@@ -15409,17 +15409,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4300000000500}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4300000000511}
-  m_Father: {fileID: 4300000000001}
+  m_Father: {fileID: 4200000000301}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1063, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 294.0531, y: 250.31146}
   m_SizeDelta: {x: 108, y: 108}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4300000000502

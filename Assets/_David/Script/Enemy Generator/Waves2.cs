@@ -526,7 +526,7 @@ public class Waves2 : MonoBehaviour
 
         monsterScript.maxHP = Mathf.RoundToInt(2.5f * monsterScript.maxHP);
         monsterScript.HP = monsterScript.maxHP;
-        monsterScript.hpRatio = 3f;
+        monsterScript.hpRatio = 2.5f;
     }
 
     //==================== Wave 11 ====================
