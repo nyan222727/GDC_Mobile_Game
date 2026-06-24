@@ -33,6 +33,10 @@ public class BomberAI : MonoBehaviour
     [SerializeField]public PlayerFindTarget searchScript;
     [SerializeField]public PlayerBuffManager buffScript;
 
+    // 1. 先在類別（Class）的最上方宣告一個新的計時器變數（跟 fireCDTimer 放一起）
+    private float searchTimer = 0f;
+    private const float searchInterval = 0.1f; // 每 0.15 秒才允許搜尋一次目標（極度省效能）
+
     void Start()
     {
         buffScript = this.gameObject.GetComponent<PlayerBuffManager>();
@@ -43,16 +47,25 @@ public class BomberAI : MonoBehaviour
 
     void Update() {
         
-        range = defaultRange;
-        if(buffScript.isSameElement)
+        // 💡 只有時間到了，才去重新計算攻擊範圍與搜尋目標
+            searchTimer -= Time.deltaTime;
+        if (searchTimer <= 0f)
         {
-            range *= elementRange;
+            searchTimer = searchInterval; // 重置搜尋計時器
+
+            range = defaultRange;
+            if(buffScript.isSameElement)
+            {
+                range *= elementRange;
+            }
+            if(buffScript.isActive)
+            {
+                range *= activeRange;
+            }
+            
+            // 🔒 只有這時候才執行昂貴的物理與 GetComponent 搜尋！
+            target = searchScript.FindTarget(range, 1); 
         }
-        if(buffScript.isActive)
-        {
-            range *= activeRange;
-        }
-        target = searchScript.FindTarget(range); // 尋找目標
         
         if(fireCDTimer > 0)
         {

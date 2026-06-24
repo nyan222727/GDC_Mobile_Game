@@ -15,9 +15,10 @@ public class TileProperty : MonoBehaviour
     public Material defaultMaterial;
     public Material fireMaterial;
     public Material iceMaterial; 
-    private Renderer myRenderer;
     public float elementTimer;
     public float elementTime;
+    private MeshRenderer myRenderer;       // 確保型態是 MeshRenderer 比較精準
+    private MaterialPropertyBlock propBlock; // 宣告 PropertyBlock 變數
 
     public float RemainingElementTime => Mathf.Max(0f, elementTimer);
     [SerializeField]public GameObject flowManager;
@@ -39,7 +40,8 @@ public class TileProperty : MonoBehaviour
 
         chainCount = 0;
         element = Element.None;
-        myRenderer = GetComponent<Renderer>();
+        myRenderer = GetComponent<MeshRenderer>();
+        propBlock = new MaterialPropertyBlock(); // 在一開始就 new 出來準備好
     }
 
     // Update is called once per frame
@@ -64,7 +66,7 @@ public class TileProperty : MonoBehaviour
             }
         }
 
-        // 🎨 處理材質球顏色切換
+        // 🎨 步驟 A：根據目前的元素，決定要拿哪一個基礎材質球
         Material targetMaterial = defaultMaterial;
         switch(element)
         {
@@ -75,32 +77,35 @@ public class TileProperty : MonoBehaviour
 
         if (myRenderer != null && targetMaterial != null)
         {
-            // 💡 關鍵：先將材質球指定過去
-            myRenderer.material = targetMaterial;
+            // 1. 先用原本共用的材質球指定過去（此時大家都長一樣）
+            myRenderer.sharedMaterial = targetMaterial; 
 
-            // 🌗 核心暗化邏輯：如果剩下不到 10 秒，且目前有屬性加成
+            // 2. 清空上一次的屬性塊設定
+            propBlock.Clear(); 
+            
+            // 3. 抓取目前材質球的原始顏色作為基底
+            Color finalColor = targetMaterial.color;
+
+            // 🌗 步驟 B：核心暗化計算（不到 10 秒時，只去改 finalColor 的數值）
             if (element != Element.None && elementTimer <= 20f)
             {
-                // 計算變暗的比例 (t 會從 1.0 漸變到 0.0)
-                // 當 elementTimer = 10 時，t = 1.0 (原本亮度)
-                // 當 elementTimer = 0  時，t = 0.0 (最暗)
                 float t = Mathf.Clamp01(elementTimer / 20f);
+                float brightness = Mathf.Lerp(0.2f, 1.0f, t); // 亮度從 1.0 慢慢掉到 0.2
 
-                // 調整最低亮度（例如 0.2f），防止方塊全黑到看不見
-                float brightness = Mathf.Lerp(0.2f, 1.0f, t);
-
-                // 取得原本材質球的顏色，並乘以亮度係數
-                Color originalColor = targetMaterial.color;
-                Color darkerColor = new Color(
-                    originalColor.r * brightness, 
-                    originalColor.g * brightness, 
-                    originalColor.b * brightness, 
-                    originalColor.a
+                finalColor = new Color(
+                    finalColor.r * brightness,
+                    finalColor.g * brightness,
+                    finalColor.b * brightness,
+                    finalColor.a
                 );
-
-                // 把變暗後的顏色指定給當前渲染器
-                myRenderer.material.color = darkerColor;
             }
+
+            // 4. ⚙️ 【最關鍵的一步】把算好的顏色塞進屬性塊
+            // ⚠️ 注意：URP Shader 的顏色底層變數名稱固定叫做 "_BaseColor"（舊版內建 Shader 叫 "_Color"）
+            propBlock.SetColor("_BaseColor", finalColor);
+
+            // 5. 🚀 把這個屬性外掛包直接貼到 Renderer 上！
+            myRenderer.SetPropertyBlock(propBlock);
         }
     }
 
