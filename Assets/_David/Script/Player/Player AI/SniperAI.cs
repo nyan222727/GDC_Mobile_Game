@@ -75,7 +75,13 @@ public class SniperAI : MonoBehaviour
             target = searchScript.FindTarget(range, 1); 
         }
         
-        
+        if(fireCDTimer > 0)
+        {
+            if(buffScript.stunTimer<=0)
+            {
+                fireCDTimer -= Time.deltaTime; 
+            }
+        }
         if (target)
         {
             // 鎖定邏輯：讓塔轉向目標
