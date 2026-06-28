@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8162804371417242812}
   - component: {fileID: 611001000000000007}
   - component: {fileID: 7344561576565511956}
+  - component: {fileID: 8859759486405349212}
   m_Layer: 6
   m_Name: Generate Enemy (Fire)
   m_TagString: Untagged
@@ -198,6 +199,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 464db67f69e5890448ea4623943b4a61, type: 3}
   - {fileID: 21300000, guid: 1edd2ae9fb029894db3d4c0ca62bfb47, type: 3}
   frameInterval: 0.2
+--- !u!114 &8859759486405349212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922571589437204657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d1426a075c44e4792d933268918da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 4867368402475253618}
+  defaultFacing: 1
+  deadZone: 0.001
 --- !u!1 &6071130402193280595
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 6071130402193280595}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.05, y: -0.05, z: 0}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

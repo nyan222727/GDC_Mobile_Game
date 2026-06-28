@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3141287663633656777}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.05, y: -0.05, z: 0}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 8162804371417242812}
   - component: {fileID: 611001000000000007}
   - component: {fileID: 2915404395046617902}
+  - component: {fileID: 8435590052543471085}
   m_Layer: 6
   m_Name: Generate Enemy (Ice)
   m_TagString: Untagged
@@ -298,6 +299,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e06a3280acfb2494b96f9e57ea527e91, type: 3}
   - {fileID: 21300000, guid: bcaeecdcc8f327d4fbb0276f3d4a70e8, type: 3}
   frameInterval: 0.2
+--- !u!114 &8435590052543471085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922571589437204657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d1426a075c44e4792d933268918da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 6363013740964324011}
+  defaultFacing: 1
+  deadZone: 0.001
 --- !u!1 &7200000000000000401
 GameObject:
   m_ObjectHideFlags: 0

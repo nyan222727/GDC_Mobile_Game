@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2543259171113049079}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 8249037068895399969}
   - component: {fileID: 611001000000000004}
   - component: {fileID: 1428048968081582773}
+  - component: {fileID: 297430395308086210}
   m_Layer: 6
   m_Name: Freeze Enemy (Ice)
   m_TagString: Untagged
@@ -293,6 +294,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6a7b8fe9952ccc44da3b9f805f9f9b83, type: 3}
   - {fileID: 21300000, guid: 90e0871d43297e64480652321bbbaf41, type: 3}
   frameInterval: 0.2
+--- !u!114 &297430395308086210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428645707453406323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d1426a075c44e4792d933268918da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 9214636368159893468}
+  - {fileID: 2971596627230847694}
+  defaultFacing: 0
+  deadZone: 0.001
 --- !u!1 &5523931862649246316
 GameObject:
   m_ObjectHideFlags: 0
@@ -5153,7 +5171,7 @@ Transform:
   m_GameObject: {fileID: 5572510426655455856}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

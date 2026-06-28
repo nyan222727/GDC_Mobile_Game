@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 611001000000000005}
   - component: {fileID: 1982243643862153401}
   - component: {fileID: 2538961618125748112}
+  - component: {fileID: 9039806189781525900}
   m_Layer: 6
   m_Name: Stun Enemy (Fire)
   m_TagString: Untagged
@@ -395,6 +396,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9039806189781525900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715480771911735215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d1426a075c44e4792d933268918da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 1878863079532502980}
+  - {fileID: 7610602899202738999}
+  defaultFacing: 0
+  deadZone: 0.001
 --- !u!1 &7200000000000001101
 GameObject:
   m_ObjectHideFlags: 0
